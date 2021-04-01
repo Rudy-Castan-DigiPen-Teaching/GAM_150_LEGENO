@@ -1,5 +1,6 @@
 #include"Map.h"
 #include"Minsoo.h"
+#include "Guard.h"
 #include"doodle/doodle.hpp"
 class Game
 {

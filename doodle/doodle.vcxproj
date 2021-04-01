@@ -114,27 +114,31 @@ xcopy /y /d "$(SolutionDir)external\SFML\$(Platform)\bin\sfml-system-2.dll" "$(T
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Guard.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Minsoo.cpp" />
     <ClCompile Include="Sketch.cpp" />
-    <ClCompile Include="vec2.cpp" />
     <ClCompile Include="WinMain.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Guard.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Minsoo.h" />
     <ClInclude Include="Sketch.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="vec2.h" />
+    <ClInclude Include="Vec2.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="doodle.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="icon1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Vec2.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

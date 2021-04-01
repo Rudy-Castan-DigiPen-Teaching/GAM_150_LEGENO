@@ -33,10 +33,10 @@
     <ClCompile Include="Minsoo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="vec2.cpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="Game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Guard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -53,10 +53,13 @@
     <ClInclude Include="Minsoo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="vec2.h">
+    <ClInclude Include="Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game.h">
+    <ClInclude Include="Guard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vec2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -69,5 +72,10 @@
     <Image Include="icon1.ico">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Vec2.inl">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
