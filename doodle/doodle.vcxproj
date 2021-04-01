@@ -131,7 +131,7 @@ xcopy /y /d "$(SolutionDir)external\SFML\$(Platform)\bin\sfml-system-2.dll" "$(T
     <ClInclude Include="Minsoo.h" />
     <ClInclude Include="Sketch.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="Vec2.h" />
+    <ClInclude Include="vec2.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="doodle.rc" />

@@ -7,11 +7,12 @@ enum class Type
 {
 	wall,
 	road,
+	radar,
 	exit
 };
 struct info
 {
-	math::vec2 position;
+	math::ivec2 position;
 	Type type;
 };
 
@@ -19,9 +20,9 @@ struct info
 class Map
 {
 protected:
-	double map_width = 32;
-	double map_height = 22;
-	double block_size = 30;
+	int map_width = 32;
+	int map_height = 22;
+	int block_size = 30;
 public:
 	vector<info> map;
 	void setup();

@@ -6,18 +6,19 @@
 
 void Guard::setup()
 {
-	guards.push_back(math::vec2(130, 100));
-	guards.push_back(math::vec2(230, 150));
-	guards.push_back(math::vec2(280, 140));
-	guards.push_back(math::vec2(340, 200));
-	guards.push_back(math::vec2(530, 100));
-	guards.push_back(math::vec2(700, 100));
-	guards.push_back(math::vec2(130, 400));
-	guards.push_back(math::vec2(230, 370));
-	guards.push_back(math::vec2(280, 370));
-	guards.push_back(math::vec2(340, 400));
-	guards.push_back(math::vec2(530, 400));
-	guards.push_back(math::vec2(700, 370));
+	guards.clear();
+	//guards.push_back(math::ivec2(4, 4));
+	//guards.push_back(math::ivec2(9, 4));
+	//guards.push_back(math::ivec2(15, 4));
+	//guards.push_back(math::ivec2(6, 8));
+	//guards.push_back(math::ivec2(11,8));
+	//guards.push_back(math::ivec2(14, 8));
+	//guards.push_back(math::ivec2(4, 15));
+	//guards.push_back(math::ivec2(7, 16));
+	//guards.push_back(math::ivec2(15, 17));
+	//guards.push_back(math::ivec2(20, 9));
+	//guards.push_back(math::ivec2(25, 9));
+	//guards.push_back(math::ivec2(26, 11));
 }
 
 void Guard::Draw_guard()
@@ -25,8 +26,25 @@ void Guard::Draw_guard()
 	doodle::set_fill_color(255, 0, 0);
 	for (auto p : guards)
 	{
-		doodle::draw_ellipse(p.x, p.y, 20);
+		doodle::draw_ellipse((p.x + 0.5) * 30  , (p.y + 0.5 ) * 30 , 20);
 	}
+}
 
-
+void Guard::move(int index, int direction)
+{
+	switch (direction)
+	{
+	case 1:   //move up
+		guards[index].y--;
+		break;
+	case 2:   //move down
+		guards[index].y++;
+		break;
+	case 3:   //move right
+		guards[index].x++;
+		break;
+	case 4:   //move left
+		guards[index].x--;
+		break;
+	}
 }

@@ -10,8 +10,7 @@ class Guard :Map
 public:
 	void setup();
 	void Draw_guard();
-
-private:
-	vector<math::vec2> guards;
+	vector<math::ivec2> guards;
+	void move(int index, int direction);
 
 };
