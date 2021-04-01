@@ -10,8 +10,7 @@ enum Type
 };
 struct info
 {
-	double x = 0;
-	double y = 0;
+	math::vec2 position;
 	Type type;
 };
 

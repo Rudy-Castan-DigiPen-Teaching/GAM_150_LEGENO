@@ -41,5 +41,9 @@ void Minsoo::set_position(doodle::KeyboardButtons button)
 		position.y -= 30;
 		break;
 	}
+}
 
+void Minsoo::check_collision(math::vec2 position)
+{
+	if(map)
 }
