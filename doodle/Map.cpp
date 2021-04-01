@@ -5,36 +5,50 @@
 
 void Map::setup()
 {
-	std::ifstream readFile;             
+    std::ifstream readFile;
 
-	readFile.open("assets/Maze1.txt");    
-	double width = 0;
-	double height = 0;
-	if (readFile.is_open())   
-	{
-		while (!readFile.eof())    
-		{
-			char a;
-			readFile >> a;
-			switch (a)
-			{
-			case '0': map.push_back(info{ math::vec2{width,height},Type::wall });
-				break;
-			case '1': map.push_back(info{ math::vec2{width,height},Type::road });
-				break;	
-			}
-			if (width < map_width-1)
-			{
-				width++;
-			}
-			else if (width == (map_width - 1))
-			{
-				width = 0;
-				height++;
-			}
-		}
-	}
-	readFile.close();   
+    readFile.open("assets/Maze1.txt");
+    double width = 0;
+    double height = 0;
+    int count_road{ 0 };
+
+    if (readFile.is_open())
+    {
+        while (!readFile.eof())
+        {
+            char a;
+            readFile >> a;
+            switch (a)
+            {
+            case '0': map.push_back(info{ math::vec2{width,height},Type::wall });
+                break;
+            case '1': map.push_back(info{ math::vec2{width,height},Type::road }); count_road++;
+                break;
+            }
+            if (width < map_width - 1)
+            {
+                width++;
+            }
+            else if (width == (map_width - 1))
+            {
+                width = 0;
+                height++;
+            }
+        }
+    }
+    readFile.close();
+
+    int hidden_entrance = doodle::random(0, count_road + 1);
+    int count{ 0 };
+
+    for (int i{ 0 }; i < map.size(); i++)
+    {
+        if (map[i].type == Type::road)
+            count++;
+
+        if (count == hidden_entrance)
+            map[i].type = Type::exit;
+    }
 }
 
 void Map::draw()

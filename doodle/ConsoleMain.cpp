@@ -12,12 +12,13 @@ Game game;
 int main(void)
 try
 {
-    doodle::create_window(800, 600);
+    doodle::create_window(960, 660);
     doodle::set_frame_of_reference(doodle::FrameOfReference::LeftHanded_OriginTopLeft);
     game.setup();
     while (!doodle::is_window_closed())
     {
         doodle::update_window();
+        game.Update();
         game.Draw();
     }
     return 0;

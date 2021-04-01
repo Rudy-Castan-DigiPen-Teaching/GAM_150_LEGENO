@@ -6,7 +6,8 @@ using namespace std;
 enum class Type
 {
 	wall,
-	road
+	road,
+	exit
 };
 struct info
 {

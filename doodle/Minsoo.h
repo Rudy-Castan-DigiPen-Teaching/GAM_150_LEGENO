@@ -11,6 +11,7 @@ public:
 	void set_position(doodle::KeyboardButtons button);
 	bool check_collision(math::vec2 position);
 	math::vec2 GetPosition();
+	void setup();
 private:
 	math::vec2 position{ 2.5,2.5 };
 	int movement{ 0 };
