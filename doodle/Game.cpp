@@ -3,13 +3,15 @@
 void Game::setup()
 {
 	map.setup();
+	guard.setup();
 }
 
 void Game::Draw()
 {
 	map.draw();
-	minsu.Draw_minsu();
 	guard.Draw_guard();
+	minsu.Draw_minsu();
+	
 }
 
 void Game::set_position(doodle::KeyboardButtons doodleButton)

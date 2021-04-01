@@ -3,7 +3,7 @@
 #include"vec2.h"
 using namespace std;
 
-enum Type
+enum class Type
 {
 	wall,
 	road
@@ -18,11 +18,11 @@ struct info
 class Map
 {
 protected:
-	vector<info> map;
 	double map_width = 32;
 	double map_height = 22;
 	double block_size = 30;
 public:
+	vector<info> map;
 	void setup();
 	void draw();
 };

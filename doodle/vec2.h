@@ -1,6 +1,14 @@
+/*--------------------------------------------------------------
+Copyright (C) 2021 DigiPen Institute of Technology.
+Reproduction or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+File Name: Vec2.h
+Author: Hyosang Jung
+Creation date: 2021-03-13
+-----------------------------------------------------------------*/
 #pragma once
-#include <cmath> //sqrt
-#include <limits> //numeric_limits
+#include <cmath>
+#include <limits>
 
 namespace math
 {
@@ -17,29 +25,27 @@ namespace math
     {
         double x{ 0 }, y{ 0 };
         constexpr vec2() noexcept = default;
-        constexpr vec2(double value) noexcept : vec2(value, value) {}
-        constexpr vec2(double x_value, double y_value) noexcept : x{ x_value }, y{ y_value }{}
+        constexpr vec2(double value) noexcept : vec2(value,value){}
+        constexpr vec2(double x_value,double y_value) noexcept : x{ x_value }, y{ y_value }{}
 
         constexpr vec2& operator+=(vec2 right) noexcept;
         constexpr vec2& operator-=(vec2 right) noexcept;
         constexpr vec2& operator*=(double value) noexcept;
         constexpr vec2& operator/=(double value) noexcept;
-        [[nodiscard]] constexpr double LengthSquared() noexcept;
-        [[nodiscard]] constexpr vec2 Normalize() noexcept;
     };
-
+    
 
     struct [[nodiscard]] ivec2
     {
-        int x{ 0 }, y{ 0 };
-        constexpr ivec2() noexcept = default;
-        constexpr ivec2(int value) noexcept : ivec2(value, value) {}
-        constexpr ivec2(int x_value, int y_value) noexcept : x{ x_value }, y{ y_value }{}
+         int x{ 0 }, y{ 0 };
+         constexpr ivec2() noexcept = default;
+         constexpr ivec2(int value) noexcept : ivec2(value,value){}
+         constexpr ivec2(int x_value, int y_value) noexcept : x{ x_value }, y{ y_value }{}
 
-        constexpr ivec2& operator+=(ivec2 right) noexcept;
-        constexpr ivec2& operator-=(ivec2 right) noexcept;
-        constexpr ivec2& operator*=(int value) noexcept;
-        constexpr ivec2& operator/=(int value) noexcept;
+         constexpr ivec2& operator+=(ivec2 right) noexcept;
+         constexpr ivec2& operator-=(ivec2 right) noexcept;
+         constexpr ivec2& operator*=(int value) noexcept;
+         constexpr ivec2& operator/=(int value) noexcept;
         [[nodiscard]] constexpr operator vec2() noexcept;
     };
 
@@ -72,3 +78,4 @@ namespace math
     [[nodiscard]] constexpr  bool operator!=(ivec2 value1, ivec2 value2) noexcept;
 }
 
+#include "Vec2.inl"

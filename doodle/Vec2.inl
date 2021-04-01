@@ -7,8 +7,6 @@ Author: Hyosang Jung
 Creation date: 2021-03-13
 -----------------------------------------------------------------*/
 
-#include"vec2.h"
-
 namespace math
 {
     [[nodiscard]] constexpr vec2 operator+(vec2 left, vec2 right) noexcept
@@ -33,7 +31,7 @@ namespace math
         return negate_value;
     }
 
-    [[nodiscard]] constexpr vec2 operator*(vec2 vec, double value) noexcept
+    [[nodiscard]] constexpr vec2 operator*(vec2 vec,double value) noexcept
     {
         vec2 scale_value;
         scale_value.x = vec.x * value;
@@ -89,7 +87,7 @@ namespace math
     {
         bool x_check = math::is_equal(value1.x, value2.x);
         bool y_check = math::is_equal(value1.y, value2.y);
-        if (x_check == true && y_check == true)
+        if (x_check==true && y_check == true)
         {
             return false;
         }
@@ -115,15 +113,7 @@ namespace math
         *this = *this / value;
         return *this;
     }
-    constexpr vec2 vec2::Normalize() noexcept
-    {
-        return *this / sqrt(LengthSquared());
-    }
-    [[nodiscard]] constexpr double vec2::LengthSquared() noexcept
-    {
-        double len = (x * x + y * y);
-        return len;
-    }
+
     /*--------------------------------------------------------------------------*/
 
     [[nodiscard]] constexpr ivec2 operator+(ivec2 left, ivec2 right) noexcept
@@ -170,7 +160,7 @@ namespace math
     }
     [[nodiscard]] constexpr  bool operator==(ivec2 value1, ivec2 value2) noexcept
     {
-        if ((value1.x == value2.x) && (value1.y == value2.y))
+        if ((value1.x == value2.x) && (value1.y == value2.y) )
         {
             return true;
         }
