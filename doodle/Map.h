@@ -8,6 +8,7 @@ enum class Type
 	wall,
 	road,
 	radar,
+	treasure,
 	exit
 };
 struct info

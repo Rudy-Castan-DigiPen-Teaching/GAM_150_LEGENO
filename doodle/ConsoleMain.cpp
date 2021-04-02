@@ -30,25 +30,6 @@ catch (std::exception& e)
 }
 void on_key_pressed(doodle::KeyboardButtons doodleButton)
 {
-    if (doodleButton == doodle::KeyboardButtons::S)
-    {
-       game.set_position(doodleButton);
-       doodleButton = doodle::KeyboardButtons::None;
-    }
-    if (doodleButton == doodle::KeyboardButtons::W)
-    {
-        game.set_position(doodleButton);
+        game.Get_inputkey(doodleButton);
         doodleButton = doodle::KeyboardButtons::None;
-    }
-    if (doodleButton == doodle::KeyboardButtons::D)
-    {
-        game.set_position(doodleButton);
-        doodleButton = doodle::KeyboardButtons::None;
-    }
-    if (doodleButton == doodle::KeyboardButtons::A)
-    {
-        game.set_position(doodleButton);
-        doodleButton = doodle::KeyboardButtons::None;
-    }
-
 }

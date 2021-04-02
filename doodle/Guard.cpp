@@ -7,18 +7,18 @@
 void Guard::setup()
 {
 	guards.clear();
-	//guards.push_back(math::ivec2(4, 4));
-	//guards.push_back(math::ivec2(9, 4));
-	//guards.push_back(math::ivec2(15, 4));
-	//guards.push_back(math::ivec2(6, 8));
-	//guards.push_back(math::ivec2(11,8));
-	//guards.push_back(math::ivec2(14, 8));
-	//guards.push_back(math::ivec2(4, 15));
-	//guards.push_back(math::ivec2(7, 16));
-	//guards.push_back(math::ivec2(15, 17));
-	//guards.push_back(math::ivec2(20, 9));
-	//guards.push_back(math::ivec2(25, 9));
-	//guards.push_back(math::ivec2(26, 11));
+	guards.push_back(math::ivec2(4, 4));
+	guards.push_back(math::ivec2(9, 4));
+	guards.push_back(math::ivec2(15, 4));
+	guards.push_back(math::ivec2(6, 8));
+	guards.push_back(math::ivec2(11,8));
+	guards.push_back(math::ivec2(14, 8));
+	guards.push_back(math::ivec2(4, 15));
+	guards.push_back(math::ivec2(7, 16));
+	guards.push_back(math::ivec2(15, 17));
+	guards.push_back(math::ivec2(20, 9));
+	guards.push_back(math::ivec2(25, 9));
+	guards.push_back(math::ivec2(26, 11));
 }
 
 void Guard::Draw_guard()

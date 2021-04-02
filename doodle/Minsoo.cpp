@@ -15,7 +15,7 @@ void Minsoo::Draw_minsu()
 	}
 	doodle::pop_settings();*/
 
-	doodle::draw_text(to_string(movement),0,75);
+	doodle::draw_text(to_string(movement),0,80);
 }
 void Minsoo::setup()
 {
