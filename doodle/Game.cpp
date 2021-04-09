@@ -52,6 +52,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 	case State::START:
 		if (doodleButton == doodle::KeyboardButtons::S)
 		{
+			Reset();
 			current_state = State::IN_GAME;
 		}
 		if (doodleButton == doodle::KeyboardButtons::Q)
