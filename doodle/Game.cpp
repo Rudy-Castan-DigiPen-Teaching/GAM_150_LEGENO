@@ -1,5 +1,5 @@
 #include"Game.h"
-
+#include<iostream>
 void Game::setup()
 {
 	current_state = State::START;
@@ -22,6 +22,7 @@ void Game::Draw()
 		break;
 	case State::IN_GAME:
 		map.draw();
+		guard.Draw_Sight();
 		guard.Draw_guard();
 		minsu.Draw_minsu();
 		draw_text(std::to_string(timer), 80, 80);
@@ -67,24 +68,33 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			if (check(doodleButton) == false)
 			{
 				minsu.set_position(doodleButton);
+		
 				for (int i = 0; i < static_cast<int>(guard.guards.size()); i++)
 				{
-					if (minsu.GetPosition() == guard.guards[i])
+					if (minsu.GetPosition() == guard.guards[i].position)
 					{
-						current_state = State::START;
+						current_state = State::GAME_OVER;
 					}
-					int direction = doodle::random(1, 5);
+
 					while (1)
 					{
-						if (check_guard(i, direction) == false)
+						if (check_guard(i) == false)
 						{
-							guard.move(i, direction);
+							guard.move(i);
+							if (minsu.movement % 3 == 0)
+							{
+								
+									guard.change_sight(map, i);
+								
+							}
+							sight_check(i);
 							break;
 						}
-						direction = doodle::random(1, 5);
+						
 					}
 				}
 			}
+			caught_by_guard();
 		}
 		if (doodleButton == doodle::KeyboardButtons::R)
 		{
@@ -108,13 +118,14 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 }
 void Game::Update()
 {
+
 	switch (current_state)
 	{
 	case State::START:
 		
 		break;
 	case State::IN_GAME:
-		timer = 20 - static_cast<int>(doodle::ElapsedTime);
+		timer = total_time - static_cast<int>(doodle::ElapsedTime);
 		score = timer * (treasure_count + 1) * 100;
 
 		if (timer <= 0)
@@ -138,7 +149,7 @@ void Game::Update()
 				}
 			}
 		}
-		caught_by_guard();
+		
 		break;
 	case State::CLEAR:
 		
@@ -150,7 +161,7 @@ void Game::Update()
 
 void Game::Reset()
 {
-	timer = 20;
+	timer = total_time;
 	doodle::ElapsedTime = 0;
 	map.setup();
 	minsu.setup();
@@ -216,55 +227,149 @@ void Game::caught_by_guard()
 	math::ivec2 position = minsu.GetPosition() ;
 	for (auto& i : guard.guards)
 	{
-		if (position.x == i.x  && position.y == i.y )
+		switch (i.direction)
 		{
-			current_state = State::GAME_OVER;
+		case Direction::UP:
+		{
+			if (position.x == i.position.x && position.y == i.position.y || position.x == i.position.x && position.y == i.position.y -1)
+			{
+				current_state = State::GAME_OVER;
+			}
 		}
+		break;
+
+		case Direction::DOWN:
+		{
+			if (position.x == i.position.x && position.y == i.position.y || position.x == i.position.x && position.y == i.position.y + 1)
+			{
+				current_state = State::GAME_OVER;
+			}
+		}
+		break;
+
+		case Direction::RIGHT:
+		{
+			if (position.x == i.position.x && position.y == i.position.y || position.x == i.position.x + 1 && position.y == i.position.y )
+			{
+				current_state = State::GAME_OVER;
+			}
+		}
+		break;
+
+
+		case Direction::LEFT:
+		{
+			if (position.x == i.position.x && position.y == i.position.y || position.x == i.position.x -1 && position.y == i.position.y)
+			{
+				current_state = State::GAME_OVER;
+			}
+		}
+		break;
+		}
+
 	}
 }
 
-bool Game::check_guard(int index, int direction)
+bool Game::check_guard(int index)
 {
-	switch (direction)
+
+	switch (guard.guards[index].direction)
 	{
-	case 1:   //move up
+	case Direction::UP:   //move up
 	{
 		for (auto& i : map.map)
 		{
-			if (i.position.x == guard.guards[index].x  && i.position.y == guard.guards[index].y -1  && i.type == Type::wall)
+			if (i.position.x == guard.guards[index].position.x && i.position.y == guard.guards[index].position.y - 1 && i.type == Type::wall)
 			{
+				guard.change_sight(map, index);
 				return true;
 			}
 		}
 	}
-		break;
-	case 2:   //move down
+	break;
+	case Direction::DOWN:   //move down
 		for (auto& i : map.map)
 		{
-			if (i.position.x == guard.guards[index].x && i.position.y == guard.guards[index].y + 1 && i.type == Type::wall)
+			if (i.position.x == guard.guards[index].position.x && i.position.y == guard.guards[index].position.y + 1 && i.type == Type::wall)
 			{
+				guard.change_sight(map, index);
 				return true;
 			}
 		}
 		break;
-	case 3:   //move right
+	case Direction::RIGHT:   //move right
 		for (auto& i : map.map)
 		{
-			if (i.position.x == guard.guards[index].x+1 && i.position.y == guard.guards[index].y  && i.type == Type::wall)
-			{														 
-				return true;										 
-			}														 
-		}															 
-		break;														 
-	case 4:   //move left											 
-		for (auto& i : map.map)										 
-		{															 
-			if (i.position.x == guard.guards[index].x-1 && i.position.y == guard.guards[index].y && i.type == Type::wall)
+			if (i.position.x == guard.guards[index].position.x + 1 && i.position.y == guard.guards[index].position.y && i.type == Type::wall)
 			{
+				guard.change_sight(map, index);
+				return true;
+			}
+		}
+		break;
+	case Direction::LEFT:   //move left
+		for (auto& i : map.map)
+		{
+			if (i.position.x == guard.guards[index].position.x - 1 && i.position.y == guard.guards[index].position.y && i.type == Type::wall)
+			{
+				guard.change_sight(map, index);
 				return true;
 			}
 		}
 		break;
 	}
+
 	return false;
+}
+
+void Game::sight_check(int index)
+{
+	switch (guard.guards[index].direction)
+	{
+	case Direction::UP:
+	{
+		for (auto& j : map.map)
+		{
+			if (guard.guards[index].position.x == j.position.x && guard.guards[index].position.y - 1 == j.position.y && j.type == Type::wall)
+			{
+				guard.change_sight(map,index);
+			}
+		}
+	}
+	break;
+	case Direction::DOWN:
+	{
+		for (auto& j : map.map)
+		{
+			if (guard.guards[index].position.x == j.position.x && guard.guards[index].position.y + 1 == j.position.y && j.type == Type::wall)
+			{
+				guard.change_sight(map, index);
+			}
+		}
+	}
+	break;
+	case Direction::RIGHT:
+	{
+		for (auto& j : map.map)
+		{
+			if (guard.guards[index].position.x + 1 == j.position.x && guard.guards[index].position.y == j.position.y && j.type == Type::wall)
+			{
+				guard.change_sight(map, index);
+			}
+		}
+	}
+	break;
+	case Direction::LEFT:
+	{
+		for (auto& j : map.map)
+		{
+			if (guard.guards[index].position.x - 1 == j.position.x && guard.guards[index].position.y == j.position.y && j.type == Type::wall)
+			{
+				guard.change_sight(map, index);
+			}
+		}
+	}
+	break;
+
+	}
 }

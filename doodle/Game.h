@@ -2,21 +2,15 @@
 #include"Minsoo.h"
 #include "Guard.h"
 #include"doodle/doodle.hpp"
-
-enum class State
-{
-	START,
-	IN_GAME,
-	CLEAR,
-	GAME_OVER
-};
+#include "ENUM.h"
 
 class Game
 {
 	Map map;
 	Minsoo minsu;
 	Guard guard;
-	int timer = 20;
+	int timer = 100;
+	const int total_time{ 100 };
 	bool did_abtain_radar{ false };
 	int treasure_count{ 0 };
 	int score{ 0 };
@@ -29,5 +23,6 @@ public:
 	void caught_by_guard();
 	void Reset();
 	void Update();
-	bool check_guard(int index, int direction);
+	bool check_guard(int index);
+	void sight_check(int index);
 };

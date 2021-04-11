@@ -125,6 +125,7 @@ xcopy /y /d "$(SolutionDir)external\SFML\$(Platform)\bin\sfml-system-2.dll" "$(T
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ENUM.H" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Guard.h" />
     <ClInclude Include="Map.h" />

@@ -11,7 +11,7 @@ public:
 	void set_position(doodle::KeyboardButtons button);
 	math::ivec2 GetPosition();
 	void setup();
+	int movement{ 0 };
 private:
 	math::ivec2 position{ 2,2 };
-	int movement{ 0 };
 };

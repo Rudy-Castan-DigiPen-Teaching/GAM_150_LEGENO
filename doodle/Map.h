@@ -1,16 +1,9 @@
 #pragma once
 #include<vector>
 #include"vec2.h"
+#include "ENUM.h"
 using namespace std;
 
-enum class Type
-{
-	wall,
-	road,
-	radar,
-	treasure,
-	exit
-};
 struct info
 {
 	math::ivec2 position;

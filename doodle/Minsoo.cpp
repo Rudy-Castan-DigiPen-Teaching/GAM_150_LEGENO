@@ -5,15 +5,15 @@ void Minsoo::Draw_minsu()
 	doodle::set_fill_color(255, 255, 0);
 	doodle::draw_ellipse((position.x + 0.5)* block_size, (position.y+0.5)* block_size, 20);	//block_size=30;
 
-	/*doodle::push_settings();
-	for (int i{ 0 }; i < 200; i++)
-	{
-		doodle::no_fill();
-		doodle::set_outline_width(100);
-		doodle::set_outline_color(0);
-		doodle::draw_ellipse(position.x* block_size, position.y* block_size, 160+i*10);
-	}
-	doodle::pop_settings();*/
+	//doodle::push_settings();
+	//for (int i{ 0 }; i < 200; i++)
+	//{
+	//	doodle::no_fill();
+	//	doodle::set_outline_width(100);
+	//	doodle::set_outline_color(0);
+	//	doodle::draw_ellipse(position.x* block_size, position.y* block_size, 160+i*10);
+	//}
+	//doodle::pop_settings();
 
 	doodle::draw_text(to_string(movement),0,80);
 }
