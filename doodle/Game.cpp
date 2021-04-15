@@ -34,7 +34,7 @@ void Game::Draw()
 		set_fill_color(255, 255, 0);
 		//draw_image(clear_scene, 0, 0);
 		draw_text("Level1 Clear!", 30, 30);
-		draw_text("score= " + std::to_string(treasure_count), 30, 100);
+		draw_text("score= " + std::to_string(score), 30, 100);
 		pop_settings();
 		break;
 	case State::GAME_OVER:
@@ -69,7 +69,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			if (check(doodleButton) == false)
 			{
 				minsu.set_position(doodleButton);
-		
+
 				for (int i = 0; i < static_cast<int>(guard.guards.size()); i++)
 				{
 					if (minsu.GetPosition() == guard.guards[i].position)
@@ -82,25 +82,27 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 						if (check_guard(i) == false)
 						{
 							guard.move(i);
-							if (minsu.movement % 3 == 0)
+							if (minsu.movement % 5 == 0)
 							{
-								
-									guard.change_sight(map, i);
-								
+
+								guard.change_sight(map, i);
+
 							}
 							sight_check(i);
 							break;
 						}
-						
+
 					}
 				}
 			}
 			caught_by_guard();
 		}
+#ifdef _DEBUG
 		if (doodleButton == doodle::KeyboardButtons::R)
 		{
 			Reset();
 		}
+#endif
 		break;
 	}
 	case State::CLEAR:
@@ -115,7 +117,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 	}
 
 	}
-	
+
 }
 void Game::Update()
 {
@@ -127,7 +129,7 @@ void Game::Update()
 		break;
 	case State::IN_GAME:
 		timer = total_time - static_cast<int>(doodle::ElapsedTime);
-		score = timer * (treasure_count + 1) * 100;
+		score = timer * (treasure_count + 1) * 10;
 
 		if (timer <= 0)
 		{
