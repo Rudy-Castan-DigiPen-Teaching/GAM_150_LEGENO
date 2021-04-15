@@ -32,6 +32,7 @@ void Game::Draw()
 		push_settings();
 		clear_background();
 		set_fill_color(255, 255, 0);
+		//draw_image(clear_scene, 0, 0);
 		draw_text("Level1 Clear!", 30, 30);
 		draw_text("score= " + std::to_string(treasure_count), 30, 100);
 		pop_settings();

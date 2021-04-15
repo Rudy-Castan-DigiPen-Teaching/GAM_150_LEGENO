@@ -15,6 +15,7 @@ class Game
 	int treasure_count{ 0 };
 	int score{ 0 };
 	State current_state = State::START;
+	doodle::Image clear_scene{ "assets/clear_scene.png" };
 public:
 	void setup();
 	void Draw();
