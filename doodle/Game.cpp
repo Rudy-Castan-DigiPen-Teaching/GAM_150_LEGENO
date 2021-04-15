@@ -31,16 +31,17 @@ void Game::Draw()
 	case State::CLEAR:
 		push_settings();
 		clear_background();
-		set_fill_color(255, 255, 0);
-		//draw_image(clear_scene, 0, 0);
-		draw_text("Level1 Clear!", 30, 30);
-		draw_text("score= " + std::to_string(score), 30, 100);
+		set_fill_color(255, 0, 255);
+		draw_image(clear_scene, 0, 0);
+		draw_text("Level 1 Clear!", 30, 100);
+		draw_text("score= " + std::to_string(score), 100, 600);
 		pop_settings();
 		break;
 	case State::GAME_OVER:
 		push_settings();
 		clear_background();
 		set_fill_color(255, 255, 0);
+		draw_image(clear_scene, 0, 0);
 		draw_text("You lose!", 30, 250);
 		pop_settings();
 		break;
@@ -101,6 +102,10 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 		if (doodleButton == doodle::KeyboardButtons::R)
 		{
 			Reset();
+		}
+		if (doodleButton == doodle::KeyboardButtons::K)
+		{
+			current_state = State::CLEAR;
 		}
 #endif
 		break;
