@@ -7,8 +7,8 @@
 void Guard::setup()
 {
 	guards.clear();
-	guards.push_back(guard_info{ math::ivec2(4, 3) , Direction::UP });
-	//guards.push_back(guard_info{ math::ivec2(9, 4), Direction::UP });
+	//guards.push_back(guard_info{ math::ivec2(4, 3) , Direction::UP });
+	guards.push_back(guard_info{ math::ivec2(8, 2), Direction::UP });
 	//guards.push_back(guard_info{ math::ivec2(15, 4), Direction::UP });
 	//guards.push_back(guard_info{ math::ivec2(6, 8), Direction::DOWN });
 	//guards.push_back(guard_info{ math::ivec2(11,8), Direction::UP });

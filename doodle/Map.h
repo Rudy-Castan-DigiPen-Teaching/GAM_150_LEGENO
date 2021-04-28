@@ -14,8 +14,8 @@ struct info
 class Map
 {
 protected:
-	int map_width = 32;
-	int map_height = 22;
+	int map_width = 81;
+	int map_height = 27;
 	int block_size = 30;
 public:
 	vector<info> map;

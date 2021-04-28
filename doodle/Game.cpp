@@ -144,7 +144,7 @@ void Game::Update()
 			int item_num = 1;
 			while (item_num > 0)
 			{
-				math::ivec2 pos(doodle::random(0, 30), doodle::random(0, 20));
+				math::ivec2 pos(doodle::random(0, 10), doodle::random(0, 10));
 				for (auto& p : map.map)
 				{
 					if (p.position == pos && p.type == Type::road)
