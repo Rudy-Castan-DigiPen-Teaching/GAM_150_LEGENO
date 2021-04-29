@@ -8,7 +8,7 @@ void Map::setup()
     map.clear();
     std::ifstream readFile;
 
-    readFile.open("assets/Maze1.txt");
+    readFile.open("assets/Maze2.txt");
     int width = 0;
     int height = 0;
    
@@ -86,7 +86,7 @@ void Map::draw()
             break;
         case Type::exit:
             push_settings();
-            set_fill_color(255, 255, 0);
+            set_fill_color(255, 40, 0);
             set_outline_width(1);
             set_outline_color(255);
             draw_rectangle(i.position.x * block_size, i.position.y * block_size, block_size);

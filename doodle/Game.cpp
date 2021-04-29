@@ -32,7 +32,7 @@ void Game::Draw()
 		push_settings();
 		clear_background();
 		set_fill_color(255, 0, 255);
-		draw_image(clear_scene, 0, 0);
+		draw_image(clear_scene, 0, 0);// function for image movement
 		draw_text("Level 1 Clear!", 30, 100);
 		draw_text("score= " + std::to_string(score), 100, 600);
 		pop_settings();
@@ -41,7 +41,6 @@ void Game::Draw()
 		push_settings();
 		clear_background();
 		set_fill_color(255, 255, 0);
-		draw_image(clear_scene, 0, 0);
 		draw_text("You lose!", 30, 250);
 		pop_settings();
 		break;
@@ -145,7 +144,7 @@ void Game::Update()
 			int item_num = 1;
 			while (item_num > 0)
 			{
-				math::ivec2 pos(doodle::random(0, 30), doodle::random(0, 20));
+				math::ivec2 pos(doodle::random(0, 10), doodle::random(0, 10));
 				for (auto& p : map.map)
 				{
 					if (p.position == pos && p.type == Type::road)
@@ -171,6 +170,7 @@ void Game::Reset()
 {
 	timer = total_time;
 	doodle::ElapsedTime = 0;
+	treasure_count = 0;
 	map.setup();
 	minsu.setup();
 	guard.setup();
