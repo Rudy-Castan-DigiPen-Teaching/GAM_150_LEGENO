@@ -2,10 +2,25 @@
 
 void Minsoo::Draw_minsu()
 {
+	
 	doodle::set_fill_color(255, 255, 0);
-	doodle::draw_image(Minsoo_left, 2 * block_size, 2 * block_size,block_size,block_size);
-	//doodle::draw_image(Minsoo_left, (position.x) * block_size, (position.y) * block_size, block_size, block_size);
-	//doodle::draw_ellipse((position.x + 0.5)* block_size, (position.y+0.5)* block_size, 20);	//block_size=30;
+	switch(direction)
+	{
+	case Direction::DOWN:
+		doodle::draw_image(Minsoo_Down, 2 * block_size, 2 * block_size, block_size, block_size);
+		break;
+	case Direction::UP:
+		doodle::draw_image(Minsoo_Up, 2 * block_size, 2 * block_size, block_size, block_size);
+		break;
+	case Direction::RIGHT:
+		doodle::draw_image(Minsoo_right, 2 * block_size, 2 * block_size, block_size, block_size);
+		break;
+	case Direction::LEFT:
+		doodle::draw_image(Minsoo_left, 2 * block_size, 2 * block_size, block_size, block_size);
+		break;
+		
+	}
+
 #ifdef _DEBUG
 
 #else
@@ -34,24 +49,28 @@ void Minsoo::set_position(doodle::KeyboardButtons button)
 	{
 		position.y += 1;
 		movement++;
+		direction = Direction::DOWN;
 	}
 		break;
 	case doodle::KeyboardButtons::A:
 		{
 			position.x -= 1;
 			movement++;
+			direction = Direction::LEFT;
 		}
 		break;
 	case doodle::KeyboardButtons::D:
 		{
 			position.x += 1;
 			movement++;
+			direction = Direction::RIGHT;
 		}
 		break;
 	case doodle::KeyboardButtons::W:
 		{
 			position.y -= 1;
 			movement++;
+			direction = Direction::UP;
 		}
 		break;
 	}

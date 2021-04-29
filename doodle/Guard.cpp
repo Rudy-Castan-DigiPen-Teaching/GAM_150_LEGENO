@@ -28,7 +28,7 @@ void Guard::Draw_guard(Camera& camera)
 	doodle::set_fill_color(255, 0, 0);
 	for (auto p : guards)
 	{
-		doodle::draw_ellipse((p.position.x + 0.5 +camera.GetPosition().x) * block_size  , (p.position.y + 0.5+ camera.GetPosition().y) * block_size , block_size);
+		doodle::draw_image(Guard_image, (p.position.x + camera.GetPosition().x) * block_size, (p.position.y  + camera.GetPosition().y) * block_size, block_size+10, block_size+10);;
 	}
 }
 
@@ -43,7 +43,7 @@ void Guard::Draw_Sight(Camera& camera)
 		{
 		doodle::push_settings();
 		doodle::set_fill_color(255, 255, 0);
-		doodle::draw_triangle((g.position.x + camera.GetPosition().x) * block_size, (g.position.y + camera.GetPosition().y)* block_size, (g.position.x + 1 + camera.GetPosition().x)* block_size, (g.position.y + camera.GetPosition().y)* block_size, (g.position.x +0.5 + camera.GetPosition().x)* block_size, (g.position.y - 1 + camera.GetPosition().y)* block_size);
+		doodle::draw_triangle((g.position.x + camera.GetPosition().x) * block_size, (g.position.y + camera.GetPosition().y)* block_size, (g.position.x + 1.0 + camera.GetPosition().x)* block_size, (g.position.y + camera.GetPosition().y)* block_size, (g.position.x +0.5 + camera.GetPosition().x)* block_size, (g.position.y - 1.0 + camera.GetPosition().y)* block_size);
 		doodle::pop_settings();
 		}
 		break;
@@ -52,7 +52,7 @@ void Guard::Draw_Sight(Camera& camera)
 		{
 			doodle::push_settings();
 			doodle::set_fill_color(255, 255, 0);
-			doodle::draw_triangle((g.position.x + camera.GetPosition().x) *block_size, (g.position.y +1 + camera.GetPosition().y)*block_size, (g.position.x + 1 + camera.GetPosition().x)*block_size, (g.position.y +1 + camera.GetPosition().y)*block_size, (g.position.x +0.5 + camera.GetPosition().x)*block_size, (g.position.y + 2 + camera.GetPosition().y)*block_size);
+			doodle::draw_triangle((g.position.x + camera.GetPosition().x) *block_size, (g.position.y +1.0 + camera.GetPosition().y)*block_size, (g.position.x + 1.0 + camera.GetPosition().x)*block_size, (g.position.y +1.0 + camera.GetPosition().y)*block_size, (g.position.x +0.5 + camera.GetPosition().x)*block_size, (g.position.y + 2.0 + camera.GetPosition().y)*block_size);
 			doodle::pop_settings();
 		}
 		break;
@@ -61,7 +61,7 @@ void Guard::Draw_Sight(Camera& camera)
 		{
 			doodle::push_settings();
 			doodle::set_fill_color(255, 255, 0);
-			doodle::draw_triangle((g.position.x+1 + camera.GetPosition().x) * block_size, (g.position.y + camera.GetPosition().y) * block_size, (g.position.x+1 + camera.GetPosition().x) * block_size, (g.position.y+1 + camera.GetPosition().y) * block_size, (g.position.x +2 + camera.GetPosition().x) * block_size, (g.position.y + 0.5 + camera.GetPosition().y) * block_size);
+			doodle::draw_triangle((g.position.x+1.0 + camera.GetPosition().x) * block_size, (g.position.y + camera.GetPosition().y) * block_size, (g.position.x+1.0 + camera.GetPosition().x) * block_size, (g.position.y+1.0 + camera.GetPosition().y) * block_size, (g.position.x +2.0 + camera.GetPosition().x) * block_size, (g.position.y + 0.5 + camera.GetPosition().y) * block_size);
 			doodle::pop_settings();
 		}
 		break;
@@ -70,7 +70,7 @@ void Guard::Draw_Sight(Camera& camera)
 		{
 			doodle::push_settings();
 			doodle::set_fill_color(255, 255, 0);
-			doodle::draw_triangle((g.position.x + camera.GetPosition().x) * block_size, (g.position.y + camera.GetPosition().y) * block_size, (g.position.x + camera.GetPosition().x) * block_size, (g.position.y+1 + camera.GetPosition().y) * block_size, (g.position.x -1 + camera.GetPosition().x) * block_size, (g.position.y + 0.5 + camera.GetPosition().y) * block_size);
+			doodle::draw_triangle((g.position.x + camera.GetPosition().x) * block_size, (g.position.y + camera.GetPosition().y) * block_size, (g.position.x + camera.GetPosition().x) * block_size, (g.position.y+1.0 + camera.GetPosition().y) * block_size, (g.position.x -1.0 + camera.GetPosition().x) * block_size, (g.position.y + 0.5 + camera.GetPosition().y) * block_size);
 			doodle::pop_settings();
 		}
 		break;

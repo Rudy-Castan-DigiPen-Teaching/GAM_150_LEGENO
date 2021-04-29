@@ -17,4 +17,5 @@ public:
 	vector<guard_info> guards;
 	void move(int index);
 	void change_sight(Map m, int index);
+	doodle::Image Guard_image{ "assets/Guard.png" };
 };

@@ -13,6 +13,10 @@ public:
 	void setup();
 	int movement{ 0 };
 	doodle::Image Minsoo_left{ "assets/Minsoo_left.png" };
+	doodle::Image Minsoo_right{ "assets/Minsoo_right.png" };
+	doodle::Image Minsoo_Up{ "assets/Minsoo_up.png" };
+	doodle::Image Minsoo_Down{ "assets/Minsoo_down.png" };
 private:
 	math::vec2 position{ 2,2 };
+	Direction direction = Direction::DOWN;
 };
