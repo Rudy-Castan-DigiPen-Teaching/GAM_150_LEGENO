@@ -2,6 +2,7 @@
 #include<vector>
 #include"vec2.h"
 #include "ENUM.h"
+#include "Camera.h"
 using namespace std;
 
 struct info
@@ -16,9 +17,9 @@ class Map
 protected:
 	int map_width = 81;
 	int map_height = 27;
-	int block_size = 30;
+	int block_size = 100;
 public:
 	vector<info> map;
 	void setup();
-	void draw();
+	void draw(Camera& camera);
 };

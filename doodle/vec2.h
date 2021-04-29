@@ -76,6 +76,18 @@ namespace math
 
     [[nodiscard]] constexpr  bool operator==(ivec2 value1, ivec2 value2) noexcept;
     [[nodiscard]] constexpr  bool operator!=(ivec2 value1, ivec2 value2) noexcept;
+    //struct rect2
+    //{
+    //	math::vec2 bottomLeft{ 0.0, 0.0 };
+    //    math::vec2 topRight{ 0.0, 0.0 };
+    //};
+    //
+    //struct irect2
+    //{
+    //    math::ivec2 bottomLeft{ 0.0, 0.0 };
+    //    math::ivec2 topRight{ 0.0, 0.0 };
+    //};
 }
+
 
 #include "Vec2.inl"

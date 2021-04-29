@@ -21,9 +21,9 @@ void Game::Draw()
 		pop_settings();
 		break;
 	case State::IN_GAME:
-		map.draw();
-		guard.Draw_Sight();
-		guard.Draw_guard();
+		map.draw(camera);
+		guard.Draw_Sight(camera);
+		guard.Draw_guard(camera);
 		minsu.Draw_minsu();
 		draw_text(std::to_string(timer), 80, 80);
 		doodle::draw_text(std::to_string(treasure_count), 500, 80);
@@ -134,7 +134,7 @@ void Game::Update()
 	case State::IN_GAME:
 		timer = total_time - static_cast<int>(doodle::ElapsedTime);
 		score = timer * (treasure_count + 1) * 10;
-
+		camera.Update(minsu.GetPosition());
 		if (timer <= 0)
 		{
 			current_state = State::GAME_OVER;
@@ -178,7 +178,7 @@ void Game::Reset()
 
 bool Game::check(doodle::KeyboardButtons doodleButton)
 {
-	math::ivec2 position = minsu.GetPosition();
+	math::vec2 position = minsu.GetPosition();
 	switch (doodleButton)
 	{
 	case doodle::KeyboardButtons::S:
@@ -232,7 +232,7 @@ bool Game::check(doodle::KeyboardButtons doodleButton)
 
 void Game::caught_by_guard()
 {
-	math::ivec2 position = minsu.GetPosition() ;
+	math::vec2 position = minsu.GetPosition() ;
 	for (auto& i : guard.guards)
 	{
 		switch (i.direction)

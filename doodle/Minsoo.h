@@ -9,9 +9,10 @@ class Minsoo: public Map
 public:
 	void Draw_minsu();
 	void set_position(doodle::KeyboardButtons button);
-	math::ivec2 GetPosition();
+	math::vec2 GetPosition();
 	void setup();
 	int movement{ 0 };
+	doodle::Image Minsoo_left{ "assets/Minsoo_left.png" };
 private:
-	math::ivec2 position{ 2,2 };
+	math::vec2 position{ 2,2 };
 };

@@ -45,7 +45,7 @@ void Map::setup()
 }
 
 
-void Map::draw()
+void Map::draw(Camera& camera)
 {
 	using namespace doodle;
 	for (auto& i : map)
@@ -57,7 +57,7 @@ void Map::draw()
             set_fill_color(0, 0, 0);
             set_outline_width(1);
             set_outline_color(255);
-            draw_rectangle(i.position.x * block_size, i.position.y * block_size, block_size);
+            draw_rectangle((i.position.x + camera.GetPosition().x) * block_size, (i.position.y+ camera.GetPosition().y) * block_size, block_size);
             pop_settings();
             break;
         case Type::road:
@@ -65,7 +65,7 @@ void Map::draw()
             set_fill_color(0, 0, 255);
             set_outline_width(1);
             set_outline_color(255);
-            draw_rectangle(i.position.x * block_size, i.position.y * block_size, block_size);
+            draw_rectangle((i.position.x + camera.GetPosition().x) * block_size, (i.position.y + camera.GetPosition().y) * block_size, block_size);
             pop_settings();
             break;
         case Type::radar:
@@ -73,7 +73,7 @@ void Map::draw()
             set_fill_color(0, 255, 0);
             set_outline_width(1);
             set_outline_color(255);
-            draw_rectangle(i.position.x * block_size, i.position.y * block_size, block_size);
+            draw_rectangle((i.position.x + camera.GetPosition().x) * block_size, (i.position.y + camera.GetPosition().y) * block_size, block_size);
             pop_settings();
             break;
         case Type::treasure:
@@ -81,7 +81,7 @@ void Map::draw()
             set_fill_color(255, 255, 0);
             set_outline_width(1);
             set_outline_color(255);
-            draw_rectangle(i.position.x * block_size, i.position.y * block_size, block_size);
+            draw_rectangle((i.position.x + camera.GetPosition().x) * block_size, (i.position.y + camera.GetPosition().y) * block_size, block_size);
             pop_settings();
             break;
         case Type::exit:
@@ -89,7 +89,7 @@ void Map::draw()
             set_fill_color(255, 40, 0);
             set_outline_width(1);
             set_outline_color(255);
-            draw_rectangle(i.position.x * block_size, i.position.y * block_size, block_size);
+            draw_rectangle((i.position.x + camera.GetPosition().x) * block_size, (i.position.y + camera.GetPosition().y) * block_size, block_size);
             pop_settings();
             break;
         }

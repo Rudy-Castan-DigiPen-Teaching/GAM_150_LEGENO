@@ -3,7 +3,9 @@
 void Minsoo::Draw_minsu()
 {
 	doodle::set_fill_color(255, 255, 0);
-	doodle::draw_ellipse((position.x + 0.5)* block_size, (position.y+0.5)* block_size, 20);	//block_size=30;
+	doodle::draw_image(Minsoo_left, 2 * block_size, 2 * block_size,block_size,block_size);
+	//doodle::draw_image(Minsoo_left, (position.x) * block_size, (position.y) * block_size, block_size, block_size);
+	//doodle::draw_ellipse((position.x + 0.5)* block_size, (position.y+0.5)* block_size, 20);	//block_size=30;
 #ifdef _DEBUG
 
 #else
@@ -55,7 +57,7 @@ void Minsoo::set_position(doodle::KeyboardButtons button)
 	}
 }
 
-math::ivec2 Minsoo::GetPosition()
+math::vec2 Minsoo::GetPosition()
 {
 	return position;
 }

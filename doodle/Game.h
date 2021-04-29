@@ -4,6 +4,8 @@
 #include"doodle/doodle.hpp"
 #include "ENUM.h"
 
+#include "Camera.h"
+
 class Game
 {
 	Map map;
@@ -16,6 +18,7 @@ class Game
 	int score{ 0 };
 	State current_state = State::START;
 	doodle::Image clear_scene{ "assets/clear_scene.png" };
+	Camera camera;
 public:
 	void setup();
 	void Draw();
@@ -26,4 +29,5 @@ public:
 	void Update();
 	bool check_guard(int index);
 	void sight_check(int index);
+	double move = 0;
 };
