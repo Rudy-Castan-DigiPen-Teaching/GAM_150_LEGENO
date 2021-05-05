@@ -13,7 +13,8 @@ enum class Type
 	road,
 	radar,
 	treasure,
-	exit
+	exit,
+	dog_chew
 };
 
 enum class Direction
@@ -23,3 +24,4 @@ enum class Direction
 	RIGHT,
 	LEFT
 };
+

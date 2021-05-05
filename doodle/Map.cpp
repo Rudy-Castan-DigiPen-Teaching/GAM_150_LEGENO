@@ -92,6 +92,15 @@ void Map::draw(Camera& camera)
             draw_rectangle((i.position.x + camera.GetPosition().x) * block_size, (i.position.y + camera.GetPosition().y) * block_size, block_size);
             pop_settings();
             break;
+        case Type::dog_chew:
+            push_settings();
+            set_fill_color(0, 0, 255);
+            set_outline_width(1);
+            set_outline_color(255);
+            draw_rectangle((i.position.x + camera.GetPosition().x) * block_size, (i.position.y + camera.GetPosition().y) * block_size, block_size);
+            draw_image(Dog_chew,(i.position.x + camera.GetPosition().x) * block_size, (i.position.y + camera.GetPosition().y) * block_size,block_size,block_size);
+            pop_settings();
+            break;
         }
 	}
 }

@@ -16,6 +16,7 @@ class Game
 	bool did_abtain_radar{ false };
 	int treasure_count{ 0 };
 	int score{ 0 };
+	int chew_item{ 3 };
 	State current_state = State::START;
 	doodle::Image clear_scene{ "assets/clear_scene.png" };
 	Camera camera;
@@ -29,5 +30,6 @@ public:
 	void Update();
 	bool check_guard(int index);
 	void sight_check(int index);
+	void set_item(doodle::KeyboardButtons button);
 	double move = 0;
 };

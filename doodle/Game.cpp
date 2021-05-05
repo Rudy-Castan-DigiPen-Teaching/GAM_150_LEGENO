@@ -27,6 +27,10 @@ void Game::Draw()
 		minsu.Draw_minsu();
 		draw_text(std::to_string(timer), 80, 80);
 		doodle::draw_text(std::to_string(treasure_count), 500, 80);
+		doodle::push_settings();
+		doodle::set_font_size(30);
+		doodle::draw_text("Chew item " + std::to_string(chew_item), 50, 200);
+		doodle::pop_settings();
 		break;
 	case State::CLEAR:
 		push_settings();
@@ -97,6 +101,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			}
 			caught_by_guard();
 		}
+		set_item(doodleButton);
 #ifdef _DEBUG
 		if (doodleButton == doodle::KeyboardButtons::R)
 		{
@@ -135,6 +140,8 @@ void Game::Update()
 		timer = total_time - static_cast<int>(doodle::ElapsedTime);
 		score = timer * (treasure_count + 1) * 10;
 		camera.Update(minsu.GetPosition());
+		guard.get_dogchew(map,minsu.movement);
+
 		if (timer <= 0)
 		{
 			current_state = State::GAME_OVER;
@@ -239,7 +246,7 @@ void Game::caught_by_guard()
 		{
 		case Direction::UP:
 		{
-			if (position.x == i.position.x && position.y == i.position.y || position.x == i.position.x && position.y == i.position.y -1)
+			if (position.x == i.position.x && position.y == i.position.y || position.x == i.position.x && position.y == i.position.y -1.0)
 			{
 				current_state = State::GAME_OVER;
 			}
@@ -248,7 +255,7 @@ void Game::caught_by_guard()
 
 		case Direction::DOWN:
 		{
-			if (position.x == i.position.x && position.y == i.position.y || position.x == i.position.x && position.y == i.position.y + 1)
+			if (position.x == i.position.x && position.y == i.position.y || position.x == i.position.x && position.y == i.position.y + 1.0)
 			{
 				current_state = State::GAME_OVER;
 			}
@@ -257,7 +264,7 @@ void Game::caught_by_guard()
 
 		case Direction::RIGHT:
 		{
-			if (position.x == i.position.x && position.y == i.position.y || position.x == i.position.x + 1 && position.y == i.position.y )
+			if (position.x == i.position.x && position.y == i.position.y || position.x == i.position.x + 1.0 && position.y == i.position.y )
 			{
 				current_state = State::GAME_OVER;
 			}
@@ -267,7 +274,7 @@ void Game::caught_by_guard()
 
 		case Direction::LEFT:
 		{
-			if (position.x == i.position.x && position.y == i.position.y || position.x == i.position.x -1 && position.y == i.position.y)
+			if (position.x == i.position.x && position.y == i.position.y || position.x == i.position.x -1.0 && position.y == i.position.y)
 			{
 				current_state = State::GAME_OVER;
 			}
@@ -374,6 +381,29 @@ void Game::sight_check(int index)
 			if (guard.guards[index].position.x - 1 == j.position.x && guard.guards[index].position.y == j.position.y && j.type == Type::wall)
 			{
 				guard.change_sight(map, index);
+			}
+		}
+	}
+	break;
+
+	}
+}
+
+void Game::set_item(doodle::KeyboardButtons button)
+{
+	switch (button)
+	{
+	case doodle::KeyboardButtons::_1:
+	{
+		if (chew_item > 0)
+		{
+			for (int i{ 0 }; i < map.map.size(); i++)
+			{
+				if (map.map[i].position == minsu.GetPosition())
+				{
+					map.map[i].type = Type::dog_chew;
+					chew_item--;
+				}
 			}
 		}
 	}

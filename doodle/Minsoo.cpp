@@ -2,23 +2,21 @@
 
 void Minsoo::Draw_minsu()
 {
-	
 	doodle::set_fill_color(255, 255, 0);
 	switch(direction)
 	{
 	case Direction::DOWN:
-		doodle::draw_image(Minsoo_Down, 2 * block_size, 2 * block_size, block_size, block_size);
+		doodle::draw_image(Minsoo_Down, 2.0 * block_size, 2.0 * block_size, block_size, block_size);
 		break;
 	case Direction::UP:
-		doodle::draw_image(Minsoo_Up, 2 * block_size, 2 * block_size, block_size, block_size);
+		doodle::draw_image(Minsoo_Up, 2.0 * block_size, 2.0 * block_size, block_size, block_size);
 		break;
 	case Direction::RIGHT:
-		doodle::draw_image(Minsoo_right, 2 * block_size, 2 * block_size, block_size, block_size);
+		doodle::draw_image(Minsoo_right, 2.0 * block_size, 2.0 * block_size, block_size, block_size);
 		break;
 	case Direction::LEFT:
-		doodle::draw_image(Minsoo_left, 2 * block_size, 2 * block_size, block_size, block_size);
+		doodle::draw_image(Minsoo_left, 2.0 * block_size, 2.0 * block_size, block_size, block_size);
 		break;
-		
 	}
 
 #ifdef _DEBUG
@@ -41,6 +39,7 @@ void Minsoo::setup()
 	position = math::ivec2{ 2,2 };
 	movement = 0;
 }
+
 void Minsoo::set_position(doodle::KeyboardButtons button)
 {
 	switch (button)

@@ -19,4 +19,5 @@ public:
 private:
 	math::vec2 position{ 2,2 };
 	Direction direction = Direction::DOWN;
+	int chew_item = 3;
 };

@@ -83,20 +83,33 @@ void Guard::move(int index)
 {
 	switch (guards[index].direction)
 	{
-	case Direction::UP:   //move up
-		guards[index].position.y--;
+	case Direction::UP:
+		//move up
+		if (guards[index].is_okay == true)
+		{
+			guards[index].position.y--;
+		}
 		break;
 
 	case Direction::DOWN:   //move down
-		guards[index].position.y++;
+		if (guards[index].is_okay == true)
+		{
+			guards[index].position.y++;
+		}
 		break;
 
 	case Direction::RIGHT:  //move right
-		guards[index].position.x++;
+		if (guards[index].is_okay == true)
+		{
+			guards[index].position.x++;
+		}
 		break;
 
 	case Direction::LEFT:   //move left
-		guards[index].position.x--;
+		if (guards[index].is_okay == true)
+		{
+			guards[index].position.x--;
+		}
 		break;
 	}
 
@@ -106,6 +119,8 @@ void Guard::change_sight(Map m, int index)
 {
 	Direction dir;
 	bool is_change = false;
+	if (guards[index].is_okay == true)
+	{
 		while (is_change == false)
 		{
 			dir = static_cast<Direction>(doodle::random(0, 4));
@@ -166,5 +181,35 @@ void Guard::change_sight(Map m, int index)
 
 			}
 		}
-	
+	}
 }
+
+void Guard::get_dogchew(Map& m,int movement)
+{
+	for (auto& i : guards)
+	{
+		for (auto& j : m.map)
+		{
+			if (i.position == j.position && j.type == Type::dog_chew)
+			{
+				i.is_okay = false;
+				i.movement = movement;
+				j.type = Type::road;
+			}
+		}
+	}
+
+	for (auto& i : guards)
+	{
+		
+			if (i.is_okay == false)
+			{
+				if (movement - i.movement == 3)
+				{
+					i.is_okay = true;
+				}
+			}
+	}
+
+}
+
