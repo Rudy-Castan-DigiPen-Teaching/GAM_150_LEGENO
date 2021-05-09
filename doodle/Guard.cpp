@@ -134,7 +134,7 @@ void Guard::change_sight(Map m, int index)
 			{
 				for (auto& j : m.map)
 				{
-					if (guards[index].position.x == j.position.x && guards[index].position.y - 1 == j.position.y && j.type == Type::road)
+					if (guards[index].position.x == j.position.x && guards[index].position.y - 1 == j.position.y && (j.type != Type::wall))
 					{
 						guards[index].direction = Direction::UP;
 						is_change = true;
@@ -146,7 +146,7 @@ void Guard::change_sight(Map m, int index)
 			{
 				for (auto& j : m.map)
 				{
-					if (guards[index].position.x == j.position.x && guards[index].position.y + 1 == j.position.y && j.type == Type::road)
+					if (guards[index].position.x == j.position.x && guards[index].position.y + 1 == j.position.y && (j.type != Type::wall))
 					{
 						guards[index].direction = Direction::DOWN;
 						is_change = true;
@@ -158,7 +158,7 @@ void Guard::change_sight(Map m, int index)
 			{
 				for (auto& j : m.map)
 				{
-					if (guards[index].position.x + 1 == j.position.x && guards[index].position.y == j.position.y && j.type == Type::road)
+					if (guards[index].position.x + 1 == j.position.x && guards[index].position.y == j.position.y && (j.type != Type::wall))
 					{
 						guards[index].direction = Direction::RIGHT;
 						is_change = true;
@@ -170,7 +170,7 @@ void Guard::change_sight(Map m, int index)
 			{
 				for (auto& j : m.map)
 				{
-					if (guards[index].position.x - 1 == j.position.x && guards[index].position.y == j.position.y && j.type == Type::road)
+					if (guards[index].position.x - 1 == j.position.x && guards[index].position.y == j.position.y && (j.type != Type::wall))
 					{
 						guards[index].direction = Direction::LEFT;
 						is_change = true;
@@ -184,7 +184,7 @@ void Guard::change_sight(Map m, int index)
 	}
 }
 
-void Guard::get_dogchew(Map& m,int movement)
+void Guard::get_dogchew(Map& m, int movement)
 {
 	for (auto& i : guards)
 	{
@@ -201,14 +201,14 @@ void Guard::get_dogchew(Map& m,int movement)
 
 	for (auto& i : guards)
 	{
-		
-			if (i.is_okay == false)
+
+		if (i.is_okay == false)
+		{
+			if (movement - i.movement == 3)
 			{
-				if (movement - i.movement == 3)
-				{
-					i.is_okay = true;
-				}
+				i.is_okay = true;
 			}
+		}
 	}
 
 }

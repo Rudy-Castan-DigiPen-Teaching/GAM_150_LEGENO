@@ -178,6 +178,7 @@ void Game::Reset()
 	timer = total_time;
 	doodle::ElapsedTime = 0;
 	treasure_count = 0;
+	chew_item = 3;
 	map.setup();
 	minsu.setup();
 	guard.setup();
