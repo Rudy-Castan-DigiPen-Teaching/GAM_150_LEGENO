@@ -21,10 +21,11 @@ void Game::Draw()
 		pop_settings();
 		break;
 	case State::IN_GAME:
+		doodle::clear_background(0);
 		map.draw(camera);
-		guard.Draw_Sight(camera);
+		guard.Draw_Sight(camera,map);
 		guard.Draw_guard(camera);
-		minsu.Draw_minsu();
+		minsu.Draw_minsu(camera);
 		draw_text(std::to_string(timer), 80, 80);
 		doodle::draw_text(std::to_string(treasure_count), 500, 80);
 		doodle::push_settings();
@@ -60,6 +61,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 		{
 			Reset();
 			current_state = State::IN_GAME;
+			doodle::clear_background(0);
 		}
 		if (doodleButton == doodle::KeyboardButtons::Q)
 		{
@@ -73,7 +75,6 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			if (check(doodleButton) == false)
 			{
 				minsu.set_position(doodleButton);
-
 				for (int i = 0; i < static_cast<int>(guard.guards.size()); i++)
 				{
 					if (minsu.GetPosition() == guard.guards[i].position)
@@ -86,13 +87,19 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 						if (check_guard(i) == false)
 						{
 							guard.move(i);
+							for (auto& j : guard.guards)
+							{
+								if (j.is_trace == true)
+								{
+									j.trace_movement++;
+								}
+							}
 							if (minsu.movement % 5 == 0)
 							{
-
 								guard.change_sight(map, i);
-
 							}
 							sight_check(i);
+							guard.set_sight();
 							break;
 						}
 
@@ -141,7 +148,11 @@ void Game::Update()
 		score = timer * (treasure_count + 1) * 10;
 		camera.Update(minsu.GetPosition());
 		guard.get_dogchew(map,minsu.movement);
-
+		if (guard.in_guard_sight(minsu) != -1)
+		{
+			guard.guards[guard.in_guard_sight(minsu)].is_trace = true;
+			guard.guards[guard.in_guard_sight(minsu)].trace_movement = 0;
+		}
 		if (timer <= 0)
 		{
 			current_state = State::GAME_OVER;
@@ -286,7 +297,7 @@ void Game::caught_by_guard()
 	}
 }
 
-bool Game::check_guard(int index)
+bool Game::check_guard(int index)  // 가드가 벽을 보고있을때 시야방향 바꾸기
 {
 
 	switch (guard.guards[index].direction)
@@ -345,7 +356,7 @@ void Game::sight_check(int index)
 	case Direction::UP:
 	{
 		for (auto& j : map.map)
-		{
+		{ 
 			if (guard.guards[index].position.x == j.position.x && guard.guards[index].position.y - 1 == j.position.y && j.type == Type::wall)
 			{
 				guard.change_sight(map,index);
@@ -412,3 +423,5 @@ void Game::set_item(doodle::KeyboardButtons button)
 
 	}
 }
+
+

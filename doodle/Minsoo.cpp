@@ -1,6 +1,6 @@
 #include"Minsoo.h"
 
-void Minsoo::Draw_minsu()
+void Minsoo::Draw_minsu([[maybe_unused]]Camera camera)
 {
 	doodle::set_fill_color(255, 255, 0);
 	switch(direction)
@@ -28,7 +28,7 @@ void Minsoo::Draw_minsu()
 		doodle::no_fill();
 		doodle::set_outline_width(100);
 		doodle::set_outline_color(0);
-		doodle::draw_ellipse((position.x+0.5)* block_size, (position.y+0.5)* block_size, 160+i*10);
+		doodle::draw_ellipse((position.x+0.5 + camera.GetPosition().x)* block_size, (position.y+0.5 + camera.GetPosition().y)* block_size, 350+i*10.0);
 	}
 	doodle::pop_settings();
 #endif

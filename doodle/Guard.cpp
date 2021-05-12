@@ -10,7 +10,7 @@ void Guard::setup()
 
 
 	//guards.push_back(guard_info{ math::ivec2(4, 3) , Direction::UP });
-	guards.push_back(guard_info{ math::ivec2(8, 2), Direction::UP });
+	guards.push_back(guard_info{ math::ivec2(8, 2), Direction::LEFT });
 	//guards.push_back(guard_info{ math::ivec2(15, 4), Direction::UP });
 	//guards.push_back(guard_info{ math::ivec2(6, 8), Direction::DOWN });
 	//guards.push_back(guard_info{ math::ivec2(11,8), Direction::UP });
@@ -21,61 +21,75 @@ void Guard::setup()
 	//guards.push_back(guard_info{ math::ivec2(21, 9), Direction::DOWN });
 	//guards.push_back(guard_info{ math::ivec2(25, 9), Direction::UP });
 	//guards.push_back(guard_info{ math::ivec2(27, 11), Direction::UP });
+
+	set_sight();
+
 }
 
 void Guard::Draw_guard(Camera& camera)
 {
 	doodle::set_fill_color(255, 0, 0);
-	for (auto p : guards)
+	for (auto &p : guards)
 	{
-		doodle::draw_image(Guard_image, (p.position.x + camera.GetPosition().x) * block_size, (p.position.y  + camera.GetPosition().y) * block_size, block_size+10, block_size+10);;
+		if (p.is_okay == true)
+		{
+			switch (p.direction)
+			{
+			case Direction::UP:
+				doodle::draw_image(GuardUP_image, (p.position.x + camera.GetPosition().x) * block_size, (p.position.y + camera.GetPosition().y) * block_size, block_size + 10.0, block_size + 10.0);
+				break;
+			case Direction::DOWN:
+				doodle::draw_image(GuardDown_image, (p.position.x + camera.GetPosition().x) * block_size, (p.position.y + camera.GetPosition().y) * block_size, block_size + 10.0, block_size + 10.0);
+				break;
+			case Direction::RIGHT:
+				doodle::draw_image(GuardRight_image, (p.position.x + camera.GetPosition().x) * block_size, (p.position.y + camera.GetPosition().y) * block_size, block_size + 10.0, block_size + 10.0);
+				break;
+			case Direction::LEFT:
+				doodle::draw_image(GuardLeft_image, (p.position.x + camera.GetPosition().x) * block_size, (p.position.y + camera.GetPosition().y) * block_size, block_size + 10.0, block_size + 10.0);
+				break;
+
+			}
+		}
+		else if(p.is_okay == false)
+		{
+			doodle::draw_image(Guard_CHEW_image, (p.position.x + camera.GetPosition().x) * block_size, (p.position.y + camera.GetPosition().y) * block_size, block_size + 10.0, block_size + 10.0);
+		}
+		if (p.is_trace == true)
+		{
+			doodle::draw_image(Guard_tracing_image, (p.position.x + camera.GetPosition().x) * block_size, (p.position.y + camera.GetPosition().y) * block_size, block_size + 10.0, block_size + 10.0);
+		}
 	}
 }
 
-void Guard::Draw_Sight(Camera& camera)
+void Guard::Draw_Sight(Camera& camera,Map MAP)
 {
 
-	for (auto g : guards)
+	for (auto& guard : guards)
 	{
-		switch (g.direction)
+		for (int i = 0; i < sight_size; i++)
 		{
-		case Direction::UP:   //move up
-		{
-		doodle::push_settings();
-		doodle::set_fill_color(255, 255, 0);
-		doodle::draw_triangle((g.position.x + camera.GetPosition().x) * block_size, (g.position.y + camera.GetPosition().y)* block_size, (g.position.x + 1.0 + camera.GetPosition().x)* block_size, (g.position.y + camera.GetPosition().y)* block_size, (g.position.x +0.5 + camera.GetPosition().x)* block_size, (g.position.y - 1.0 + camera.GetPosition().y)* block_size);
-		doodle::pop_settings();
-		}
-		break;
+			for (auto& m : MAP.map)
+			{		
+				if (guard.sight_position[i].position.x == m.position.x && guard.sight_position[i].position.y == m.position.y && guard.sight_position[i].is_valid == true )
+				{
+					if (m.type == Type::road)
+					{
+						doodle::draw_ellipse((guard.sight_position[i].position.x + camera.GetPosition().x) * block_size + block_size / 2, (guard.sight_position[i].position.y + camera.GetPosition().y) * block_size + block_size / 2, block_size);
+					}
 
-		case Direction::DOWN:   //move down
-		{
-			doodle::push_settings();
-			doodle::set_fill_color(255, 255, 0);
-			doodle::draw_triangle((g.position.x + camera.GetPosition().x) *block_size, (g.position.y +1.0 + camera.GetPosition().y)*block_size, (g.position.x + 1.0 + camera.GetPosition().x)*block_size, (g.position.y +1.0 + camera.GetPosition().y)*block_size, (g.position.x +0.5 + camera.GetPosition().x)*block_size, (g.position.y + 2.0 + camera.GetPosition().y)*block_size);
-			doodle::pop_settings();
-		}
-		break;
-
-		case Direction::RIGHT:  //move right
-		{
-			doodle::push_settings();
-			doodle::set_fill_color(255, 255, 0);
-			doodle::draw_triangle((g.position.x+1.0 + camera.GetPosition().x) * block_size, (g.position.y + camera.GetPosition().y) * block_size, (g.position.x+1.0 + camera.GetPosition().x) * block_size, (g.position.y+1.0 + camera.GetPosition().y) * block_size, (g.position.x +2.0 + camera.GetPosition().x) * block_size, (g.position.y + 0.5 + camera.GetPosition().y) * block_size);
-			doodle::pop_settings();
-		}
-		break;
-
-		case Direction::LEFT:   //move left
-		{
-			doodle::push_settings();
-			doodle::set_fill_color(255, 255, 0);
-			doodle::draw_triangle((g.position.x + camera.GetPosition().x) * block_size, (g.position.y + camera.GetPosition().y) * block_size, (g.position.x + camera.GetPosition().x) * block_size, (g.position.y+1.0 + camera.GetPosition().y) * block_size, (g.position.x -1.0 + camera.GetPosition().x) * block_size, (g.position.y + 0.5 + camera.GetPosition().y) * block_size);
-			doodle::pop_settings();
-		}
-		break;
+					if (m.type != Type::road)
+					{
+						while (i < sight_size)
+						{
+							guard.sight_position[i++].is_valid = false;
+						}
+					}
+				}
+			}
 		}
 	}
+
+
 }
 	
 
@@ -182,9 +196,10 @@ void Guard::change_sight(Map m, int index)
 			}
 		}
 	}
+
 }
 
-void Guard::get_dogchew(Map& m, int movement)
+void Guard::get_dogchew(Map& m, int movement) //개껌먹었을때, 트레이스 트루일때 움직임 계산후 리셋
 {
 	for (auto& i : guards)
 	{
@@ -209,7 +224,72 @@ void Guard::get_dogchew(Map& m, int movement)
 				i.is_okay = true;
 			}
 		}
+		if (i.trace_movement == 3)
+		{
+			i.is_trace = false;
+		}
 	}
 
+}
+
+void Guard::set_sight()
+{
+	for (auto& guard : guards)
+	{
+		for (int i = 0; i < sight_size; i++)
+		{
+			guard.sight_position[i].is_valid = true;
+		}
+		switch (guard.direction)
+		{
+		case Direction::UP:
+		{
+			for (int i = 0; i < sight_size; i++)
+			{
+				guard.sight_position[i].position = { guard.position.x,guard.position.y - (i + 1) };
+			}
+		}
+		break;
+		case Direction::DOWN:
+		{
+			for (int i = 0; i < sight_size; i++)
+			{
+				guard.sight_position[i].position = { guard.position.x,guard.position.y + (i + 1) };
+			}
+		}
+		break;
+		case Direction::RIGHT:
+		{
+			for (int i = 0; i < sight_size; i++)
+			{
+				guard.sight_position[i].position = { guard.position.x + (i + 1),guard.position.y };
+			}
+		}
+		break;
+		case Direction::LEFT:
+		{
+			for (int i = 0; i < sight_size; i++)
+			{
+				guard.sight_position[i].position = { guard.position.x - (i + 1),guard.position.y };
+			}
+		}
+		break;
+		}
+	}
+}
+
+int Guard::in_guard_sight(Minsoo minsoo)
+{
+	for (int i=0; i<static_cast<int>(guards.size()); i++)
+	{
+		for (int j = 0; j < sight_size; j++)
+		{
+			if (minsoo.GetPosition() == guards[i].sight_position[j].position)
+			{
+				return i;
+			}
+		}
+	}
+	return -1;
 }
 

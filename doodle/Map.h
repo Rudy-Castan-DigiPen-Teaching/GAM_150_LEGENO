@@ -20,7 +20,7 @@ protected:
 	int map_height = 27;
 	int block_size = 100;
 	doodle::Image Dog_chew{"assets/dog_chew.png"};
-
+	doodle::Image Road{ "assets/Road.png" };
 public:
 	vector<info> map;
 	void setup();

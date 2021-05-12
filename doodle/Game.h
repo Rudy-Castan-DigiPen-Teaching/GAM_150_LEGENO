@@ -25,10 +25,10 @@ public:
 	void Draw();
 	void Get_inputkey(doodle::KeyboardButtons doodleButton);
 	bool check(doodle::KeyboardButtons doodleButton);
-	void caught_by_guard();
+	void caught_by_guard();   // 민수 포지션 == 가드포지션  -> 게임오버
 	void Reset();
 	void Update();
-	bool check_guard(int index);
+	bool check_guard(int index);  // 가드가 벽을 보고있을때 시야방향 바꾸기
 	void sight_check(int index);
 	void set_item(doodle::KeyboardButtons button);
 	double move = 0;
