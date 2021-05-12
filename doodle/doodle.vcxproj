@@ -115,6 +115,7 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Minsoo.cpp" />
     <ClCompile Include="Sketch.cpp" />
+    <ClCompile Include="Sound.cpp" />
     <ClCompile Include="WinMain.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -128,6 +129,7 @@
     <ClInclude Include="Minsoo.h" />
     <ClInclude Include="Sketch.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Sound.h" />
     <ClInclude Include="vec2.h" />
   </ItemGroup>
   <ItemGroup>
