@@ -21,6 +21,7 @@ protected:
 	int block_size = 100;
 	doodle::Image Dog_chew{"assets/dog_chew.png"};
 	doodle::Image Road{ "assets/Road.png" };
+	doodle::Image Radar{ "assets/Radar.png" };
 public:
 	vector<info> map;
 	void setup();

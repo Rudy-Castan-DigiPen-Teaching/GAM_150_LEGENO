@@ -66,7 +66,7 @@ void Map::draw(Camera& camera)
             set_outline_width(1);
             set_outline_color(255);
             draw_image(Road, (i.position.x + camera.GetPosition().x) * block_size - 11.0, (i.position.y + camera.GetPosition().y) * block_size - 11.0, block_size + 30.0, block_size + 30.0);
-           // draw_rectangle((i.position.x + camera.GetPosition().x) * block_size, (i.position.y + camera.GetPosition().y) * block_size, block_size);
+            //draw_rectangle((i.position.x + camera.GetPosition().x) * block_size, (i.position.y + camera.GetPosition().y) * block_size, block_size);
             pop_settings();
             break;
         case Type::radar:
@@ -74,7 +74,8 @@ void Map::draw(Camera& camera)
             set_fill_color(0, 255, 0);
             set_outline_width(1);
             set_outline_color(255);
-            draw_rectangle((i.position.x + camera.GetPosition().x) * block_size, (i.position.y + camera.GetPosition().y) * block_size, block_size);
+            //draw_rectangle((i.position.x + camera.GetPosition().x) * block_size, (i.position.y + camera.GetPosition().y) * block_size, block_size);
+            draw_image(Radar, (i.position.x + camera.GetPosition().x) * block_size, (i.position.y + camera.GetPosition().y) * block_size, block_size, block_size);
             pop_settings();
             break;
         case Type::treasure:
