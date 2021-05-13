@@ -44,8 +44,22 @@ private:
 	doodle::Image GuardRight_image{ "assets/GuardRight.png" };
 	doodle::Image GuardLeft_image{ "assets/GuardLeft.png" };
 	doodle::Image Guard_CHEW_image{ "assets/chew_dog.png" }; //²­¸Ô´Â°³
-
 	doodle::Image Guard_tracing_image{ "assets/tracing_dog.png" };
+	doodle::Image Ruby_image{ "assets/Ruby.png" };
 
-	doodle::Image Ruby_image{ "assets/tracing_dog.png" };
+	doodle::Image Sight1_up_image{ "assets/sight1_up.png" };
+	doodle::Image Sight2_up_image{ "assets/sight2_up.png" };
+	doodle::Image Sight3_up_image{ "assets/sight3_up.png" };
+
+	doodle::Image Sight1_down_image{ "assets/sight1_down.png" };
+	doodle::Image Sight2_down_image{ "assets/sight2_down.png" };
+	doodle::Image Sight3_down_image{ "assets/sight3_down.png" };
+
+	doodle::Image Sight1_right_image{ "assets/sight1_right.png" };
+	doodle::Image Sight2_right_image{ "assets/sight2_right.png" };
+	doodle::Image Sight3_right_image{ "assets/sight3_right.png" };
+
+	doodle::Image Sight1_left_image{ "assets/sight1_left.png" };
+	doodle::Image Sight2_left_image{ "assets/sight2_left.png" };
+	doodle::Image Sight3_left_image{ "assets/sight3_left.png" };
 };

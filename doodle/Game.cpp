@@ -69,7 +69,7 @@ void Game::Draw()
 		push_settings();
 		clear_background();
 		set_fill_color(255, 255, 0);
-		draw_text("You lose!", 30, 250);
+		draw_image(GameOver_scene, 0, 0,Width,Height);// function for image movement
 		pop_settings();
 		break;
 	}
@@ -115,6 +115,10 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 	case State::CREDIT:; break;
 	case State::IN_GAME:
 	{
+		if (doodleButton == doodle::KeyboardButtons::Z)
+		{
+			cheat_Z = !cheat_Z;
+		}
 		if (doodleButton == doodle::KeyboardButtons::A || doodleButton == doodle::KeyboardButtons::S || doodleButton == doodle::KeyboardButtons::W || doodleButton == doodle::KeyboardButtons::D)
 		{
 			if (check(doodleButton) == false)
@@ -158,6 +162,27 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 									guard.guards[i].direction = Direction::UP;
 
 								}
+								if (path_finding<27, 81>(map, minsu.GetPosition(), (guard.guards[i].position)).empty()!=true)
+								{
+									curr_position = guard.guards[i].position - path_finding<27, 81>(map, minsu.GetPosition(), (guard.guards[i].position)).back().pos;
+									if (curr_position.x == -1)
+									{
+										guard.guards[i].direction = Direction::RIGHT;
+									}
+									if (curr_position.x == 1)
+									{
+										guard.guards[i].direction = Direction::LEFT;
+									}
+									if (curr_position.y == -1)
+									{
+										guard.guards[i].direction = Direction::DOWN;
+									}
+									if (curr_position.y == 1)
+									{
+										guard.guards[i].direction = Direction::UP;
+									}
+								}
+
 							}
 							else if(guard.guards[i].is_okay == true)
 							{
@@ -236,7 +261,7 @@ void Game::Update()
 		}
 		if (guard.in_guard_sight(minsu) != -1)
 		{
-		sounds.PlaySound(static_cast<int>(SoundType::Siren));
+		    sounds.PlaySound(static_cast<int>(SoundType::Siren));
 			guard.guards[guard.in_guard_sight(minsu)].is_trace = true;
 			guard.guards[guard.in_guard_sight(minsu)].trace_movement = 0;
 		}
@@ -302,6 +327,11 @@ bool Game::check(doodle::KeyboardButtons doodleButton)
 	}
 	default: 
 		return true;
+	}
+
+	if(cheat_Z==true)
+	{
+		return false;
 	}
 	
 	for (int i{ 0 };i<map.map.size();i++)
@@ -652,7 +682,16 @@ void Game::Ruby_camera()
 	}
 	if (new_pos.x >= guard.guards.back().position.x && new_pos.y >= guard.guards.back().position.y)
 	{
-		camera_move = false;
+		if (start_camera_count == false)
+		{
+			curr_timer = timer;
+			start_camera_count = true;
+		}
+		double Target_time = 2;
+		if ( curr_timer - timer  > Target_time)
+		{
+			camera_move = false;
+		}
 	}
 }
 

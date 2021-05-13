@@ -29,9 +29,11 @@ class Game
 	doodle::Image start_button{ "assets/StratButton.png" };
 	doodle::Image quit_button{ "assets/QuitButton.png" };
 	doodle::Image credit_button{ "assets/CreditButton.png" };
+	doodle::Image GameOver_scene{ "assets/GameOver.png" };
 	Camera camera;
 	int get_count(math::ivec2 exit_pos);
 	bool camera_move = false;
+	bool cheat_Z = false;
 public:
 	void setup();
 	void Draw();
@@ -43,7 +45,8 @@ public:
 	bool check_guard(int index);  // 가드가 벽을 보고있을때 시야방향 바꾸기
 	void sight_check(int index);
 	void set_item(doodle::KeyboardButtons button);
-	//double move = 0;
+	double curr_timer = 0;
+	bool start_camera_count = false;
 	void radar_obtain();
 	void draw_radar();
 	void Ruby_camera();
