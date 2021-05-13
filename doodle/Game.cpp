@@ -5,7 +5,7 @@ using namespace doodle;
 
 void Game::setup()
 {
-	sounds.SetUpSound();
+	//sounds.SetUpSound();
 	current_state = State::START;
 	map.setup();
 	guard.setup();
@@ -25,7 +25,8 @@ void Game::Draw()
 		case static_cast<int>(MenuOption::credit):	doodle::draw_image(credit_button, 0, 0, Width, Height); break;
 		}
 		break;
-	case State::CREDIT:;
+	case State::CREDIT:
+		doodle::draw_image(credit_menu, 0, 0, Width, Height); break;
 	case State::IN_GAME:
 		doodle::clear_background(0);
 		map.draw(camera);
@@ -87,14 +88,12 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 				case static_cast<int>(MenuOption::start) :
 				{
 					Reset();
-					sounds.SetMusic("assets/BasicBGM.ogg", true);
-					sounds.music.play();
 					current_state = State::IN_GAME;
 					doodle::clear_background(0);
 					break;
 				}
 				case static_cast<int>(MenuOption::quit) : doodle::close_window(); break;
-				case static_cast<int>(MenuOption::credit) : break;
+				case static_cast<int>(MenuOption::credit) : current_state = State::CREDIT; break;
 			}
 		}
 		if (doodleButton == doodle::KeyboardButtons::Up)
@@ -112,9 +111,18 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			}
 		}
 		break;
-	case State::CREDIT:; break;
+	case State::CREDIT:
+		if (doodleButton == doodle::KeyboardButtons::Escape)
+		{
+			current_state = State::START;
+		} break;
 	case State::IN_GAME:
 	{
+		if (doodleButton == doodle::KeyboardButtons::Escape)
+		{
+			sounds.music.stop();
+			current_state = State::START;
+		}
 		if (doodleButton == doodle::KeyboardButtons::Z)
 		{
 			cheat_Z = !cheat_Z;
@@ -189,7 +197,6 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 								guard.move(i);
 								if (minsu.movement % 5 == 0)
 								{
-									sounds.music.stop();
 									guard.change_sight(map, i);  //5칸 움직이면 시야 바꾸기
 								}
 							}
@@ -248,6 +255,22 @@ void Game::Update()
 		
 		break;
 	case State::IN_GAME:
+		if (is_music_playing == false)
+		{
+			sounds.music.stop();
+			if (is_in_guard_sight == true)
+			{
+				sounds.SetMusic("assets/Siren.ogg", true);
+				sounds.music.play();
+				is_music_playing = true;
+			}
+			else
+			{
+				sounds.SetMusic("assets/BasicBGM.ogg", true);
+				sounds.music.play();
+				is_music_playing = true;
+			}
+		}
 		timer = total_time - static_cast<int>(doodle::ElapsedTime);
 		score = timer * (treasure_count + 1) * 10;
 		if (camera_move == false)
@@ -261,9 +284,23 @@ void Game::Update()
 		}
 		if (guard.in_guard_sight(minsu) != -1)
 		{
-		    sounds.PlaySound(static_cast<int>(SoundType::Siren));
 			guard.guards[guard.in_guard_sight(minsu)].is_trace = true;
 			guard.guards[guard.in_guard_sight(minsu)].trace_movement = 0;
+			if (is_chased_state == false)
+			{
+				is_music_playing = false;
+			}
+			is_in_guard_sight = true;
+			is_chased_state = true;
+		}
+		else // 시야에 안잡히면
+		{
+			if (is_chased_state == true)
+			{
+				is_music_playing = false;
+			}
+			is_in_guard_sight = false;
+			is_chased_state = false;
 		}
 		guard.Guard_movement_update(map,minsu.movement);
 		if (timer <= 0)
@@ -293,6 +330,9 @@ void Game::Reset()
 	is_exit = false;
 	radar_start = false;
 	make_radar_big = false;
+	is_in_guard_sight = false;
+	is_music_playing = false;
+	is_chased_state = false;
 	map.setup();
 	minsu.setup();
 	guard.setup();
@@ -371,7 +411,7 @@ void Game::caught_by_guard()
 		{
 			if (position.x == i.position.x && position.y == i.position.y || position.x == i.position.x && position.y == i.position.y -1.0)
 			{
-			//sounds.music.stop();
+				sounds.music.stop();
 				current_state = State::GAME_OVER;
 			}
 		}
@@ -381,7 +421,7 @@ void Game::caught_by_guard()
 		{
 			if (position.x == i.position.x && position.y == i.position.y || position.x == i.position.x && position.y == i.position.y + 1.0)
 			{
-			//sounds.music.stop();
+				sounds.music.stop();
 				current_state = State::GAME_OVER;
 			}
 		}
@@ -391,7 +431,7 @@ void Game::caught_by_guard()
 		{
 			if (position.x == i.position.x && position.y == i.position.y || position.x == i.position.x + 1.0 && position.y == i.position.y )
 			{
-			//sounds.music.stop();
+				sounds.music.stop();
 				current_state = State::GAME_OVER;
 			}
 		}
@@ -402,7 +442,7 @@ void Game::caught_by_guard()
 		{
 			if (position.x == i.position.x && position.y == i.position.y || position.x == i.position.x -1.0 && position.y == i.position.y)
 			{
-			//sounds.music.stop();
+				sounds.music.stop();
 				current_state = State::GAME_OVER;
 			}
 		}

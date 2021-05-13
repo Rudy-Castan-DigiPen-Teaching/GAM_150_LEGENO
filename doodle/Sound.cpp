@@ -7,7 +7,7 @@ using namespace doodle;
 
 void Sound::SetUpSound()
 {
-    LoadSound("assets/Siren.ogg");
+    //LoadSound("assets/Siren.ogg");
 }
 
 void Sound::SetMusic(const std::string& file_path, bool isLoop)

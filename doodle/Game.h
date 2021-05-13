@@ -12,6 +12,7 @@ class Game
 	Map map;
 	Minsoo minsu;
 	Guard guard;
+
 	int timer = 100;
 	const int total_time{ 100 };
 	bool did_abtain_radar{ false };
@@ -21,7 +22,13 @@ class Game
 	double speed = 10;
 	int treasure_count{ 0 };
 	int score{ 0 };
+
 	bool is_exit =false;
+	bool is_in_guard_sight = false;
+	bool is_music_playing = false;
+	bool is_chased_state = false;
+
+
 	State current_state = State::START;
 	int current_menu = static_cast<int>(MenuOption::start);
 	doodle::Image clear_scene{ "assets/clear_scene.png" };
@@ -30,6 +37,7 @@ class Game
 	doodle::Image quit_button{ "assets/QuitButton.png" };
 	doodle::Image credit_button{ "assets/CreditButton.png" };
 	doodle::Image GameOver_scene{ "assets/GameOver.png" };
+	doodle::Image credit_menu{ "assets/Credit.png" };
 	Camera camera;
 	int get_count(math::ivec2 exit_pos);
 	bool camera_move = false;
