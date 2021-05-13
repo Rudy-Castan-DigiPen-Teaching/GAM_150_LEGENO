@@ -30,6 +30,7 @@ class Game
 	doodle::Image credit_button{ "assets/CreditButton.png" };
 	Camera camera;
 	int get_count(math::ivec2 exit_pos);
+	bool camera_move = false;
 public:
 	void setup();
 	void Draw();
@@ -44,4 +45,6 @@ public:
 	//double move = 0;
 	void radar_obtain();
 	void draw_radar();
+	void Ruby_camera();
+	math::vec2 new_pos = minsu.GetPosition();
 };

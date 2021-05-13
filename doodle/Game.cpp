@@ -1,6 +1,6 @@
 ﻿#include"Game.h"
 #include"Pathfinding.h"
-
+#include<iostream>
 using namespace doodle;
 
 void Game::setup()
@@ -30,7 +30,7 @@ void Game::Draw()
 		map.draw(camera);
 		guard.Draw_Sight(camera,map);
 		guard.Draw_guard(camera);
-		minsu.Draw_minsu(camera);
+		minsu.Draw_minsu(camera,camera_move);
 		draw_text(std::to_string(timer), 80, 80);
 		draw_text(std::to_string(treasure_count), 500, 80);
 		push_settings();
@@ -211,7 +211,15 @@ void Game::Update()
 	case State::IN_GAME:
 		timer = total_time - static_cast<int>(doodle::ElapsedTime);
 		score = timer * (treasure_count + 1) * 10;
-		camera.Update(minsu.GetPosition());
+		if (camera_move == false)
+		{
+			camera.Update(minsu.GetPosition());
+			new_pos = minsu.GetPosition();
+		}
+		if (camera_move == true)
+		{
+			Ruby_camera();
+		}
 		if (guard.in_guard_sight(minsu) != -1)
 		{
 			guard.guards[guard.in_guard_sight(minsu)].is_trace = true;
@@ -522,6 +530,7 @@ void Game::set_item(doodle::KeyboardButtons button)
 
 	}
 }
+
 void Game::radar_obtain()
 {
 	if (did_abtain_radar == true)
@@ -538,6 +547,8 @@ void Game::radar_obtain()
 					item_num--;
 					did_abtain_radar = false;
 					radar_start = true;
+					guard.guards.push_back(guard_info{ math::ivec2(20, 20), Direction::UP ,"Ruby"}); //minsu start pos
+					camera_move = true;
 				}
 			}
 		}
@@ -600,6 +611,35 @@ void Game::draw_radar()
 	}
 }
 
+void Game::Ruby_camera()
+{
+	if (camera_move == true)
+	{
+		if (new_pos.x > guard.guards.back().position.x)
+		{
+			new_pos.x -= 0.1;
+		}
+		if (new_pos.x < guard.guards.back().position.x)
+		{
+			new_pos.x += 0.1;
+		}
+		if (new_pos.y > guard.guards.back().position.y)
+		{
+			new_pos.y -= 0.1;
+		}
+		if (new_pos.y < guard.guards.back().position.y)
+		{
+			new_pos.y += 0.1;
+		}
+		camera.Update(new_pos);
+	}
+	if (new_pos.x >= guard.guards.back().position.x && new_pos.y >= guard.guards.back().position.y)
+	{
+		camera_move = false;
+	}
+}
+
+
 int Game::get_count(math::ivec2 exit_pos)
 {
 	int count{ 1 };
@@ -619,7 +659,6 @@ int Game::get_count(math::ivec2 exit_pos)
 	{
 		while (1)
 		{
-			//count�� �� Ŀ���� ����
 			if (count >= exit_minsu.x)
 			{
 				for (int column = exit_minsu.x, row = 0; row < exit_minsu.x; row++)

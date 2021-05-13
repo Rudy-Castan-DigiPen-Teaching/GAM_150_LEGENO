@@ -6,7 +6,7 @@
 class Minsoo: public Map
 {
 public:
-	void Draw_minsu(Camera camera);
+	void Draw_minsu(Camera camera,bool camera_move);
 	void set_position(doodle::KeyboardButtons button);
 	math::ivec2 GetPosition();
 	void setup();

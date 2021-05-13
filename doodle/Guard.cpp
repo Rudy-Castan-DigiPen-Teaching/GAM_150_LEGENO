@@ -31,23 +31,45 @@ void Guard::Draw_guard(Camera& camera)
 	doodle::set_fill_color(255, 0, 0);
 	for (auto &p : guards)
 	{
-		if (p.is_okay == true)
+		
+		if (p.is_okay == true )
 		{
-			switch (p.direction)
+			if( p.guard_type == "guard")
 			{
-			case Direction::UP:
-				doodle::draw_image(GuardUP_image, (p.position.x + camera.GetPosition().x) * block_size, (p.position.y + camera.GetPosition().y) * block_size, block_size + 10.0, block_size + 10.0);
-				break;
-			case Direction::DOWN:
-				doodle::draw_image(GuardDown_image, (p.position.x + camera.GetPosition().x) * block_size, (p.position.y + camera.GetPosition().y) * block_size, block_size + 10.0, block_size + 10.0);
-				break;
-			case Direction::RIGHT:
-				doodle::draw_image(GuardRight_image, (p.position.x + camera.GetPosition().x) * block_size, (p.position.y + camera.GetPosition().y) * block_size, block_size + 10.0, block_size + 10.0);
-				break;
-			case Direction::LEFT:
-				doodle::draw_image(GuardLeft_image, (p.position.x + camera.GetPosition().x) * block_size, (p.position.y + camera.GetPosition().y) * block_size, block_size + 10.0, block_size + 10.0);
-				break;
-
+				switch (p.direction)
+				{
+				case Direction::UP:
+					doodle::draw_image(GuardUP_image, (p.position.x + camera.GetPosition().x) * block_size, (p.position.y + camera.GetPosition().y) * block_size, block_size + 10.0, block_size + 10.0);
+					break;
+				case Direction::DOWN:
+					doodle::draw_image(GuardDown_image, (p.position.x + camera.GetPosition().x) * block_size, (p.position.y + camera.GetPosition().y) * block_size, block_size + 10.0, block_size + 10.0);
+					break;
+				case Direction::RIGHT:
+					doodle::draw_image(GuardRight_image, (p.position.x + camera.GetPosition().x) * block_size, (p.position.y + camera.GetPosition().y) * block_size, block_size + 10.0, block_size + 10.0);
+					break;
+				case Direction::LEFT:
+					doodle::draw_image(GuardLeft_image, (p.position.x + camera.GetPosition().x) * block_size, (p.position.y + camera.GetPosition().y) * block_size, block_size + 10.0, block_size + 10.0);
+					break;
+				}
+			}
+			else if (p.guard_type == "Ruby")
+			{
+				p.is_trace = true;
+				switch (p.direction)
+				{
+				case Direction::UP:
+					doodle::draw_image(Ruby_image, (p.position.x + camera.GetPosition().x) * block_size, (p.position.y + camera.GetPosition().y) * block_size, block_size + 10.0, block_size + 10.0);
+					break;
+				case Direction::DOWN:
+					doodle::draw_image(Ruby_image, (p.position.x + camera.GetPosition().x) * block_size, (p.position.y + camera.GetPosition().y) * block_size, block_size + 10.0, block_size + 10.0);
+					break;
+				case Direction::RIGHT:
+					doodle::draw_image(Ruby_image, (p.position.x + camera.GetPosition().x) * block_size, (p.position.y + camera.GetPosition().y) * block_size, block_size + 10.0, block_size + 10.0);
+					break;
+				case Direction::LEFT:
+					doodle::draw_image(Ruby_image, (p.position.x + camera.GetPosition().x) * block_size, (p.position.y + camera.GetPosition().y) * block_size, block_size + 10.0, block_size + 10.0);
+					break;
+				}
 			}
 		}
 		else if(p.is_okay == false)

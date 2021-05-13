@@ -14,11 +14,13 @@ struct guard_info
 {
 	math::ivec2 position;
 	Direction direction = Direction::UP;
+	string guard_type = "guard";
 	bool is_okay = true;  //개껌먹었는지 안먹었는지
 	bool is_trace = false; //민수가 시야에 들어왔는지 안들어왔는지
 	int trace_movement = 0;
 	int movement = 0;
 	sight_info sight_position[3] = { {0,true} };
+	
 };
 class Guard :Map
 {
@@ -44,4 +46,6 @@ private:
 	doodle::Image Guard_CHEW_image{ "assets/chew_dog.png" }; //껌먹는개
 
 	doodle::Image Guard_tracing_image{ "assets/tracing_dog.png" };
+
+	doodle::Image Ruby_image{ "assets/tracing_dog.png" };
 };
