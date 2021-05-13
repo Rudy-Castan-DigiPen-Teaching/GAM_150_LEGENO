@@ -640,7 +640,7 @@ void Game::radar_obtain()
 					item_num--;
 					did_abtain_radar = false;
 					radar_start = true;
-					guard.guards.push_back(guard_info{ math::ivec2(20, 20), Direction::UP ,"Ruby"}); //minsu start pos
+					guard.guards.push_back(guard_info{ math::ivec2(20, 19), Direction::LEFT ,"Ruby"}); //minsu start pos
 					camera_move = true;
 				}
 			}
