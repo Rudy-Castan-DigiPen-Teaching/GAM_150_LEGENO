@@ -127,6 +127,7 @@
     <ClInclude Include="Guard.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Minsoo.h" />
+    <ClInclude Include="Pathfinding.h" />
     <ClInclude Include="Sketch.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Sound.h" />

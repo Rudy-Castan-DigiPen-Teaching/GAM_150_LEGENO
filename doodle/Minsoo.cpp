@@ -38,6 +38,9 @@ void Minsoo::setup()
 {
 	position = math::ivec2{ 2,2 };
 	movement = 0;
+	chew_item = 3;
+	bomb_item = 1;
+	explode_count = -1;
 }
 
 void Minsoo::set_position(doodle::KeyboardButtons button)
@@ -49,6 +52,10 @@ void Minsoo::set_position(doodle::KeyboardButtons button)
 		position.y += 1;
 		movement++;
 		direction = Direction::DOWN;
+		if(explode_count>0)
+		{
+			explode_count--;
+		}
 	}
 		break;
 	case doodle::KeyboardButtons::A:
@@ -56,6 +63,10 @@ void Minsoo::set_position(doodle::KeyboardButtons button)
 			position.x -= 1;
 			movement++;
 			direction = Direction::LEFT;
+			if(explode_count>0)
+			{
+				explode_count--;
+			}
 		}
 		break;
 	case doodle::KeyboardButtons::D:
@@ -63,6 +74,10 @@ void Minsoo::set_position(doodle::KeyboardButtons button)
 			position.x += 1;
 			movement++;
 			direction = Direction::RIGHT;
+			if(explode_count>0)
+			{
+				explode_count--;
+			}
 		}
 		break;
 	case doodle::KeyboardButtons::W:
@@ -70,12 +85,16 @@ void Minsoo::set_position(doodle::KeyboardButtons button)
 			position.y -= 1;
 			movement++;
 			direction = Direction::UP;
+			if(explode_count>0)
+			{
+				explode_count--;
+			}
 		}
 		break;
 	}
 }
 
-math::vec2 Minsoo::GetPosition()
+math::ivec2 Minsoo::GetPosition()
 {
 	return position;
 }

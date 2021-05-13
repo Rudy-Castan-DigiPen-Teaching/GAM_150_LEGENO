@@ -1,5 +1,8 @@
-#include"Game.h"
-#include<iostream>
+﻿#include"Game.h"
+#include"Pathfinding.h"
+
+using namespace doodle;
+
 void Game::setup()
 {
 	current_state = State::START;
@@ -9,17 +12,19 @@ void Game::setup()
 
 void Game::Draw()
 {
-	using namespace doodle;
 	switch (current_state)
 	{
 	case State::START:
-		push_settings();
 		clear_background();
-		set_fill_color(255, 255, 0);
-		draw_text("Press S to start", 80, 150);
-		draw_text("Press Q to quit", 80, 250);
-		pop_settings();
+		doodle::draw_image(main_menu, 0, 0, Width, Height);
+		switch (current_menu)
+		{
+		case static_cast<int>(MenuOption::start):	doodle::draw_image(start_button, 0, 0, Width, Height); break;
+		case static_cast<int>(MenuOption::quit):	doodle::draw_image(quit_button, 0, 0, Width, Height); break;
+		case static_cast<int>(MenuOption::credit):	doodle::draw_image(credit_button, 0, 0, Width, Height); break;
+		}
 		break;
+	case State::CREDIT:;
 	case State::IN_GAME:
 		doodle::clear_background(0);
 		map.draw(camera);
@@ -27,11 +32,20 @@ void Game::Draw()
 		guard.Draw_guard(camera);
 		minsu.Draw_minsu(camera);
 		draw_text(std::to_string(timer), 80, 80);
-		doodle::draw_text(std::to_string(treasure_count), 500, 80);
-		doodle::push_settings();
-		doodle::set_font_size(30);
-		doodle::draw_text("Chew item " + std::to_string(chew_item), 50, 200);
-		doodle::pop_settings();
+		draw_text(std::to_string(treasure_count), 500, 80);
+		push_settings();
+		set_font_size(30);
+		draw_text("Chew item " + std::to_string(minsu.chew_item), 50, 200);
+		doodle::draw_text("Bomb item " + std::to_string(minsu.bomb_item), 50, 250);
+		draw_radar();
+		pop_settings();
+		if (guard.warning == true)
+		{
+			push_settings();
+			set_fill_color(255, 0, 0,100);
+			draw_rectangle(0, 0, Width, Height);
+			doodle::pop_settings();
+		}
 		break;
 	case State::CLEAR:
 		push_settings();
@@ -57,17 +71,37 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 	switch (current_state)
 	{
 	case State::START:
-		if (doodleButton == doodle::KeyboardButtons::S)
+		if (doodleButton == doodle::KeyboardButtons::Enter)
 		{
-			Reset();
-			current_state = State::IN_GAME;
-			doodle::clear_background(0);
+			switch (current_menu)
+			{
+				case static_cast<int>(MenuOption::start) :
+				{
+					Reset();
+					current_state = State::IN_GAME;
+					doodle::clear_background(0);
+					break;
+				}
+				case static_cast<int>(MenuOption::quit) : doodle::close_window(); break;
+				case static_cast<int>(MenuOption::credit) : break;
+			}
 		}
-		if (doodleButton == doodle::KeyboardButtons::Q)
+		if (doodleButton == doodle::KeyboardButtons::Up)
 		{
-			doodle::close_window();
+			if (current_menu > static_cast<int>(MenuOption::start))
+			{
+				current_menu--;
+			}
+		}
+		else if (doodleButton == doodle::KeyboardButtons::Down)
+		{
+			if (current_menu < static_cast<int>(MenuOption::credit))
+			{
+				current_menu++;
+			}
 		}
 		break;
+	case State::CREDIT:; break;
 	case State::IN_GAME:
 	{
 		if (doodleButton == doodle::KeyboardButtons::A || doodleButton == doodle::KeyboardButtons::S || doodleButton == doodle::KeyboardButtons::W || doodleButton == doodle::KeyboardButtons::D)
@@ -77,7 +111,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 				minsu.set_position(doodleButton);
 				for (int i = 0; i < static_cast<int>(guard.guards.size()); i++)
 				{
-					if (minsu.GetPosition() == guard.guards[i].position)
+					if (minsu.GetPosition() == guard.guards[i].position) //가드포지션이랑 민수포지션 같으면 게임오버
 					{
 						current_state = State::GAME_OVER;
 					}
@@ -86,7 +120,42 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 					{
 						if (check_guard(i) == false)
 						{
-							guard.move(i);
+							if (guard.guards[i].is_trace == true && guard.guards[i].is_okay == true) //시야안에 있는지없는지,개껌안먹었는지 ->있으면 페스파인딩
+							{
+								math::ivec2 curr_position = guard.guards[i].position;
+
+								//template arguments = map height, map width
+								
+								guard.guards[i].position = path_finding<27, 81>(map, minsu.GetPosition(), (guard.guards[i].position)).back().pos;
+								
+								curr_position -= guard.guards[i].position;
+								if (curr_position.x == -1)
+								{
+									guard.guards[i].direction = Direction::RIGHT;
+								}
+								if (curr_position.x == 1)
+								{
+									guard.guards[i].direction = Direction::LEFT;
+								}
+								if (curr_position.y == -1)
+								{
+									guard.guards[i].direction = Direction::DOWN;
+								}
+								if (curr_position.y == 1)
+								{
+									guard.guards[i].direction = Direction::UP;
+
+								}
+							}
+							else if(guard.guards[i].is_okay == true)
+							{
+								guard.move(i);
+								if (minsu.movement % 5 == 0)
+								{
+									guard.change_sight(map, i);  //5칸 움직이면 시야 바꾸기
+								}
+							}
+							sight_check(i);  // 시야가 벽을 보고있는지 확인, 벽보고있으면 시야바꾸기
 							for (auto& j : guard.guards)
 							{
 								if (j.is_trace == true)
@@ -94,12 +163,8 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 									j.trace_movement++;
 								}
 							}
-							if (minsu.movement % 5 == 0)
-							{
-								guard.change_sight(map, i);
-							}
-							sight_check(i);
-							guard.set_sight();
+
+							guard.set_sight();  // 지금 방향으로 시야 늘려서 보이기
 							break;
 						}
 
@@ -147,34 +212,19 @@ void Game::Update()
 		timer = total_time - static_cast<int>(doodle::ElapsedTime);
 		score = timer * (treasure_count + 1) * 10;
 		camera.Update(minsu.GetPosition());
-		guard.get_dogchew(map,minsu.movement);
 		if (guard.in_guard_sight(minsu) != -1)
 		{
 			guard.guards[guard.in_guard_sight(minsu)].is_trace = true;
 			guard.guards[guard.in_guard_sight(minsu)].trace_movement = 0;
 		}
+		guard.Guard_movement_update(map,minsu.movement);
 		if (timer <= 0)
 		{
 			current_state = State::GAME_OVER;
 		}
-		if (did_abtain_radar == true)
-		{
-			int item_num = 1;
-			while (item_num > 0)
-			{
-				math::ivec2 pos(doodle::random(0, 10), doodle::random(0, 10));
-				for (auto& p : map.map)
-				{
-					if (p.position == pos && p.type == Type::road)
-					{
-						p.type = Type::exit;
-						item_num--;
-						did_abtain_radar = false;
-					}
-				}
-			}
-		}
 		
+		radar_obtain();
+	
 		break;
 	case State::CLEAR:
 		
@@ -189,10 +239,16 @@ void Game::Reset()
 	timer = total_time;
 	doodle::ElapsedTime = 0;
 	treasure_count = 0;
-	chew_item = 3;
+	offset = 0 ;
+	speed = 10;
+	is_exit = false;
+	radar_start = false;
+	make_radar_big = false;
 	map.setup();
 	minsu.setup();
 	guard.setup();
+	minsu.direction = Direction::DOWN;
+	
 }
 
 bool Game::check(doodle::KeyboardButtons doodleButton)
@@ -240,7 +296,7 @@ bool Game::check(doodle::KeyboardButtons doodleButton)
 			map.map[i].type = Type::road;
 			treasure_count++;
 		}
-		else if (map.map[i].position == position && map.map[i].type == Type::exit)
+		else if (map.map[i].position == position && map.map[i].type == Type::can_escape)
 		{
 			current_state= State::CLEAR;
 			return true;
@@ -297,7 +353,7 @@ void Game::caught_by_guard()
 	}
 }
 
-bool Game::check_guard(int index)  // ���尡 ���� ���������� �þ߹��� �ٲٱ�
+bool Game::check_guard(int index)  // 가드가 벽을 보고있을때 시야방향 바꾸기
 {
 
 	switch (guard.guards[index].direction)
@@ -405,16 +461,59 @@ void Game::set_item(doodle::KeyboardButtons button)
 {
 	switch (button)
 	{
+	case doodle::KeyboardButtons::W:
+	case doodle::KeyboardButtons::A:
+	case doodle::KeyboardButtons::S:
+	case doodle::KeyboardButtons::D:
+	if (minsu.explode_count == 0)
+	{
+		for (int i{ 0 }; i < map.map.size(); i++)
+		{
+			if (map.map[i].type == Type::bomb)
+			{
+				if (is_exit == true)
+				{
+					map.map[i].type = Type::can_escape;
+				}
+				else
+				{
+					map.map[i].type = Type::road;
+				}
+			}
+		}
+	}
+	break;
 	case doodle::KeyboardButtons::_1:
 	{
-		if (chew_item > 0)
+		if (minsu.chew_item > 0)
 		{
 			for (int i{ 0 }; i < map.map.size(); i++)
 			{
 				if (map.map[i].position == minsu.GetPosition())
 				{
 					map.map[i].type = Type::dog_chew;
-					chew_item--;
+					minsu.chew_item--;
+				}
+			}
+		}
+	}
+	break;
+	case doodle::KeyboardButtons::_2:
+	{
+		if (minsu.bomb_item > 0)
+		{
+			for (int i{ 0 }; i < map.map.size(); i++)
+			{
+				if (map.map[i].position == minsu.GetPosition())
+				{
+					if (map.map[i].type == Type::exit)
+					{
+						is_exit = true;
+					}
+					minsu.explode_count = 3;
+					map.map[i].type = Type::bomb;
+					minsu.bomb_item--;
+					
 				}
 			}
 		}
@@ -423,5 +522,290 @@ void Game::set_item(doodle::KeyboardButtons button)
 
 	}
 }
+void Game::radar_obtain()
+{
+	if (did_abtain_radar == true)
+	{
+		int item_num = 1;
+		while (item_num > 0)
+		{
+			math::ivec2 pos(doodle::random(0, 10), doodle::random(0, 10));
+			for (auto& m : map.map)
+			{
+				if (m.position == pos && m.type == Type::road)
+				{
+					m.type = Type::exit;
+					item_num--;
+					did_abtain_radar = false;
+					radar_start = true;
+				}
+			}
+		}
+	}
+}
 
+void Game::draw_radar()
+{
+	if (radar_start == true)
+	{
+		set_fill_color(0, 255, 0);
+		draw_rectangle(100 * 9, 100 * 0, 100);
+
+		math::ivec2 exit_pos;
+		for (auto& m : map.map)
+		{
+			if (m.type == Type::exit)
+			{
+				exit_pos = m.position;
+			}
+		}
+		
+		double curr_speed = speed;
+		if (get_count(exit_pos) == 0)
+		{
+			speed = 50;
+		}
+		else
+		{
+			speed = 40. / get_count(exit_pos);
+		}
+		
+		if (curr_speed != speed)
+		{
+			offset = 0;
+			make_radar_big = false;
+		}
+
+		double off_spd = offset * speed;
+		draw_image(map.Radar, 100 * 9 + (off_spd / 2), 100 * 0 + (off_spd / 2), 100 - off_spd, 100 - off_spd);
+		if (make_radar_big == false)
+		{
+			off_spd = ++offset * speed;
+			if (off_spd > 50)
+			{
+				offset = 50 / speed;
+				make_radar_big = true;
+			}
+		}
+		else if (make_radar_big == true)
+		{
+			off_spd = --offset * speed;
+			if (off_spd < 0)
+			{
+				offset = 0;
+				make_radar_big = false;
+			}
+		}
+
+	}
+}
+
+int Game::get_count(math::ivec2 exit_pos)
+{
+	int count{ 1 };
+	math::ivec2 minsu_pos = minsu.GetPosition();
+	math::ivec2 exit_minsu = exit_pos - minsu_pos;
+
+	if (exit_minsu.x == 0 && exit_minsu.y == 0)//exit
+	{
+		return 0;
+	}
+	else if (exit_minsu.x == 0 || exit_minsu.y == 0)//same x or y
+	{
+		int result = exit_minsu.y == 0 ? exit_minsu.x : exit_minsu.y;
+		return abs(result);
+	}
+	else if (exit_minsu.x > 0 && exit_minsu.y > 0)//left top
+	{
+		while (1)
+		{
+			//count�� �� Ŀ���� ����
+			if (count >= exit_minsu.x)
+			{
+				for (int column = exit_minsu.x, row = 0; row < exit_minsu.x; row++)
+				{
+					if (exit_pos == math::ivec2{ minsu_pos.x + column ,minsu_pos.y + row })
+					{
+						return count;
+					}
+				}
+			}
+			else
+			{
+				for (int column = count, row = 0; row < count; row++)
+				{
+					if (exit_pos == math::ivec2{ minsu_pos.x + column ,minsu_pos.y + row })
+					{
+						return count;
+					}
+				}
+			}
+
+			if (count >= exit_minsu.y)
+			{
+				for (int column = 0, row = exit_minsu.y; column <= exit_minsu.y; column++)
+				{
+					if (exit_pos == math::ivec2{ minsu_pos.x + column ,minsu_pos.y + row })
+					{
+						return count;
+					}
+				}
+			}
+			else
+			{
+				for (int column = 0, row = count; column <= count; column++)
+				{
+					if (exit_pos == math::ivec2{ minsu_pos.x + column ,minsu_pos.y + row })
+					{
+						return count;
+					}
+				}
+			}
+			count++;
+		}
+	}
+	else if (exit_minsu.x > 0 && exit_minsu.y < 0)//left bottom
+	{
+		while (1)
+		{
+			if (count >= exit_minsu.x)
+			{
+				for (int column = exit_minsu.x, row = 0; row < exit_minsu.x; row++)
+				{
+					if (exit_pos == math::ivec2{ minsu_pos.x + column ,minsu_pos.y - row })
+					{
+						return count;
+					}
+				}
+			}
+			else
+			{
+				for (int column = count, row = 0; row < count; row++)
+				{
+					if (exit_pos == math::ivec2{ minsu_pos.x + column ,minsu_pos.y - row })
+					{
+						return count;
+					}
+				}
+			}
+			if (count >= -exit_minsu.y)
+			{
+				for (int column = 0, row = -exit_minsu.y; column <= -exit_minsu.y; column++)
+				{
+					if (exit_pos == math::ivec2{ minsu_pos.x + column ,minsu_pos.y - row })
+					{
+						return count;
+					}
+				}
+			}
+			else
+			{
+				for (int column = 0, row = count; column <= count; column++)
+				{
+					if (exit_pos == math::ivec2{ minsu_pos.x + column ,minsu_pos.y - row })
+					{
+						return count;
+					}
+				}
+			}
+			count++;
+		}
+	}
+	else if (exit_minsu.x < 0 && exit_minsu.y > 0)//right top
+	{
+		while (1)
+		{
+			if (count >= -exit_minsu.x)
+			{
+				for (int column = -exit_minsu.x, row = 0; row < -exit_minsu.x; row++)
+				{
+					if (exit_pos == math::ivec2{ minsu_pos.x - column ,minsu_pos.y + row })
+					{
+						return count;
+					}
+				}
+			}
+			else
+			{
+				for (int column = count, row = 0; row < count; row++)
+				{
+					if (exit_pos == math::ivec2{ minsu_pos.x - column ,minsu_pos.y + row })
+					{
+						return count;
+					}
+				}
+			}
+			if (count >= exit_minsu.y)
+			{
+				for (int column = 0, row = exit_minsu.y; column <= exit_minsu.y; column++)
+				{
+					if (exit_pos == math::ivec2{ minsu_pos.x - column ,minsu_pos.y + row })
+					{
+						return count;
+					}
+				}
+			}
+			else
+			{
+				for (int column = 0, row = count; column <= count; column++)
+				{
+					if (exit_pos == math::ivec2{ minsu_pos.x - column ,minsu_pos.y + row })
+					{
+						return count;
+					}
+				}
+			}
+			count++;
+		}
+	}
+	else if (exit_minsu.x < 0 && exit_minsu.y < 0)//right bottom
+	{
+		while (1)
+		{
+			if (count >= -exit_minsu.x)
+			{
+				for (int column = -exit_minsu.x, row = 0; row < -exit_minsu.x; row++)
+				{
+					if (exit_pos == math::ivec2{ minsu_pos.x - column ,minsu_pos.y - row })
+					{
+						return count;
+					}
+				}
+			}
+			else
+			{
+				for (int column = count, row = 0; row < count; row++)
+				{
+					if (exit_pos == math::ivec2{ minsu_pos.x - column ,minsu_pos.y - row })
+					{
+						return count;
+					}
+				}
+			}
+			if (count >= -exit_minsu.y)
+			{
+				for (int column = 0, row = -exit_minsu.y; column <= -exit_minsu.y; column++)
+				{
+					if (exit_pos == math::ivec2{ minsu_pos.x - column ,minsu_pos.y - row })
+					{
+						return count;
+					}
+				}
+			}
+			else
+			{
+				for (int column = 0, row = count; column <= count; column++)
+				{
+					if (exit_pos == math::ivec2{ minsu_pos.x - column ,minsu_pos.y - row })
+					{
+						return count;
+					}
+				}
+			}
+			count++;
+		}
+	}
+
+	return -1;
+}
 

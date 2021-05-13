@@ -16,12 +16,15 @@ struct info
 class Map
 {
 protected:
-	int map_width = 81;
-	int map_height = 27;
 	int block_size = 100;
+public:
 	doodle::Image Dog_chew{"assets/dog_chew.png"};
 	doodle::Image Road{ "assets/Road.png" };
-public:
+	doodle::Image Bomb{ "assets/Bomb.png" };
+	doodle::Image Breakable_wall{ "assets/Breakable_wall.png" };
+	doodle::Image Radar{ "assets/Radar.png" };
+	int map_width = 81;
+	int map_height = 27;
 	vector<info> map;
 	void setup();
 	void draw(Camera& camera);

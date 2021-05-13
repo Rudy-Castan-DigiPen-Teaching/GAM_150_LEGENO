@@ -2,9 +2,17 @@
 enum class State
 {
 	START,
+	CREDIT,
 	IN_GAME,
 	CLEAR,
 	GAME_OVER
+};
+
+enum class MenuOption
+{
+	start,
+	quit,
+	credit
 };
 
 enum class Type
@@ -14,7 +22,9 @@ enum class Type
 	radar,
 	treasure,
 	exit,
-	dog_chew
+	can_escape,
+	dog_chew,
+	bomb
 };
 
 enum class Direction

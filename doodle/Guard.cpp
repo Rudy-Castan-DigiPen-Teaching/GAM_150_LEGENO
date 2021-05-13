@@ -7,11 +7,11 @@
 void Guard::setup()
 {
 	guards.clear();
-
+	warning = false;
 
 	//guards.push_back(guard_info{ math::ivec2(4, 3) , Direction::UP });
 	guards.push_back(guard_info{ math::ivec2(8, 2), Direction::LEFT });
-	//guards.push_back(guard_info{ math::ivec2(15, 4), Direction::UP });
+	//guards.push_back(guard_info{ math::ivec2(7, 9), Direction::UP });
 	//guards.push_back(guard_info{ math::ivec2(6, 8), Direction::DOWN });
 	//guards.push_back(guard_info{ math::ivec2(11,8), Direction::UP });
 	//guards.push_back(guard_info{ math::ivec2(14, 8), Direction::RIGHT });
@@ -54,7 +54,7 @@ void Guard::Draw_guard(Camera& camera)
 		{
 			doodle::draw_image(Guard_CHEW_image, (p.position.x + camera.GetPosition().x) * block_size, (p.position.y + camera.GetPosition().y) * block_size, block_size + 10.0, block_size + 10.0);
 		}
-		if (p.is_trace == true)
+		if (p.is_trace == true )
 		{
 			doodle::draw_image(Guard_tracing_image, (p.position.x + camera.GetPosition().x) * block_size, (p.position.y + camera.GetPosition().y) * block_size, block_size + 10.0, block_size + 10.0);
 		}
@@ -77,7 +77,7 @@ void Guard::Draw_Sight(Camera& camera,Map MAP)
 						doodle::draw_ellipse((guard.sight_position[i].position.x + camera.GetPosition().x) * block_size + block_size / 2, (guard.sight_position[i].position.y + camera.GetPosition().y) * block_size + block_size / 2, block_size);
 					}
 
-					if (m.type != Type::road)
+					if (m.type == Type::wall )
 					{
 						while (i < sight_size)
 						{
@@ -199,7 +199,7 @@ void Guard::change_sight(Map m, int index)
 
 }
 
-void Guard::get_dogchew(Map& m, int movement) //개껌먹었을때, 트레이스 트루일때 움직임 계산후 리셋
+void Guard::Guard_movement_update(Map& m, int movement) //개껌먹었을때, 트레이스 트루일때 움직임 계산후 리셋
 {
 	for (auto& i : guards)
 	{
@@ -219,15 +219,29 @@ void Guard::get_dogchew(Map& m, int movement) //개껌먹었을때, 트레이스 트루일때 
 
 		if (i.is_okay == false)
 		{
-			if (movement - i.movement == 3)
+			if (movement - i.movement == how_many_craze)
 			{
 				i.is_okay = true;
 			}
 		}
-		if (i.trace_movement == 3)
+		if (i.trace_movement == how_many_trace)
 		{
 			i.is_trace = false;
 		}
+
+		if (i.is_trace == true)
+		{
+			if (i.is_okay ==true)
+			{
+				warning = !warning;
+			}
+			if (i.is_okay == false)
+			{
+				i.is_trace = false;
+				warning = false;
+			}
+		}
+
 	}
 
 }
