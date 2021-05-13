@@ -35,3 +35,8 @@ enum class Direction
 	LEFT
 };
 
+enum class SoundType
+{
+	Siren,
+};
+

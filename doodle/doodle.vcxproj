@@ -114,7 +114,10 @@
     <ClCompile Include="Guard.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Minsoo.cpp" />
-    <ClCompile Include="Sketch.cpp" />
+    <ClCompile Include="Sketch.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="WinMain.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -128,7 +131,10 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="Minsoo.h" />
     <ClInclude Include="Pathfinding.h" />
-    <ClInclude Include="Sketch.h" />
+    <ClInclude Include="Sketch.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="resource.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="vec2.h" />

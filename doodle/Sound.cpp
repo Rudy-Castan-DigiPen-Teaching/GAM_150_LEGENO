@@ -1,17 +1,22 @@
 #include "Sound.h"
-void Sound::PlaySound(int index)
+#include "doodle/doodle.hpp"
+
+using namespace doodle;
+
+[[noreturn]] void error(const std::string& s) { throw std::runtime_error(s); }
+
+void Sound::SetUpSound()
 {
-    for (auto& sound : Sounds)
+    LoadSound("assets/Siren.ogg");
+}
+
+void Sound::SetMusic(const std::string& file_path, bool isLoop)
+{
+    if (!music.openFromFile(file_path))
     {
-        if (sound.getStatus() != sf::SoundSource::Playing)
-        {
-            sound.setBuffer(SoundBuffers[index]);
-            sound.play();
-            return;
-        }
+        throw std::runtime_error("Failed to load the music file: " + file_path);
     }
-    Sounds.emplace_back(SoundBuffers[index]);
-    Sounds.back().play();
+    music.setLoop(isLoop);
 }
 
 void Sound::LoadSound(const std::string& file_path)
@@ -20,15 +25,21 @@ void Sound::LoadSound(const std::string& file_path)
     sf::SoundBuffer& buffer = SoundBuffers.back();
     if (!buffer.loadFromFile(file_path))
     {
-        throw std::runtime_error("failed to load " + file_path);
+        error("Failed to load " + file_path);
     }
 }
 
-void Sound::setup()
+void Sound::PlaySound(int soundType)
 {
-    //LoadSound("assets/item.wav");
-    //LoadSound("assets/thump.wav");
-    //LoadSound("assets/zoom.wav");
-    //LoadSound("assets/teleport.wav");
-    //LoadSound("assets/switch.wav");
+    for (auto& sound : Sounds)
+    {
+        if (sound.getStatus() != sf::SoundSource::Playing)
+        {
+            sound.setBuffer(SoundBuffers[soundType]);
+            sound.play();
+            return;
+        }
+    }
+    Sounds.emplace_back(SoundBuffers[soundType]);
+    Sounds.back().play();
 }

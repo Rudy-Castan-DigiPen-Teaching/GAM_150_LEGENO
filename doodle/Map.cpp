@@ -58,7 +58,7 @@ void Map::draw(Camera& camera)
             set_fill_color(0, 0, 0);
             set_outline_width(1);
             set_outline_color(255);
-            draw_rectangle((i.position.x + camera.GetPosition().x) * block_size, (i.position.y + camera.GetPosition().y) * block_size, block_size);
+            draw_image(Wall, (i.position.x + camera.GetPosition().x) * block_size -25 , (i.position.y + camera.GetPosition().y)* block_size - 25, block_size*2.5 , block_size*2.5);
             pop_settings();
             break;
         case Type::road:
@@ -67,7 +67,7 @@ void Map::draw(Camera& camera)
             set_outline_width(1);
             set_outline_color(255);
 
-            draw_image(Road, (i.position.x + camera.GetPosition().x) * block_size - 30.0, (i.position.y + camera.GetPosition().y) * block_size - 30.0, block_size + 200.0, block_size + 200.0);
+            draw_image(Road, (i.position.x + camera.GetPosition().x) * block_size-25 , (i.position.y + camera.GetPosition().y) * block_size -25, block_size*2.5, block_size*2.5);
 
             pop_settings();
             break;
@@ -76,6 +76,7 @@ void Map::draw(Camera& camera)
             set_fill_color(0, 255, 0);
             set_outline_width(1);
             set_outline_color(255);
+            draw_image(Road, (i.position.x + camera.GetPosition().x) * block_size - 25, (i.position.y + camera.GetPosition().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
             draw_image(Radar, (i.position.x + camera.GetPosition().x) * block_size, (i.position.y + camera.GetPosition().y) * block_size, block_size, block_size);            
             pop_settings();
             break;

@@ -3,11 +3,12 @@
 #include "Guard.h"
 #include"doodle/doodle.hpp"
 #include "ENUM.h"
-
+#include "Sound.h"
 #include "Camera.h"
 
 class Game
 {
+	Sound sounds;
 	Map map;
 	Minsoo minsu;
 	Guard guard;

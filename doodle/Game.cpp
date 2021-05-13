@@ -5,6 +5,7 @@ using namespace doodle;
 
 void Game::setup()
 {
+	sounds.SetUpSound();
 	current_state = State::START;
 	map.setup();
 	guard.setup();
@@ -31,9 +32,17 @@ void Game::Draw()
 		guard.Draw_Sight(camera,map);
 		guard.Draw_guard(camera);
 		minsu.Draw_minsu(camera,camera_move);
-		draw_text(std::to_string(timer), 80, 80);
 		draw_text(std::to_string(treasure_count), 500, 80);
+
 		push_settings();
+		set_outline_width(5);
+		set_outline_color(0);
+		set_fill_color(255);
+		draw_ellipse(200, 50, 100);
+		set_outline_color(255,0,0);
+		draw_line(200, 50, 200 + 50 * sin((PI / 50) * (100-static_cast<double>(timer))), 50 + 50 * cos((PI) * ((static_cast<double>(timer)) / 50 - 1)));
+		pop_settings();
+
 		set_font_size(30);
 		draw_text("Chew item " + std::to_string(minsu.chew_item), 50, 200);
 		doodle::draw_text("Bomb item " + std::to_string(minsu.bomb_item), 50, 250);
@@ -78,6 +87,8 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 				case static_cast<int>(MenuOption::start) :
 				{
 					Reset();
+					sounds.SetMusic("assets/BasicBGM.ogg", true);
+					sounds.music.play();
 					current_state = State::IN_GAME;
 					doodle::clear_background(0);
 					break;
@@ -113,6 +124,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 				{
 					if (minsu.GetPosition() == guard.guards[i].position) //가드포지션이랑 민수포지션 같으면 게임오버
 					{
+						sounds.music.stop();
 						current_state = State::GAME_OVER;
 					}
 
@@ -152,6 +164,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 								guard.move(i);
 								if (minsu.movement % 5 == 0)
 								{
+									sounds.music.stop();
 									guard.change_sight(map, i);  //5칸 움직이면 시야 바꾸기
 								}
 							}
@@ -181,6 +194,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 		}
 		if (doodleButton == doodle::KeyboardButtons::K)
 		{
+			sounds.music.stop();
 			current_state = State::CLEAR;
 		}
 #endif
@@ -222,12 +236,14 @@ void Game::Update()
 		}
 		if (guard.in_guard_sight(minsu) != -1)
 		{
+		sounds.PlaySound(static_cast<int>(SoundType::Siren));
 			guard.guards[guard.in_guard_sight(minsu)].is_trace = true;
 			guard.guards[guard.in_guard_sight(minsu)].trace_movement = 0;
 		}
 		guard.Guard_movement_update(map,minsu.movement);
 		if (timer <= 0)
 		{
+		sounds.music.stop();
 			current_state = State::GAME_OVER;
 		}
 		
@@ -306,6 +322,7 @@ bool Game::check(doodle::KeyboardButtons doodleButton)
 		}
 		else if (map.map[i].position == position && map.map[i].type == Type::can_escape)
 		{
+		//sounds.music.stop();
 			current_state= State::CLEAR;
 			return true;
 		}
@@ -324,6 +341,7 @@ void Game::caught_by_guard()
 		{
 			if (position.x == i.position.x && position.y == i.position.y || position.x == i.position.x && position.y == i.position.y -1.0)
 			{
+			//sounds.music.stop();
 				current_state = State::GAME_OVER;
 			}
 		}
@@ -333,6 +351,7 @@ void Game::caught_by_guard()
 		{
 			if (position.x == i.position.x && position.y == i.position.y || position.x == i.position.x && position.y == i.position.y + 1.0)
 			{
+			//sounds.music.stop();
 				current_state = State::GAME_OVER;
 			}
 		}
@@ -342,6 +361,7 @@ void Game::caught_by_guard()
 		{
 			if (position.x == i.position.x && position.y == i.position.y || position.x == i.position.x + 1.0 && position.y == i.position.y )
 			{
+			//sounds.music.stop();
 				current_state = State::GAME_OVER;
 			}
 		}
@@ -352,6 +372,7 @@ void Game::caught_by_guard()
 		{
 			if (position.x == i.position.x && position.y == i.position.y || position.x == i.position.x -1.0 && position.y == i.position.y)
 			{
+			//sounds.music.stop();
 				current_state = State::GAME_OVER;
 			}
 		}
@@ -514,13 +535,15 @@ void Game::set_item(doodle::KeyboardButtons button)
 			{
 				if (map.map[i].position == minsu.GetPosition())
 				{
-					if (map.map[i].type == Type::exit)
-					{
-						is_exit = true;
-					}
-					minsu.explode_count = 3;
-					map.map[i].type = Type::bomb;
-					minsu.bomb_item--;
+				
+					
+						if (map.map[i].type == Type::exit)
+						{
+							is_exit = true;
+						}
+						minsu.explode_count = 3;
+						map.map[i].type = Type::bomb;
+						minsu.bomb_item--;
 					
 				}
 			}
@@ -571,20 +594,14 @@ void Game::draw_radar()
 			}
 		}
 		
-		double curr_speed = speed;
+		
 		if (get_count(exit_pos) == 0)
 		{
-			speed = 50;
+			speed = 25;
 		}
 		else
 		{
-			speed = 40. / get_count(exit_pos);
-		}
-		
-		if (curr_speed != speed)
-		{
-			offset = 0;
-			make_radar_big = false;
+			speed = 20. / get_count(exit_pos);
 		}
 
 		double off_spd = offset * speed;

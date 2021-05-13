@@ -20,7 +20,7 @@ protected:
 public:
 	doodle::Image Dog_chew{"assets/dog_chew.png"};
 	doodle::Image Road{ "assets/Road.png" };
-
+	doodle::Image Wall{ "assets/Wall.png" };
 	doodle::Image Bomb{ "assets/Bomb.png" };
 	doodle::Image Breakable_wall{ "assets/Breakable_wall.png" };
 	doodle::Image Radar{ "assets/Radar.png" };
