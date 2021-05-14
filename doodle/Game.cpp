@@ -305,7 +305,7 @@ void Game::Update()
 		guard.Guard_movement_update(map,minsu.movement);
 		if (timer <= 0)
 		{
-		sounds.music.stop();
+			sounds.music.stop();
 			current_state = State::GAME_OVER;
 		}
 		
@@ -392,7 +392,7 @@ bool Game::check(doodle::KeyboardButtons doodleButton)
 		}
 		else if (map.map[i].position == position && map.map[i].type == Type::can_escape)
 		{
-		//sounds.music.stop();
+			sounds.music.stop();
 			current_state= State::CLEAR;
 			return true;
 		}
