@@ -7,8 +7,7 @@
 void Guard::setup()
 {
 	guards.clear();
-	warning = false;
-
+	how_many_guards_tracing = 0;
 	//guards.push_back(guard_info{ math::ivec2(4, 3) , Direction::UP });
 	guards.push_back(guard_info{ math::ivec2(8, 2), Direction::LEFT });
 	//guards.push_back(guard_info{ math::ivec2(7, 9), Direction::UP });
@@ -321,19 +320,6 @@ void Guard::Guard_movement_update(Map& m, int movement) //개껌먹었을때, 트레이스
 			i.is_trace = false;
 		}
 
-		if (i.is_trace == true)
-		{
-			if (i.is_okay ==true)
-			{
-				warning = !warning;
-			}
-			if (i.is_okay == false)
-			{
-				i.is_trace = false;
-				warning = false;
-			}
-		}
-
 	}
 
 }
@@ -390,12 +376,38 @@ int Guard::in_guard_sight(Minsoo minsoo)
 	{
 		for (int j = 0; j < sight_size; j++)
 		{
-			if (minsoo.GetPosition() == guards[i].sight_position[j].position)
+			if (minsoo.GetPosition() == guards[i].sight_position[j].position && guards[i].sight_position[j].is_valid == true && guards[i].is_okay == true)
 			{
 				return i;
 			}
 		}
 	}
 	return -1;
+}
+
+bool Guard::is_trace_sommeone() // 지금 따라오고있는놈이 몇명인지 
+{
+	how_many_guards_tracing = 0;
+	for (auto& i : guards)
+	{
+		if (i.is_trace == true && i.is_okay == false) //개껌먹었으면
+		{
+			i.is_trace = false;
+		}
+	}
+	for (auto& i : guards)
+	{
+		if (i.is_trace == true)
+		{
+			how_many_guards_tracing++;
+		}
+	}
+
+	if (how_many_guards_tracing > 0)
+	{
+		return true;
+	}
+
+	return false;
 }
 

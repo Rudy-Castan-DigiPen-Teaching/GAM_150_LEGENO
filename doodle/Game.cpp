@@ -1,4 +1,6 @@
-﻿#include"Game.h"
+﻿// todo : 개껌먹는상태일때도 시야첫번째칸 들어가면 죽는거 고치기
+
+#include"Game.h"
 #include"Pathfinding.h"
 #include<iostream>
 using namespace doodle;
@@ -6,7 +8,7 @@ using namespace doodle;
 void Game::setup()
 {
 	//sounds.SetUpSound();
-	current_state = State::START;
+	current_state = State::Splash;
 	map.setup();
 	guard.setup();
 }
@@ -15,24 +17,71 @@ void Game::Draw()
 {
 	switch (current_state)
 	{
+	case State::Splash:
+	{
+		doodle::push_settings();
+		doodle::set_frame_of_reference(doodle::FrameOfReference::RightHanded_OriginCenter);
+		doodle::set_image_mode(doodle::RectMode::Center);
+		doodle::draw_image(digipen_logo,0, 0);
+		doodle::pop_settings();
+		break;
+	}
+	
 	case State::START:
+	{
 		clear_background();
 		doodle::draw_image(main_menu, 0, 0, Width, Height);
 		switch (current_menu)
 		{
-		case static_cast<int>(MenuOption::start):	doodle::draw_image(start_button, 0, 0, Width, Height); break;
-		case static_cast<int>(MenuOption::quit):	doodle::draw_image(quit_button, 0, 0, Width, Height); break;
-		case static_cast<int>(MenuOption::credit):	doodle::draw_image(credit_button, 0, 0, Width, Height); break;
+			case static_cast<int>(MenuOption::start) : doodle::draw_image(start_button, 0, 0, Width, Height); break;
+				case static_cast<int>(MenuOption::quit) : doodle::draw_image(quit_button, 0, 0, Width, Height); break;
+					case static_cast<int>(MenuOption::credit) : doodle::draw_image(credit_button, 0, 0, Width, Height); break;
+						case static_cast<int>(MenuOption::option) : doodle::draw_image(option_button, 0, 0, Width, Height); break;
 		}
 		break;
+	}
+
 	case State::CREDIT:
-		doodle::draw_image(credit_menu, 0, 0, Width, Height); break;
+	{
+		doodle::draw_image(credit_menu, 0, 0, Width, Height);
+		break;
+	}
+
+	case State::Option:
+	{
+		doodle::draw_image(option_menu, 0, 0, Width, Height);
+		switch (static_cast<int>(current_volume))
+		{
+		case 25: doodle::draw_image(sound1, 0, 0, Width, Height); break;
+		case 50: doodle::draw_image(sound2, 0, 0, Width, Height); break;
+		case 75: doodle::draw_image(sound3, 0, 0, Width, Height); break;
+		case 100: doodle::draw_image(sound4, 0, 0, Width, Height); break;
+		}
+		break;
+	}
+
+	case State::Level_select:
+	{
+		doodle::draw_image(level_select, 0, 0, Width, Height);
+		switch (curr_level)
+		{
+		case 1: doodle::draw_image(level1_button, 0, 0, Width, Height);
+			break;
+		case 2: doodle::draw_image(level2_button, 0, 0, Width, Height);
+			break;
+		case 3: doodle::draw_image(level3_button, 0, 0, Width, Height);
+			break;
+		}
+		break;
+	}
+
 	case State::IN_GAME:
+	{
 		doodle::clear_background(0);
 		map.draw(camera);
-		guard.Draw_Sight(camera,map);
+		guard.Draw_Sight(camera, map);
 		guard.Draw_guard(camera);
-		minsu.Draw_minsu(camera,camera_move);
+		minsu.Draw_minsu(camera, camera_move);
 		draw_text(std::to_string(treasure_count), 500, 80);
 
 		push_settings();
@@ -40,8 +89,8 @@ void Game::Draw()
 		set_outline_color(0);
 		set_fill_color(255);
 		draw_ellipse(200, 50, 100);
-		set_outline_color(255,0,0);
-		draw_line(200, 50, 200 + 50 * sin((PI / 50) * (100-static_cast<double>(timer))), 50 + 50 * cos((PI) * ((static_cast<double>(timer)) / 50 - 1)));
+		set_outline_color(255, 0, 0);
+		draw_line(200, 50, 200 + 50 * sin((PI / 50) * (100 - static_cast<double>(timer))), 50 + 50 * cos((PI) * ((static_cast<double>(timer)) / 50 - 1)));
 		pop_settings();
 
 		set_font_size(30);
@@ -49,15 +98,20 @@ void Game::Draw()
 		doodle::draw_text("Bomb item " + std::to_string(minsu.bomb_item), 50, 250);
 		draw_radar();
 		pop_settings();
-		if (guard.warning == true)
+		if (guard.is_trace_sommeone() == true) // 한명이라도 따라오는애 있으면 
 		{
 			push_settings();
-			set_fill_color(255, 0, 0,100);
-			draw_rectangle(0, 0, Width, Height);
+			if (timer % 2 == 0)  // 1초마다 화면 빨간색 넣기
+			{
+				set_fill_color(255, 0, 0, 100);
+				draw_rectangle(0, 0, Width, Height);
+			}
 			doodle::pop_settings();
 		}
 		break;
+	}
 	case State::CLEAR:
+	{
 		push_settings();
 		clear_background();
 		set_fill_color(255, 0, 255);
@@ -66,13 +120,17 @@ void Game::Draw()
 		draw_text("score= " + std::to_string(score), 100, 600);
 		pop_settings();
 		break;
+	}
 	case State::GAME_OVER:
+	{
 		push_settings();
 		clear_background();
 		set_fill_color(255, 255, 0);
-		draw_image(GameOver_scene, 0, 0,Width,Height);// function for image movement
+		draw_image(GameOver_scene, 0, 0, Width, Height);// function for image movement
 		pop_settings();
 		break;
+	}
+
 	}
 }
 
@@ -87,13 +145,17 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			{
 				case static_cast<int>(MenuOption::start) :
 				{
-					Reset();
-					current_state = State::IN_GAME;
+					current_state = State::Level_select;
 					doodle::clear_background(0);
 					break;
 				}
+				case static_cast<int>(MenuOption::option) :
+				{
+					current_state = State::Option;
+					break;
+				}
 				case static_cast<int>(MenuOption::quit) : doodle::close_window(); break;
-				case static_cast<int>(MenuOption::credit) : current_state = State::CREDIT; break;
+					case static_cast<int>(MenuOption::credit) : current_state = State::CREDIT; break;
 			}
 		}
 		if (doodleButton == doodle::KeyboardButtons::Up)
@@ -105,17 +167,81 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 		}
 		else if (doodleButton == doodle::KeyboardButtons::Down)
 		{
-			if (current_menu < static_cast<int>(MenuOption::credit))
+			if (current_menu < static_cast<int>(MenuOption::option))
 			{
 				current_menu++;
 			}
 		}
 		break;
+	case State::Option:
+	{
+		if (doodleButton == doodle::KeyboardButtons::Right)
+		{
+			if (current_volume < 100)
+			{
+				current_volume += 25;
+				sounds.music.setVolume(current_volume);
+			}
+		}
+		if (doodleButton == doodle::KeyboardButtons::Left)
+		{
+			if (current_volume > 0)
+			{
+				current_volume -= 25;
+				sounds.music.setVolume(current_volume);
+			}
+		}
+		if (doodleButton == doodle::KeyboardButtons::Escape)
+		{
+			current_state = State::START;
+		}
+	}
+	break;
 	case State::CREDIT:
 		if (doodleButton == doodle::KeyboardButtons::Escape)
 		{
 			current_state = State::START;
-		} break;
+		}
+		break;
+
+	case State::Level_select:  //todo 1레벨 클리어 해야지 2렙갈수있는거
+	{
+		if (doodleButton == doodle::KeyboardButtons::Enter)
+		{
+			switch (curr_level)
+			{
+			case 1:
+			{
+				Reset();
+				current_state = State::IN_GAME;
+				break;
+			}
+			case 2:
+			{
+				Reset();
+				current_state = State::IN_GAME;
+				break;
+			}
+
+			case 3:
+			{
+				Reset();
+				current_state = State::IN_GAME;
+				break;
+			}
+			}
+		}
+		//if (doodleButton == doodle::KeyboardButtons::Up)
+		//{
+
+		//}
+		//else if (doodleButton == doodle::KeyboardButtons::Down)
+		//{
+
+		//}
+	}
+	break;
+
 	case State::IN_GAME:
 	{
 		if (doodleButton == doodle::KeyboardButtons::Escape)
@@ -149,10 +275,10 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 								math::ivec2 curr_position = guard.guards[i].position;
 
 								//template arguments = map height, map width
-								
+
 								guard.guards[i].position = path_finding<27, 81>(map, minsu.GetPosition(), (guard.guards[i].position)).back().pos;
-								
-								curr_position -= guard.guards[i].position;
+
+								curr_position -= guard.guards[i].position;  // 페스파인딩으로 다음 갈 곳에 대한 시야 변경
 								if (curr_position.x == -1)
 								{
 									guard.guards[i].direction = Direction::RIGHT;
@@ -170,7 +296,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 									guard.guards[i].direction = Direction::UP;
 
 								}
-								if (path_finding<27, 81>(map, minsu.GetPosition(), (guard.guards[i].position)).empty()!=true)
+								if (path_finding<27, 81>(map, minsu.GetPosition(), (guard.guards[i].position)).empty() != true)  
 								{
 									curr_position = guard.guards[i].position - path_finding<27, 81>(map, minsu.GetPosition(), (guard.guards[i].position)).back().pos;
 									if (curr_position.x == -1)
@@ -192,7 +318,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 								}
 
 							}
-							else if(guard.guards[i].is_okay == true)
+							else if (guard.guards[i].is_okay == true)
 							{
 								guard.move(i);
 								if (minsu.movement % 5 == 0)
@@ -248,13 +374,24 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 }
 void Game::Update()
 {
-
 	switch (current_state)
 	{
-	case State::START:
-		
+	case State::Splash:
+	{
+		if (doodle::ElapsedTime > 3)
+		{
+			current_state = State::START;
+			doodle::ElapsedTime = 0;
+		}
 		break;
+	}
+
+	case State::START:
+	{
+		break;
+	}
 	case State::IN_GAME:
+	{
 		if (is_music_playing == false)
 		{
 			sounds.music.stop();
@@ -282,7 +419,7 @@ void Game::Update()
 		{
 			Ruby_camera();
 		}
-		if (guard.in_guard_sight(minsu) != -1)
+		if (guard.in_guard_sight(minsu) != -1) //따라오고있는애가 한명은있다
 		{
 			guard.guards[guard.in_guard_sight(minsu)].is_trace = true;
 			guard.guards[guard.in_guard_sight(minsu)].trace_movement = 0;
@@ -302,21 +439,22 @@ void Game::Update()
 			is_in_guard_sight = false;
 			is_chased_state = false;
 		}
-		guard.Guard_movement_update(map,minsu.movement);
+		guard.Guard_movement_update(map, minsu.movement);
 		if (timer <= 0)
 		{
 			sounds.music.stop();
 			current_state = State::GAME_OVER;
 		}
-		
+
 		radar_obtain();
-	
-		break;
-	case State::CLEAR:
-		
+
 		break;
 	}
-	
+	case State::CLEAR:
+
+		break;
+	}
+
 
 }
 
@@ -325,7 +463,7 @@ void Game::Reset()
 	timer = total_time;
 	doodle::ElapsedTime = 0;
 	treasure_count = 0;
-	offset = 0 ;
+	offset = 0;
 	speed = 10;
 	is_exit = false;
 	radar_start = false;
@@ -333,11 +471,15 @@ void Game::Reset()
 	is_in_guard_sight = false;
 	is_music_playing = false;
 	is_chased_state = false;
+	camera_move = false;
+	curr_timer = 0;
+	start_camera_count = false;
+
 	map.setup();
 	minsu.setup();
 	guard.setup();
 	minsu.direction = Direction::DOWN;
-	
+	new_pos = minsu.GetPosition();
 }
 
 bool Game::check(doodle::KeyboardButtons doodleButton)
@@ -365,16 +507,16 @@ bool Game::check(doodle::KeyboardButtons doodleButton)
 		position.y -= 1;
 		break;
 	}
-	default: 
+	default:
 		return true;
 	}
 
-	if(cheat_Z==true)
+	if (cheat_Z == true)
 	{
 		return false;
 	}
-	
-	for (int i{ 0 };i<map.map.size();i++)
+
+	for (int i{ 0 }; i < map.map.size(); i++)
 	{
 		if (map.map[i].position == position && map.map[i].type == Type::wall)
 		{
@@ -393,7 +535,7 @@ bool Game::check(doodle::KeyboardButtons doodleButton)
 		else if (map.map[i].position == position && map.map[i].type == Type::can_escape)
 		{
 			sounds.music.stop();
-			current_state= State::CLEAR;
+			current_state = State::CLEAR;
 			return true;
 		}
 	}
@@ -402,14 +544,14 @@ bool Game::check(doodle::KeyboardButtons doodleButton)
 
 void Game::caught_by_guard()
 {
-	math::vec2 position = minsu.GetPosition() ;
+	math::vec2 position = minsu.GetPosition();
 	for (auto& i : guard.guards)
 	{
 		switch (i.direction)
 		{
 		case Direction::UP:
 		{
-			if (position.x == i.position.x && position.y == i.position.y || position.x == i.position.x && position.y == i.position.y -1.0)
+			if (position.x == i.position.x && position.y == i.position.y || position.x == i.position.x && position.y == i.position.y - 1.0 && i.is_okay == true)
 			{
 				sounds.music.stop();
 				current_state = State::GAME_OVER;
@@ -419,7 +561,7 @@ void Game::caught_by_guard()
 
 		case Direction::DOWN:
 		{
-			if (position.x == i.position.x && position.y == i.position.y || position.x == i.position.x && position.y == i.position.y + 1.0)
+			if (position.x == i.position.x && position.y == i.position.y || position.x == i.position.x && position.y == i.position.y + 1.0 && i.is_okay == true)
 			{
 				sounds.music.stop();
 				current_state = State::GAME_OVER;
@@ -429,7 +571,7 @@ void Game::caught_by_guard()
 
 		case Direction::RIGHT:
 		{
-			if (position.x == i.position.x && position.y == i.position.y || position.x == i.position.x + 1.0 && position.y == i.position.y )
+			if (position.x == i.position.x && position.y == i.position.y || position.x == i.position.x + 1.0 && position.y == i.position.y && i.is_okay == true)
 			{
 				sounds.music.stop();
 				current_state = State::GAME_OVER;
@@ -440,7 +582,7 @@ void Game::caught_by_guard()
 
 		case Direction::LEFT:
 		{
-			if (position.x == i.position.x && position.y == i.position.y || position.x == i.position.x -1.0 && position.y == i.position.y)
+			if (position.x == i.position.x && position.y == i.position.y || position.x == i.position.x - 1.0 && position.y == i.position.y && i.is_okay == true)
 			{
 				sounds.music.stop();
 				current_state = State::GAME_OVER;
@@ -511,10 +653,10 @@ void Game::sight_check(int index)
 	case Direction::UP:
 	{
 		for (auto& j : map.map)
-		{ 
+		{
 			if (guard.guards[index].position.x == j.position.x && guard.guards[index].position.y - 1 == j.position.y && j.type == Type::wall)
 			{
-				guard.change_sight(map,index);
+				guard.change_sight(map, index);
 			}
 		}
 	}
@@ -564,24 +706,24 @@ void Game::set_item(doodle::KeyboardButtons button)
 	case doodle::KeyboardButtons::A:
 	case doodle::KeyboardButtons::S:
 	case doodle::KeyboardButtons::D:
-	if (minsu.explode_count == 0)
-	{
-		for (int i{ 0 }; i < map.map.size(); i++)
+		if (minsu.explode_count == 0)
 		{
-			if (map.map[i].type == Type::bomb)
+			for (int i{ 0 }; i < map.map.size(); i++)
 			{
-				if (is_exit == true)
+				if (map.map[i].type == Type::bomb)
 				{
-					map.map[i].type = Type::can_escape;
-				}
-				else
-				{
-					map.map[i].type = Type::road;
+					if (is_exit == true)
+					{
+						map.map[i].type = Type::can_escape;
+					}
+					else
+					{
+						map.map[i].type = Type::road;
+					}
 				}
 			}
 		}
-	}
-	break;
+		break;
 	case doodle::KeyboardButtons::_1:
 	{
 		if (minsu.chew_item > 0)
@@ -605,16 +747,16 @@ void Game::set_item(doodle::KeyboardButtons button)
 			{
 				if (map.map[i].position == minsu.GetPosition())
 				{
-				
-					
-						if (map.map[i].type == Type::exit)
-						{
-							is_exit = true;
-						}
-						minsu.explode_count = 3;
-						map.map[i].type = Type::bomb;
-						minsu.bomb_item--;
-					
+
+
+					if (map.map[i].type == Type::exit)
+					{
+						is_exit = true;
+					}
+					minsu.explode_count = 3;
+					map.map[i].type = Type::bomb;
+					minsu.bomb_item--;
+
 				}
 			}
 		}
@@ -640,7 +782,7 @@ void Game::radar_obtain()
 					item_num--;
 					did_abtain_radar = false;
 					radar_start = true;
-					guard.guards.push_back(guard_info{ math::ivec2(20, 19), Direction::LEFT ,"Ruby"}); //minsu start pos
+					guard.guards.push_back(guard_info{ math::ivec2(20, 19), Direction::LEFT ,"Ruby" }); //minsu start pos
 					camera_move = true;
 				}
 			}
@@ -653,7 +795,7 @@ void Game::draw_radar()
 	if (radar_start == true)
 	{
 		set_fill_color(0, 255, 0);
-		draw_rectangle(100 * 9, 100 * 0, 100);
+		draw_rectangle(100 * 9.0, 100 * 0, 100);
 
 		math::ivec2 exit_pos;
 		for (auto& m : map.map)
@@ -663,8 +805,8 @@ void Game::draw_radar()
 				exit_pos = m.position;
 			}
 		}
-		
-		
+
+
 		if (get_count(exit_pos) == 0)
 		{
 			speed = 25;
@@ -675,7 +817,7 @@ void Game::draw_radar()
 		}
 
 		double off_spd = offset * speed;
-		draw_image(map.Radar, 100 * 9 + (off_spd / 2), 100 * 0 + (off_spd / 2), 100 - off_spd, 100 - off_spd);
+		draw_image(map.Radar, 100 * 9.0 + (off_spd / 2), 100 * 0 + (off_spd / 2), 100 - off_spd, 100 - off_spd);
 		if (make_radar_big == false)
 		{
 			off_spd = ++offset * speed;
@@ -704,19 +846,19 @@ void Game::Ruby_camera()
 	{
 		if (new_pos.x > guard.guards.back().position.x)
 		{
-			new_pos.x -= 0.1;
+			new_pos.x -= 10*doodle::DeltaTime;
 		}
 		if (new_pos.x < guard.guards.back().position.x)
 		{
-			new_pos.x += 0.1;
+			new_pos.x += 10 * doodle::DeltaTime;
 		}
 		if (new_pos.y > guard.guards.back().position.y)
 		{
-			new_pos.y -= 0.1;
+			new_pos.y -= 10 * doodle::DeltaTime;
 		}
 		if (new_pos.y < guard.guards.back().position.y)
 		{
-			new_pos.y += 0.1;
+			new_pos.y += 10 * doodle::DeltaTime;
 		}
 		camera.Update(new_pos);
 	}
@@ -728,7 +870,7 @@ void Game::Ruby_camera()
 			start_camera_count = true;
 		}
 		double Target_time = 2;
-		if ( curr_timer - timer  > Target_time)
+		if (curr_timer - timer > Target_time)
 		{
 			camera_move = false;
 		}

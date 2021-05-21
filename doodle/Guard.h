@@ -34,11 +34,13 @@ public:
 	void Guard_movement_update(Map& m,int movement);
 	void set_sight();
 	int in_guard_sight(Minsoo minsoo); // 가드 시야에 있을때 몇번째 인덱스 가드인지 리턴
-	bool warning = false;
+	bool is_trace_sommeone(); // 따라오는새끼 하나라도있는지
+
 private:
 	int sight_size = 3;  //시야 몇칸보이는지
 	int how_many_trace = 5;// 몇칸동안 따라오는지
 	int how_many_craze = 3;//얼마동안 개껌먹고 미쳐있는지
+	int how_many_guards_tracing = 0;
 	doodle::Image GuardUP_image{ "assets/GuardUp.png" };
 	doodle::Image GuardDown_image{ "assets/GuardDown.png" };
 	doodle::Image GuardRight_image{ "assets/GuardRight.png" };

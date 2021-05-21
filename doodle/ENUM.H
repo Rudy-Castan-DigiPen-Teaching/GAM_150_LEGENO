@@ -1,8 +1,11 @@
 #pragma once
 enum class State
 {
+	Splash,
 	START,
 	CREDIT,
+	Option,
+	Level_select,
 	IN_GAME,
 	CLEAR,
 	GAME_OVER
@@ -12,7 +15,8 @@ enum class MenuOption
 {
 	start,
 	quit,
-	credit
+	credit,
+	option,
 };
 
 enum class Type

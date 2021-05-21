@@ -29,19 +29,35 @@ class Game
 	bool is_chased_state = false;
 
 
-	State current_state = State::START;
+	State current_state = State::Splash;
 	int current_menu = static_cast<int>(MenuOption::start);
+	int curr_level = 1;
+
+	doodle::Image digipen_logo{ "assets/DigiPen_BLACK_1024px.png" };
 	doodle::Image clear_scene{ "assets/clear_scene.png" };
 	doodle::Image main_menu{ "assets/MainMenu.png" };
+	doodle::Image level_select{ "assets/Level_select.png" };
 	doodle::Image start_button{ "assets/StratButton.png" };
 	doodle::Image quit_button{ "assets/QuitButton.png" };
 	doodle::Image credit_button{ "assets/CreditButton.png" };
 	doodle::Image GameOver_scene{ "assets/GameOver.png" };
 	doodle::Image credit_menu{ "assets/Credit.png" };
+	doodle::Image option_button{ "assets/option_button.png" };
+	doodle::Image level1_button{ "assets/Level1_button.png" };
+	doodle::Image level2_button{ "assets/Level2_button.png" };
+	doodle::Image level3_button{ "assets/Level3_button.png" };
+	doodle::Image option_menu{ "assets/option.png" };
+	doodle::Image sound1{ "assets/sound1.png" };
+	doodle::Image sound2{ "assets/sound2.png" };
+	doodle::Image sound3{ "assets/sound3.png" };
+	doodle::Image sound4{ "assets/sound4.png" };
+
 	Camera camera;
 	int get_count(math::ivec2 exit_pos);
 	bool camera_move = false;
 	bool cheat_Z = false;
+
+	float current_volume = 100;
 public:
 	void setup();
 	void Draw();
