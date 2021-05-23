@@ -82,7 +82,7 @@ void Game::Draw()
 		guard.Draw_Sight(camera, map);
 		guard.Draw_guard(camera);
 		minsu.Draw_minsu(camera, camera_move);
-		draw_text(std::to_string(treasure_count), 500, 80);
+		//draw_text(std::to_string(treasure_count), 500, 80);
 
 		push_settings();
 		set_outline_width(5);
@@ -94,8 +94,8 @@ void Game::Draw()
 		pop_settings();
 
 		set_font_size(30);
-		draw_text("Chew item " + std::to_string(minsu.chew_item), 50, 200);
-		doodle::draw_text("Bomb item " + std::to_string(minsu.bomb_item), 50, 250);
+		//draw_text("Chew item " + std::to_string(minsu.chew_item), 50, 200);
+		//doodle::draw_text("Bomb item " + std::to_string(minsu.bomb_item), 50, 250);
 		draw_radar();
 		pop_settings();
 		if (guard.is_trace_sommeone() == true) // 한명이라도 따라오는애 있으면 

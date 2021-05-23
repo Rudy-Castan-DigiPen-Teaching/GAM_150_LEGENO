@@ -58,7 +58,7 @@ void Minsoo::Draw_minsu([[maybe_unused]]Camera camera,bool camera_move)
 		doodle::pop_settings();
 	}
 #endif
-	doodle::draw_text(to_string(movement),0,80);
+	//doodle::draw_text(to_string(movement),0,80);
 }
 void Minsoo::setup()
 {
