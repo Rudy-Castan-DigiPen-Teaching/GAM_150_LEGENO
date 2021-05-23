@@ -78,7 +78,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Pathfinding.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

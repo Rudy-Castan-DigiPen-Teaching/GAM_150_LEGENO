@@ -10,7 +10,7 @@
 //	
 //}
 //
-const math::vec2& Camera::GetPosition() const
+const math::vec2& Camera::Get_position() const
 {
 	return position;
 }

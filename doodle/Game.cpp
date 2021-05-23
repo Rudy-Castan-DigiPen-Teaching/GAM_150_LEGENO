@@ -1,23 +1,23 @@
 ﻿// todo : 개껌먹는상태일때도 시야첫번째칸 들어가면 죽는거 고치기
 
 #include"Game.h"
-#include"Pathfinding.h"
-#include<iostream>
+#include"Pathfinding.h" //pathfinding logic
+
 using namespace doodle;
 
-void Game::setup()
+void Game::Set_up()
 {
 	//sounds.SetUpSound();
-	current_state = State::Splash;
-	map.setup();
-	guard.setup();
+	current_state = State::SPLASH;
+	map.Set_up();
+	guard.Set_up();
 }
 
 void Game::Draw()
 {
 	switch (current_state)
 	{
-	case State::Splash:
+	case State::SPLASH:
 	{
 		doodle::push_settings();
 		doodle::set_frame_of_reference(doodle::FrameOfReference::RightHanded_OriginCenter);
@@ -33,10 +33,10 @@ void Game::Draw()
 		doodle::draw_image(main_menu, 0, 0, Width, Height);
 		switch (current_menu)
 		{
-			case static_cast<int>(MenuOption::start) : doodle::draw_image(start_button, 0, 0, Width, Height); break;
-				case static_cast<int>(MenuOption::quit) : doodle::draw_image(quit_button, 0, 0, Width, Height); break;
-					case static_cast<int>(MenuOption::credit) : doodle::draw_image(credit_button, 0, 0, Width, Height); break;
-						case static_cast<int>(MenuOption::option) : doodle::draw_image(option_button, 0, 0, Width, Height); break;
+			case static_cast<int>(MenuOption::START) : doodle::draw_image(start_button, 0, 0, Width, Height); break;
+				case static_cast<int>(MenuOption::QUIT) : doodle::draw_image(quit_button, 0, 0, Width, Height); break;
+					case static_cast<int>(MenuOption::CREDIT) : doodle::draw_image(credit_button, 0, 0, Width, Height); break;
+						case static_cast<int>(MenuOption::OPTION) : doodle::draw_image(option_button, 0, 0, Width, Height); break;
 		}
 		break;
 	}
@@ -47,7 +47,7 @@ void Game::Draw()
 		break;
 	}
 
-	case State::Option:
+	case State::OPTION:
 	{
 		doodle::draw_image(option_menu, 0, 0, Width, Height);
 		switch (static_cast<int>(current_volume))
@@ -60,7 +60,7 @@ void Game::Draw()
 		break;
 	}
 
-	case State::Level_select:
+	case State::LEVEL_SELECT:
 	{
 		doodle::draw_image(level_select, 0, 0, Width, Height);
 		switch (curr_level)
@@ -78,10 +78,10 @@ void Game::Draw()
 	case State::IN_GAME:
 	{
 		doodle::clear_background(0);
-		map.draw(camera);
-		guard.Draw_Sight(camera, map);
+		map.Draw(camera);
+		guard.Draw_sight(camera, map);
 		guard.Draw_guard(camera);
-		minsu.Draw_minsu(camera, camera_move);
+		minsoo.Draw_minsu(camera, camera_move);
 		draw_text(std::to_string(treasure_count), 500, 80);
 
 		push_settings();
@@ -94,11 +94,11 @@ void Game::Draw()
 		pop_settings();
 
 		set_font_size(30);
-		draw_text("Chew item " + std::to_string(minsu.chew_item), 50, 200);
-		doodle::draw_text("Bomb item " + std::to_string(minsu.bomb_item), 50, 250);
-		draw_radar();
+		draw_text("Chew item " + std::to_string(minsoo.chew_item), 50, 200);
+		doodle::draw_text("Bomb item " + std::to_string(minsoo.bomb_item), 50, 250);
+		Draw_radar();
 		pop_settings();
-		if (guard.is_trace_sommeone() == true) // 한명이라도 따라오는애 있으면 
+		if (guard.Is_trace_sommeone() == true) // 한명이라도 따라오는애 있으면 
 		{
 			push_settings();
 			if (timer % 2 == 0)  // 1초마다 화면 빨간색 넣기
@@ -143,37 +143,37 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 		{
 			switch (current_menu)
 			{
-				case static_cast<int>(MenuOption::start) :
+				case static_cast<int>(MenuOption::START) :
 				{
-					current_state = State::Level_select;
+					current_state = State::LEVEL_SELECT;
 					doodle::clear_background(0);
 					break;
 				}
-				case static_cast<int>(MenuOption::option) :
+				case static_cast<int>(MenuOption::OPTION) :
 				{
-					current_state = State::Option;
+					current_state = State::OPTION;
 					break;
 				}
-				case static_cast<int>(MenuOption::quit) : doodle::close_window(); break;
-					case static_cast<int>(MenuOption::credit) : current_state = State::CREDIT; break;
+				case static_cast<int>(MenuOption::QUIT) : doodle::close_window(); break;
+					case static_cast<int>(MenuOption::CREDIT) : current_state = State::CREDIT; break;
 			}
 		}
 		if (doodleButton == doodle::KeyboardButtons::Up)
 		{
-			if (current_menu > static_cast<int>(MenuOption::start))
+			if (current_menu > static_cast<int>(MenuOption::START))
 			{
 				current_menu--;
 			}
 		}
 		else if (doodleButton == doodle::KeyboardButtons::Down)
 		{
-			if (current_menu < static_cast<int>(MenuOption::option))
+			if (current_menu < static_cast<int>(MenuOption::OPTION))
 			{
 				current_menu++;
 			}
 		}
 		break;
-	case State::Option:
+	case State::OPTION:
 	{
 		if (doodleButton == doodle::KeyboardButtons::Right)
 		{
@@ -204,7 +204,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 		}
 		break;
 
-	case State::Level_select:  //todo 1레벨 클리어 해야지 2렙갈수있는거
+	case State::LEVEL_SELECT:  //todo 1레벨 클리어 해야지 2렙갈수있는거
 	{
 		if (doodleButton == doodle::KeyboardButtons::Enter)
 		{
@@ -255,12 +255,12 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 		}
 		if (doodleButton == doodle::KeyboardButtons::A || doodleButton == doodle::KeyboardButtons::S || doodleButton == doodle::KeyboardButtons::W || doodleButton == doodle::KeyboardButtons::D)
 		{
-			if (check(doodleButton) == false)
+			if (Check(doodleButton) == false)
 			{
-				minsu.set_position(doodleButton);
+				minsoo.Set_position(doodleButton);
 				for (int i = 0; i < static_cast<int>(guard.guards.size()); i++)
 				{
-					if (minsu.GetPosition() == guard.guards[i].position) //가드포지션이랑 민수포지션 같으면 게임오버
+					if (minsoo.Get_position() == guard.guards[i].position) //가드포지션이랑 민수포지션 같으면 게임오버
 					{
 						sounds.music.stop();
 						current_state = State::GAME_OVER;
@@ -268,7 +268,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 
 					while (1)
 					{
-						if (check_guard(i) == false)
+						if (Check_guard(i) == false)
 						{
 							if (guard.guards[i].is_trace == true && guard.guards[i].is_okay == true) //시야안에 있는지없는지,개껌안먹었는지 ->있으면 페스파인딩
 							{
@@ -276,7 +276,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 
 								//template arguments = map height, map width
 
-								guard.guards[i].position = path_finding<27, 81>(map, minsu.GetPosition(), (guard.guards[i].position)).back().pos;
+								guard.guards[i].position = path_finding<27, 81>(map, minsoo.Get_position(), (guard.guards[i].position)).back().pos;
 
 								curr_position -= guard.guards[i].position;  // 페스파인딩으로 다음 갈 곳에 대한 시야 변경
 								if (curr_position.x == -1)
@@ -296,9 +296,9 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 									guard.guards[i].direction = Direction::UP;
 
 								}
-								if (path_finding<27, 81>(map, minsu.GetPosition(), (guard.guards[i].position)).empty() != true)  
+								if (path_finding<27, 81>(map, minsoo.Get_position(), (guard.guards[i].position)).empty() != true)
 								{
-									curr_position = guard.guards[i].position - path_finding<27, 81>(map, minsu.GetPosition(), (guard.guards[i].position)).back().pos;
+									curr_position = guard.guards[i].position - path_finding<27, 81>(map, minsoo.Get_position(), (guard.guards[i].position)).back().pos;
 									if (curr_position.x == -1)
 									{
 										guard.guards[i].direction = Direction::RIGHT;
@@ -320,13 +320,13 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 							}
 							else if (guard.guards[i].is_okay == true)
 							{
-								guard.move(i);
-								if (minsu.movement % 5 == 0)
+								guard.Move(i);
+								if (minsoo.movement % 5 == 0)
 								{
-									guard.change_sight(map, i);  //5칸 움직이면 시야 바꾸기
+									guard.Change_sight(map, i);  //5칸 움직이면 시야 바꾸기
 								}
 							}
-							sight_check(i);  // 시야가 벽을 보고있는지 확인, 벽보고있으면 시야바꾸기
+							Sight_check(i);  // 시야가 벽을 보고있는지 확인, 벽보고있으면 시야바꾸기
 							for (auto& j : guard.guards)
 							{
 								if (j.is_trace == true)
@@ -335,16 +335,16 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 								}
 							}
 
-							guard.set_sight();  // 지금 방향으로 시야 늘려서 보이기
+							guard.Set_sight();  // 지금 방향으로 시야 늘려서 보이기
 							break;
 						}
 
 					}
 				}
 			}
-			caught_by_guard();
+			Caught_by_guard();
 		}
-		set_item(doodleButton);
+		Set_item(doodleButton);
 #ifdef _DEBUG
 		if (doodleButton == doodle::KeyboardButtons::R)
 		{
@@ -376,7 +376,7 @@ void Game::Update()
 {
 	switch (current_state)
 	{
-	case State::Splash:
+	case State::SPLASH:
 	{
 		static double splash_timer = 4;
 		splash_timer -= doodle::DeltaTime;
@@ -413,17 +413,17 @@ void Game::Update()
 		score = timer * (treasure_count + 1) * 10;
 		if (camera_move == false)
 		{
-			camera.Update(minsu.GetPosition());
-			new_pos = minsu.GetPosition();
+			camera.Update(minsoo.Get_position());
+			new_pos = minsoo.Get_position();
 		}
 		if (camera_move == true)
 		{
 			Ruby_camera();
 		}
-		if (guard.in_guard_sight(minsu) != -1) //따라오고있는애가 한명은있다
+		if (guard.In_guard_sight(minsoo) != -1) //따라오고있는애가 한명은있다
 		{
-			guard.guards[guard.in_guard_sight(minsu)].is_trace = true;
-			guard.guards[guard.in_guard_sight(minsu)].trace_movement = 0;
+			guard.guards[guard.In_guard_sight(minsoo)].is_trace = true;
+			guard.guards[guard.In_guard_sight(minsoo)].trace_movement = 0;
 			if (is_chased_state == false)
 			{
 				is_music_playing = false;
@@ -440,14 +440,14 @@ void Game::Update()
 			is_in_guard_sight = false;
 			is_chased_state = false;
 		}
-		guard.Guard_movement_update(map, minsu.movement);
+		guard.Guard_movement_update(map, minsoo.movement);
 		if (timer <= 0)
 		{
 			sounds.music.stop();
 			current_state = State::GAME_OVER;
 		}
 
-		radar_obtain();
+		Radar_obtain();
 
 		break;
 	}
@@ -476,16 +476,16 @@ void Game::Reset()
 	curr_timer = 0;
 	start_camera_count = false;
 
-	map.setup();
-	minsu.setup();
-	guard.setup();
-	minsu.direction = Direction::DOWN;
-	new_pos = minsu.GetPosition();
+	map.Set_up();
+	minsoo.Set_up();
+	guard.Set_up();
+	minsoo.direction = Direction::DOWN;
+	new_pos = minsoo.Get_position();
 }
 
-bool Game::check(doodle::KeyboardButtons doodleButton)
+bool Game::Check(doodle::KeyboardButtons doodleButton)
 {
-	math::vec2 position = minsu.GetPosition();
+	math::vec2 position = minsoo.Get_position();
 	switch (doodleButton)
 	{
 	case doodle::KeyboardButtons::S:
@@ -519,21 +519,21 @@ bool Game::check(doodle::KeyboardButtons doodleButton)
 
 	for (int i{ 0 }; i < map.map.size(); i++)
 	{
-		if (map.map[i].position == position && map.map[i].type == Type::wall)
+		if (map.map[i].position == position && map.map[i].type == Type::WALL)
 		{
 			return true;
 		}
-		else if (map.map[i].position == position && map.map[i].type == Type::radar)
+		else if (map.map[i].position == position && map.map[i].type == Type::RADAR)
 		{
-			map.map[i].type = Type::road;
+			map.map[i].type = Type::ROAD;
 			did_abtain_radar = true;
 		}
-		else if (map.map[i].position == position && map.map[i].type == Type::treasure)
+		else if (map.map[i].position == position && map.map[i].type == Type::TREASURE)
 		{
-			map.map[i].type = Type::road;
+			map.map[i].type = Type::ROAD;
 			treasure_count++;
 		}
-		else if (map.map[i].position == position && map.map[i].type == Type::can_escape)
+		else if (map.map[i].position == position && map.map[i].type == Type::CAN_ESCAPE)
 		{
 			sounds.music.stop();
 			current_state = State::CLEAR;
@@ -543,9 +543,9 @@ bool Game::check(doodle::KeyboardButtons doodleButton)
 	return false;
 }
 
-void Game::caught_by_guard()
+void Game::Caught_by_guard()
 {
-	math::vec2 position = minsu.GetPosition();
+	math::vec2 position = minsoo.Get_position();
 	for (auto& i : guard.guards)
 	{
 		switch (i.direction)
@@ -595,7 +595,7 @@ void Game::caught_by_guard()
 	}
 }
 
-bool Game::check_guard(int index)  // 가드가 벽을 보고있을때 시야방향 바꾸기
+bool Game::Check_guard(int index)  // 가드가 벽을 보고있을때 시야방향 바꾸기
 {
 
 	switch (guard.guards[index].direction)
@@ -604,9 +604,9 @@ bool Game::check_guard(int index)  // 가드가 벽을 보고있을때 시야방
 	{
 		for (auto& i : map.map)
 		{
-			if (i.position.x == guard.guards[index].position.x && i.position.y == guard.guards[index].position.y - 1 && i.type == Type::wall)
+			if (i.position.x == guard.guards[index].position.x && i.position.y == guard.guards[index].position.y - 1 && i.type == Type::WALL)
 			{
-				guard.change_sight(map, index);
+				guard.Change_sight(map, index);
 				return true;
 			}
 		}
@@ -615,9 +615,9 @@ bool Game::check_guard(int index)  // 가드가 벽을 보고있을때 시야방
 	case Direction::DOWN:   //move down
 		for (auto& i : map.map)
 		{
-			if (i.position.x == guard.guards[index].position.x && i.position.y == guard.guards[index].position.y + 1 && i.type == Type::wall)
+			if (i.position.x == guard.guards[index].position.x && i.position.y == guard.guards[index].position.y + 1 && i.type == Type::WALL)
 			{
-				guard.change_sight(map, index);
+				guard.Change_sight(map, index);
 				return true;
 			}
 		}
@@ -625,9 +625,9 @@ bool Game::check_guard(int index)  // 가드가 벽을 보고있을때 시야방
 	case Direction::RIGHT:   //move right
 		for (auto& i : map.map)
 		{
-			if (i.position.x == guard.guards[index].position.x + 1 && i.position.y == guard.guards[index].position.y && i.type == Type::wall)
+			if (i.position.x == guard.guards[index].position.x + 1 && i.position.y == guard.guards[index].position.y && i.type == Type::WALL)
 			{
-				guard.change_sight(map, index);
+				guard.Change_sight(map, index);
 				return true;
 			}
 		}
@@ -635,9 +635,9 @@ bool Game::check_guard(int index)  // 가드가 벽을 보고있을때 시야방
 	case Direction::LEFT:   //move left
 		for (auto& i : map.map)
 		{
-			if (i.position.x == guard.guards[index].position.x - 1 && i.position.y == guard.guards[index].position.y && i.type == Type::wall)
+			if (i.position.x == guard.guards[index].position.x - 1 && i.position.y == guard.guards[index].position.y && i.type == Type::WALL)
 			{
-				guard.change_sight(map, index);
+				guard.Change_sight(map, index);
 				return true;
 			}
 		}
@@ -647,7 +647,7 @@ bool Game::check_guard(int index)  // 가드가 벽을 보고있을때 시야방
 	return false;
 }
 
-void Game::sight_check(int index)
+void Game::Sight_check(int index)
 {
 	switch (guard.guards[index].direction)
 	{
@@ -655,9 +655,9 @@ void Game::sight_check(int index)
 	{
 		for (auto& j : map.map)
 		{
-			if (guard.guards[index].position.x == j.position.x && guard.guards[index].position.y - 1 == j.position.y && j.type == Type::wall)
+			if (guard.guards[index].position.x == j.position.x && guard.guards[index].position.y - 1 == j.position.y && j.type == Type::WALL)
 			{
-				guard.change_sight(map, index);
+				guard.Change_sight(map, index);
 			}
 		}
 	}
@@ -666,9 +666,9 @@ void Game::sight_check(int index)
 	{
 		for (auto& j : map.map)
 		{
-			if (guard.guards[index].position.x == j.position.x && guard.guards[index].position.y + 1 == j.position.y && j.type == Type::wall)
+			if (guard.guards[index].position.x == j.position.x && guard.guards[index].position.y + 1 == j.position.y && j.type == Type::WALL)
 			{
-				guard.change_sight(map, index);
+				guard.Change_sight(map, index);
 			}
 		}
 	}
@@ -677,9 +677,9 @@ void Game::sight_check(int index)
 	{
 		for (auto& j : map.map)
 		{
-			if (guard.guards[index].position.x + 1 == j.position.x && guard.guards[index].position.y == j.position.y && j.type == Type::wall)
+			if (guard.guards[index].position.x + 1 == j.position.x && guard.guards[index].position.y == j.position.y && j.type == Type::WALL)
 			{
-				guard.change_sight(map, index);
+				guard.Change_sight(map, index);
 			}
 		}
 	}
@@ -688,9 +688,9 @@ void Game::sight_check(int index)
 	{
 		for (auto& j : map.map)
 		{
-			if (guard.guards[index].position.x - 1 == j.position.x && guard.guards[index].position.y == j.position.y && j.type == Type::wall)
+			if (guard.guards[index].position.x - 1 == j.position.x && guard.guards[index].position.y == j.position.y && j.type == Type::WALL)
 			{
-				guard.change_sight(map, index);
+				guard.Change_sight(map, index);
 			}
 		}
 	}
@@ -699,7 +699,7 @@ void Game::sight_check(int index)
 	}
 }
 
-void Game::set_item(doodle::KeyboardButtons button)
+void Game::Set_item(doodle::KeyboardButtons button)
 {
 	switch (button)
 	{
@@ -707,19 +707,19 @@ void Game::set_item(doodle::KeyboardButtons button)
 	case doodle::KeyboardButtons::A:
 	case doodle::KeyboardButtons::S:
 	case doodle::KeyboardButtons::D:
-		if (minsu.explode_count == 0)
+		if (minsoo.explode_count == 0)
 		{
 			for (int i{ 0 }; i < map.map.size(); i++)
 			{
-				if (map.map[i].type == Type::bomb)
+				if (map.map[i].type == Type::BOMB)
 				{
 					if (is_exit == true)
 					{
-						map.map[i].type = Type::can_escape;
+						map.map[i].type = Type::CAN_ESCAPE;
 					}
 					else
 					{
-						map.map[i].type = Type::road;
+						map.map[i].type = Type::ROAD;
 					}
 				}
 			}
@@ -727,14 +727,14 @@ void Game::set_item(doodle::KeyboardButtons button)
 		break;
 	case doodle::KeyboardButtons::_1:
 	{
-		if (minsu.chew_item > 0)
+		if (minsoo.chew_item > 0)
 		{
 			for (int i{ 0 }; i < map.map.size(); i++)
 			{
-				if (map.map[i].position == minsu.GetPosition())
+				if (map.map[i].position == minsoo.Get_position())
 				{
-					map.map[i].type = Type::dog_chew;
-					minsu.chew_item--;
+					map.map[i].type = Type::DOG_CHEW;
+					minsoo.chew_item--;
 				}
 			}
 		}
@@ -742,21 +742,21 @@ void Game::set_item(doodle::KeyboardButtons button)
 	break;
 	case doodle::KeyboardButtons::_2:
 	{
-		if (minsu.bomb_item > 0)
+		if (minsoo.bomb_item > 0)
 		{
 			for (int i{ 0 }; i < map.map.size(); i++)
 			{
-				if (map.map[i].position == minsu.GetPosition())
+				if (map.map[i].position == minsoo.Get_position())
 				{
 
 
-					if (map.map[i].type == Type::exit)
+					if (map.map[i].type == Type::EXIT)
 					{
 						is_exit = true;
 					}
-					minsu.explode_count = 3;
-					map.map[i].type = Type::bomb;
-					minsu.bomb_item--;
+					minsoo.explode_count = 3;
+					map.map[i].type = Type::BOMB;
+					minsoo.bomb_item--;
 
 				}
 			}
@@ -767,7 +767,7 @@ void Game::set_item(doodle::KeyboardButtons button)
 	}
 }
 
-void Game::radar_obtain()
+void Game::Radar_obtain()
 {
 	if (did_abtain_radar == true)
 	{
@@ -777,9 +777,9 @@ void Game::radar_obtain()
 			math::ivec2 pos(doodle::random(0, 10), doodle::random(0, 10));
 			for (auto& m : map.map)
 			{
-				if (m.position == pos && m.type == Type::road)
+				if (m.position == pos && m.type == Type::ROAD)
 				{
-					m.type = Type::exit;
+					m.type = Type::EXIT;
 					item_num--;
 					did_abtain_radar = false;
 					radar_start = true;
@@ -791,7 +791,7 @@ void Game::radar_obtain()
 	}
 }
 
-void Game::draw_radar()
+void Game::Draw_radar()
 {
 	if (radar_start == true)
 	{
@@ -801,20 +801,20 @@ void Game::draw_radar()
 		math::ivec2 exit_pos;
 		for (auto& m : map.map)
 		{
-			if (m.type == Type::exit)
+			if (m.type == Type::EXIT)
 			{
 				exit_pos = m.position;
 			}
 		}
 
 
-		if (get_count(exit_pos) == 0)
+		if (Get_count(exit_pos) == 0)
 		{
 			speed = 25;
 		}
 		else
 		{
-			speed = 20. / get_count(exit_pos);
+			speed = 20. / Get_count(exit_pos);
 		}
 
 		double off_spd = offset * speed;
@@ -879,10 +879,10 @@ void Game::Ruby_camera()
 }
 
 
-int Game::get_count(math::ivec2 exit_pos)
+int Game::Get_count(math::ivec2 exit_pos)
 {
 	int count{ 1 };
-	math::ivec2 minsu_pos = minsu.GetPosition();
+	math::ivec2 minsu_pos = minsoo.Get_position();
 	math::ivec2 exit_minsu = exit_pos - minsu_pos;
 
 	if (exit_minsu.x == 0 && exit_minsu.y == 0)//exit

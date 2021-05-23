@@ -14,7 +14,7 @@ try
 {
     doodle::create_window(1200,1200);
     doodle::set_frame_of_reference(doodle::FrameOfReference::LeftHanded_OriginTopLeft);
-    game.setup();
+    game.Set_up();
     while (!doodle::is_window_closed())
     {
         doodle::update_window();

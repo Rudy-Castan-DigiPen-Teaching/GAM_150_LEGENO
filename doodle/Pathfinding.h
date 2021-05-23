@@ -1,11 +1,11 @@
-#include"Map.h"
-#include"vec2.h"
-#include<vector>
+#include"Map.h"	// Map class
+#include"vec2.h"	// vec2 struct
+#include<vector>	// std::vector
 
 
 struct Node
 {
-	math::ivec2 pos;
+	math::ivec2 pos{0,0};
 	vector<Node> prev;
 	bool is_end = false;
 	Node() {};
@@ -22,7 +22,7 @@ struct Node
 };
 
 template<int height, int width>
-vector<Node> path_finding(Map map,math::vec2 minsoo_pos, math::ivec2 guard_pos)
+vector<Node> path_finding(Map map,math::vec2 minsoo_pos, math::ivec2 guard_pos) //find path between positions
 {
 	vector<Node> path;
 	vector<Node> que;
@@ -52,22 +52,22 @@ vector<Node> path_finding(Map map,math::vec2 minsoo_pos, math::ivec2 guard_pos)
 
 		for (auto& i : map.map)
 		{
-			if (i.position.x == node.pos.x+1 && i.position.y == node.pos.y && i.type != Type::wall && is_visited[node.pos.y][node.pos.x + 1]==false)   //right
+			if (i.position.x == node.pos.x+1 && i.position.y == node.pos.y && i.type != Type::WALL && is_visited[node.pos.y][node.pos.x + 1]==false)   //right
 			{
 				is_visited[i.position.y][i.position.x] = true;
 				que.push_back(Node{ math::ivec2{ i.position.x , i.position.y}, node });
 			}
-			if (i.position.x == node.pos.x-1 && i.position.y == node.pos.y && i.type != Type::wall && is_visited[node.pos.y][node.pos.x - 1] == false)   //left
+			if (i.position.x == node.pos.x-1 && i.position.y == node.pos.y && i.type != Type::WALL && is_visited[node.pos.y][node.pos.x - 1] == false)   //left
 			{
 				is_visited[i.position.y][i.position.x] = true;
 				que.push_back(Node{ math::ivec2{ i.position.x , i.position.y }, node });
 			}
-			if (i.position.x  == node.pos.x && i.position.y == node.pos.y - 1 && i.type != Type::wall && is_visited[node.pos.y-1][node.pos.x ] == false)   //Up
+			if (i.position.x  == node.pos.x && i.position.y == node.pos.y - 1 && i.type != Type::WALL && is_visited[node.pos.y-1][node.pos.x ] == false)   //Up
 			{
 				is_visited[i.position.y][i.position.x] = true;
 				que.push_back(Node{ math::ivec2{ i.position.x, i.position.y  }, node });
 			}
-			if (i.position.x  == node.pos.x && i.position.y== node.pos.y+1 && i.type != Type::wall && is_visited[node.pos.y+1][node.pos.x ] == false)   //Down
+			if (i.position.x  == node.pos.x && i.position.y== node.pos.y+1 && i.type != Type::WALL && is_visited[node.pos.y+1][node.pos.x ] == false)   //Down
 			{
 				is_visited[i.position.y][i.position.x] = true;
 				que.push_back(Node{ math::ivec2{ i.position.x, i.position.y }, node });
@@ -76,9 +76,3 @@ vector<Node> path_finding(Map map,math::vec2 minsoo_pos, math::ivec2 guard_pos)
 	}
 	return path;
 }
-
-
-
-
-
-

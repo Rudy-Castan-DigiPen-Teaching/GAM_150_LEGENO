@@ -1,11 +1,11 @@
 #pragma once
 enum class State
 {
-	Splash,
+	SPLASH,
 	START,
 	CREDIT,
-	Option,
-	Level_select,
+	OPTION,
+	LEVEL_SELECT,
 	IN_GAME,
 	CLEAR,
 	GAME_OVER
@@ -13,22 +13,22 @@ enum class State
 
 enum class MenuOption
 {
-	start,
-	quit,
-	credit,
-	option,
+	START,
+	QUIT,
+	CREDIT,
+	OPTION,
 };
 
 enum class Type
 {
-	wall,
-	road,
-	radar,
-	treasure,
-	exit,
-	can_escape,
-	dog_chew,
-	bomb
+	WALL,
+	ROAD,
+	RADAR,
+	TREASURE,
+	EXIT,
+	CAN_ESCAPE,
+	DOG_CHEW,
+	BOMB
 };
 
 enum class Direction

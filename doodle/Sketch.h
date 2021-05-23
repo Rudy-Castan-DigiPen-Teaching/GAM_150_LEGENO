@@ -11,8 +11,8 @@ public:
     };
 
 public:
-    void setup();
-    void draw();
+    void Set_up();
+    void Draw();
 
 private:
     constexpr static float       RADIUS{30.0};
@@ -22,7 +22,7 @@ private:
     std::vector<Ball>            balls;
 
 private:
-    void DrawAndUpdateBall(Ball& ball);
-    void LoadSound(const std::string& file_path);
-    void PlaySound();
+    void Draw_and_update_ball(Ball& ball);
+    void Load_Sound(const std::string& file_path);
+    void Play_Sound();
 };

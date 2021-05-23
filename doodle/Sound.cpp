@@ -1,7 +1,4 @@
 #include "Sound.h"
-#include "doodle/doodle.hpp"
-
-using namespace doodle;
 
 [[noreturn]] void error(const std::string& s) { throw std::runtime_error(s); }
 
@@ -12,7 +9,7 @@ void Sound::SetUpSound()
 
 void Sound::SetMusic(const std::string& file_path, bool isLoop)
 {
-    if (!music.openFromFile(file_path))
+    if (!music.openFromFile(file_path) == true)
     {
         throw std::runtime_error("Failed to load the music file: " + file_path);
     }
@@ -21,9 +18,9 @@ void Sound::SetMusic(const std::string& file_path, bool isLoop)
 
 void Sound::LoadSound(const std::string& file_path)
 {
-    SoundBuffers.emplace_back();
-    sf::SoundBuffer& buffer = SoundBuffers.back();
-    if (!buffer.loadFromFile(file_path))
+    soundBuffers.emplace_back();
+    sf::SoundBuffer& buffer = soundBuffers.back();
+    if (!buffer.loadFromFile(file_path) == true)
     {
         error("Failed to load " + file_path);
     }
@@ -31,15 +28,15 @@ void Sound::LoadSound(const std::string& file_path)
 
 void Sound::PlaySound(int soundType)
 {
-    for (auto& sound : Sounds)
+    for (auto& sound : sounds)
     {
         if (sound.getStatus() != sf::SoundSource::Playing)
         {
-            sound.setBuffer(SoundBuffers[soundType]);
+            sound.setBuffer(soundBuffers[soundType]);
             sound.play();
             return;
         }
     }
-    Sounds.emplace_back(SoundBuffers[soundType]);
-    Sounds.back().play();
+    sounds.emplace_back(soundBuffers[soundType]);
+    sounds.back().play();
 }

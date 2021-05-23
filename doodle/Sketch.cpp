@@ -15,16 +15,16 @@ void on_key_released(KeyboardButtons button)
         close_window();
 }
 
-void Sketch::setup()
+void Sketch::Set_up()
 {
     if (!music.openFromFile("assets/orchestral.ogg"))
     {
         error("Failed to load the music file: assets/orchestral.ogg");
     }
 
-    LoadSound("assets/Tambores_1.ogg");
-    LoadSound("assets/Tambores_2.ogg");
-    LoadSound("assets/Tambores_3.ogg");
+    Load_Sound("assets/Tambores_1.ogg");
+    Load_Sound("assets/Tambores_2.ogg");
+    Load_Sound("assets/Tambores_3.ogg");
 
     music.setLoop(true);
     music.play();
@@ -39,16 +39,16 @@ void Sketch::setup()
     set_frame_of_reference(FrameOfReference::RightHanded_OriginBottomLeft);
 }
 
-void Sketch::draw()
+void Sketch::Draw()
 {
     clear_background(0);
     for (auto& ball : balls)
     {
-        DrawAndUpdateBall(ball);
+        Draw_and_update_ball(ball);
     }
 }
 
-void Sketch::DrawAndUpdateBall(Ball& ball)
+void Sketch::Draw_and_update_ball(Ball& ball)
 {
     draw_ellipse(ball.x, ball.y, RADIUS * 2.0);
     ball.x += ball.xSpeed;
@@ -56,16 +56,16 @@ void Sketch::DrawAndUpdateBall(Ball& ball)
     if (ball.y + RADIUS > Height || ball.y < RADIUS)
     {
         ball.ySpeed *= -1;
-        PlaySound();
+        Play_Sound();
     }
     else if (ball.x + RADIUS > Width || ball.x < RADIUS)
     {
         ball.xSpeed *= -1;
-        PlaySound();
+        Play_Sound();
     }
 }
 
-void Sketch::LoadSound(const std::string& file_path)
+void Sketch::Load_Sound(const std::string& file_path)
 {
     SoundBuffers.emplace_back();
     sf::SoundBuffer& buffer = SoundBuffers.back();
@@ -75,7 +75,7 @@ void Sketch::LoadSound(const std::string& file_path)
     }
 }
 
-void Sketch::PlaySound()
+void Sketch::Play_Sound()
 {
     int       buffer_index = 0;
     const int random_value = random(0, 100);
