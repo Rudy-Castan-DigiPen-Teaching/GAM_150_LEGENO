@@ -94,8 +94,11 @@ void Game::Draw()
 		pop_settings();
 
 		set_font_size(30);
+#ifdef _DEBUG
 		draw_text("Chew item " + std::to_string(minsoo.chew_item), 50, 200);
 		doodle::draw_text("Bomb item " + std::to_string(minsoo.bomb_item), 50, 250);
+#endif // DEBUG
+
 		Draw_radar();
 		pop_settings();
 		if (guard.Is_trace_sommeone() == true) // 한명이라도 따라오는애 있으면 
