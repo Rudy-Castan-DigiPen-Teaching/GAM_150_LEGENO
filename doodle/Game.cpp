@@ -378,10 +378,11 @@ void Game::Update()
 	{
 	case State::Splash:
 	{
-		if (doodle::ElapsedTime > 3)
+		static double splash_timer = 4;
+		splash_timer -= doodle::DeltaTime;
+		if (splash_timer < 0)
 		{
 			current_state = State::START;
-			doodle::ElapsedTime = 0;
 		}
 		break;
 	}
