@@ -263,42 +263,45 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 				if (is_minsoo_move == false)
 				{
 					minsoo.Set_position(doodleButton);
+
 					is_minsoo_move = true;
+
+					if (is_sight_changed == true)
+					{
+						is_sight_changed = false;
+					}
 				for (int i = 0; i < static_cast<int>(guard.guards.size()); i++)
 				{
-					//Caught_by_guard_current(i);
-
 					while (true)
 					{
 						if (Check_guard(i) == false)
 						{
-							//if (guard.guards[i].is_trace == true && guard.guards[i].is_okay == true) //시야안에 있는지없는지,개껌안먹었는지 ->있으면 페스파인딩
-							//{
+							if (guard.guards[i].is_trace == true && guard.guards[i].is_okay == true) //시야안에 있는지없는지,개껌안먹었는지 ->있으면 페스파인딩
+							{
 
-							//	math::ivec2 curr_position = guard.guards[i].position;
-							//	if (curr_position != minsoo.Get_position())
-							//	{
-							//		guard.guards[i].position = path_finding<27, 81>(map, minsoo.Get_position(), (guard.guards[i].position)).back().pos;
+								math::ivec2 curr_position = math::ivec2{ guard.guards[i].position.x , guard.guards[i].position.y };
+								if (curr_position != minsoo.Get_position())
+								{
+									guard.guards[i].position = path_finding<27, 81>(map, minsoo.target_pos, curr_position).back().pos;
 
-							//		curr_position -= guard.guards[i].position;  // 페스파인딩으로 다음 갈 곳에 대한 시야 변경
-							//		set_direction(curr_position, i);
-							//		if (path_finding<27, 81>(map, minsoo.Get_position(), (guard.guards[i].position)).empty() != true)
-							//		{
-							//			curr_position = guard.guards[i].position - path_finding<27, 81>(map, minsoo.Get_position(), (guard.guards[i].position)).back().pos;
-							//			set_direction(curr_position, i);
-							//		}
-							//	}
+									curr_position -= math::ivec2{ guard.guards[i].position.x , guard.guards[i].position.y };  // 페스파인딩으로 다음 갈 곳에 대한 시야 변경
+									set_direction(curr_position, i);
+									curr_position = math::ivec2{ guard.guards[i].position.x , guard.guards[i].position.y };
+									if (path_finding<27, 81>(map, minsoo.Get_position(), curr_position).empty() != true)
+									{
+										curr_position = math::ivec2{ guard.guards[i].position.x , guard.guards[i].position.y } - path_finding<27, 81>(map, minsoo.Get_position(), curr_position).back().pos;
+										set_direction(curr_position, i);
+									}
+								}
 
-							//}
+							}
+
 							if (guard.guards[i].is_okay == true)
 							{
 								guard.Set_position(i);
-								if (minsoo.movement % 5 == 0)
-								{
-									guard.Change_sight(map, i);  //5칸 움직이면 시야 바꾸기
-								}
 							}
 							Sight_check(i);  // 시야가 벽을 보고있는지 확인, 벽보고있으면 시야바꾸기
+
 							for (auto& j : guard.guards)
 							{
 								if (j.is_trace == true)
@@ -311,8 +314,10 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 					   }
 					}
 				}
+
+
+
 			}
-			//Caught_by_guard_nextmove();
 		}
 		Set_item(doodleButton);
 #ifdef _DEBUG
@@ -386,9 +391,9 @@ void Game::Update()
 			camera.Update(minsoo.Get_position());
 			minsoo.Update_position(is_minsoo_move);
 			guard.Update_position();
-			//std::cout << guard.guards[0].position.x << "       " << guard.guards[0].position.y << std::endl;
 			guard.Set_sight();
-			std::cout << guard.guards[0].sight_position->position.x << "       " << guard.guards[0].sight_position->position.y << std::endl;
+			Collision_check();
+			Change_sight();
 		}
 		if (camera_move == true)
 		{
@@ -523,6 +528,39 @@ void Game::Move_camera(math::vec2 position)
 			}
 		}
 }
+void Game::Collision_check()
+{
+	for (auto& Guard : guard.guards)
+	{
+		if (minsoo.Get_position() == Guard.position) //가드포지션이랑 민수포지션 같으면 게임오버
+		{
+			sounds.music.stop();
+			current_state = State::GAME_OVER;
+		}
+		math::vec2 pos;
+		pos = minsoo.Get_position() - Guard.position;
+		double difference = abs(pos.x) + abs(pos.y);
+		if (difference <= 0.5)
+		{
+			sounds.music.stop();
+			current_state = State::GAME_OVER;
+		}
+	}
+}
+void Game::Change_sight()
+{
+	if (is_minsoo_move == false)
+	{
+		if (minsoo.movement % 5 == 0 && is_sight_changed == false)
+		{
+			for (int i = 0; i < static_cast<int>(guard.guards.size()); i++)
+			{
+				guard.Change_sight(map, i);  
+			}
+			is_sight_changed = true;
+		}
+	}
+}
 void Game::Reset()
 {
 	timer = total_time;
@@ -539,7 +577,7 @@ void Game::Reset()
 	camera_move = false;
 	curr_timer = 0;
 	start_camera_count = false;
-
+	is_minsoo_move = false;
 	map.Set_up();
 	minsoo.Set_up();
 	guard.Set_up();
@@ -772,6 +810,28 @@ void Game::Sight_check(int index)
 	}
 }
 
+void Game::set_direction(math::vec2 position, int index)
+{
+	if (position.x == -1)
+	{
+		guard.guards[index].direction = Direction::RIGHT;
+	}
+	if (position.x == 1)
+	{
+		guard.guards[index].direction = Direction::LEFT;
+	}
+	if (position.y == -1)
+	{
+		guard.guards[index].direction = Direction::DOWN;
+	}
+	if (position.y == 1)
+	{
+		guard.guards[index].direction = Direction::UP;
+	}
+}
+
+
+
 void Game::Set_item(doodle::KeyboardButtons button)
 {
 	switch (button)
@@ -915,25 +975,7 @@ void Game::Draw_radar()
 }
 
 
-void Game::set_direction(math::vec2 position, int index)
-{
-	if (position.x == -1)
-	{
-		guard.guards[index].direction = Direction::RIGHT;
-	}
-	if (position.x == 1)
-	{
-		guard.guards[index].direction = Direction::LEFT;
-	}
-	if (position.y == -1)
-	{
-		guard.guards[index].direction = Direction::DOWN;
-	}
-	if (position.y == 1)
-	{
-		guard.guards[index].direction = Direction::UP;
-	}
-}
+
 
 
 double Game::Get_count(math::vec2 exit_pos)

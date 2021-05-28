@@ -5,7 +5,7 @@
 #include "Guard.h"	//	Guard class
 #include "Sound.h"	//	Sound class
 #include "Camera.h"	//	Camera class
-
+#include<cmath>    //abs
 class Game
 {
 	Sound sounds;
@@ -41,7 +41,7 @@ class Game
 
 	bool is_guard_move = false;
 
-
+	bool is_sight_changed = false;
 	doodle::Image digipen_logo{ "assets/DigiPen_BLACK_1024px.png" };
 	doodle::Image clear_scene{ "assets/Clear_scene.png" };
 	doodle::Image main_menu{ "assets/MainMenu.png" };
@@ -77,9 +77,9 @@ public:
 	void Radar_obtain();	//when minsoo gets radar, add Exit, add Ruby, ready to show Ruby 
 	void Draw_radar();
 	void Move_camera(math::vec2 position); // camera shows Ruby for a while
+	void Collision_check();
+	void Change_sight();
 	void set_direction(math::vec2 position, int index);
-
-
 	math::vec2 new_pos{ minsoo.Get_position() };
 	double curr_timer{ 0 };
 	bool start_camera_count{ false };

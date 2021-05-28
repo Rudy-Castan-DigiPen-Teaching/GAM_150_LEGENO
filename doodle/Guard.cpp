@@ -5,7 +5,7 @@ void Guard::Set_up()
 	guards.clear();
 	how_many_guards_tracing = 0;
 	//guards.push_back(guard_info{ math::ivec2(4, 3) , Direction::UP });
-	guards.push_back(guard_info{ math::ivec2(8, 2), Direction::LEFT });
+	guards.push_back(guard_info{ math::ivec2(7, 2), Direction::LEFT });
 	//guards.push_back(guard_info{ math::ivec2(7, 9), Direction::UP });
 	//guards.push_back(guard_info{ math::ivec2(6, 8), Direction::DOWN });
 	//guards.push_back(guard_info{ math::ivec2(11,8), Direction::UP });
@@ -89,11 +89,11 @@ void Guard::Draw_sight(Camera& camera,Map MAP)
 	{
 		for (int i = 0; i < sight_size; i++)
 		{
-			//for (auto& m : MAP.map)
+			for (auto& m : MAP.map)
 			{		
-				//if (guard.sight_position[i].position.x == m.position.x && guard.sight_position[i].position.y == m.position.y && guard.sight_position[i].is_valid == true )
+				if (static_cast<int>(guard.sight_position[i].position.x) == m.position.x && static_cast<int>(guard.sight_position[i].position.y) == m.position.y && guard.sight_position[i].is_valid == true )
 				{
-					//if (m.type == Type::ROAD)
+					if (m.type != Type::WALL)
 					{
 						switch (guard.direction)
 						{
@@ -166,13 +166,13 @@ void Guard::Draw_sight(Camera& camera,Map MAP)
 						}
 					}
 
-					//if (m.type == Type::WALL)
-					//{
-					//	while (i < sight_size)
-					//	{
-					//		guard.sight_position[i++].is_valid = false;
-					//	}
-					//}
+					if (m.type == Type::WALL)
+					{
+						while (i < sight_size)
+						{
+							guard.sight_position[i++].is_valid = false;
+						}
+					}
 				}
 			}
 		}

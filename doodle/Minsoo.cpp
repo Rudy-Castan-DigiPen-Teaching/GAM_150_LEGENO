@@ -23,7 +23,7 @@ void Minsoo::Draw_minsu(Camera camera,[[maybe_unused]]bool camera_move)
 #ifdef _DEBUG
 
 #else
-	if (camera_move == false)
+	/*if (camera_move == false)
 	{
 		doodle::push_settings();
 		for (int i{ 0 }; i < 200; i++)
@@ -34,7 +34,7 @@ void Minsoo::Draw_minsu(Camera camera,[[maybe_unused]]bool camera_move)
 			doodle::draw_ellipse((position.x + 0.5 + camera.Get_position().x) * block_size, (position.y + 0.5 + camera.Get_position().y) * block_size, 350 + i * 10.0);
 		}
 		doodle::pop_settings();
-	}
+	}*/
 #endif
 	doodle::draw_text(to_string(movement),0,80);
 }
@@ -45,6 +45,7 @@ void Minsoo::Set_up()
 	chew_item = 3;
 	bomb_item = 1;
 	explode_count = -1;
+	target_pos = position;
 }
 
 void Minsoo::Set_position(doodle::KeyboardButtons button)
