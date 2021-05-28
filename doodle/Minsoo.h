@@ -8,7 +8,8 @@ class Minsoo: public Map
 public:
 	void Draw_minsu(Camera camera, bool camera_move);
 	void Set_position(doodle::KeyboardButtons button);
-	math::ivec2 Get_position();
+	void Update_position(bool& is_move);
+	math::vec2 Get_position();
 	void Set_up();
 
 	int movement{ 0 };
@@ -21,5 +22,6 @@ public:
 	doodle::Image Minsoo_Up{ "assets/Minsoo_up.png" };
 	doodle::Image Minsoo_Down{ "assets/Minsoo_down.png" };
 private:
-	math::ivec2 position{ 2,2 };
+	math::vec2 position{ 2,2 };
+	math::vec2 target_pos;
 };

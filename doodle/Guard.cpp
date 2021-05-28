@@ -89,11 +89,11 @@ void Guard::Draw_sight(Camera& camera,Map MAP)
 	{
 		for (int i = 0; i < sight_size; i++)
 		{
-			for (auto& m : MAP.map)
+			//for (auto& m : MAP.map)
 			{		
-				if (guard.sight_position[i].position.x == m.position.x && guard.sight_position[i].position.y == m.position.y && guard.sight_position[i].is_valid == true )
+				//if (guard.sight_position[i].position.x == m.position.x && guard.sight_position[i].position.y == m.position.y && guard.sight_position[i].is_valid == true )
 				{
-					if (m.type == Type::ROAD)
+					//if (m.type == Type::ROAD)
 					{
 						switch (guard.direction)
 						{
@@ -166,13 +166,13 @@ void Guard::Draw_sight(Camera& camera,Map MAP)
 						}
 					}
 
-					if (m.type == Type::WALL)
-					{
-						while (i < sight_size)
-						{
-							guard.sight_position[i++].is_valid = false;
-						}
-					}
+					//if (m.type == Type::WALL)
+					//{
+					//	while (i < sight_size)
+					//	{
+					//		guard.sight_position[i++].is_valid = false;
+					//	}
+					//}
 				}
 			}
 		}
@@ -180,7 +180,7 @@ void Guard::Draw_sight(Camera& camera,Map MAP)
 }
 	
 
-void Guard::Move(int index)
+void Guard::Set_position(int index)
 {
 	switch (guards[index].direction)
 	{
@@ -188,32 +188,35 @@ void Guard::Move(int index)
 		//move up
 		if (guards[index].is_okay == true)
 		{
-			guards[index].position.y--;
+			guards[index].target_pos = guards[index].position;
+			guards[index].target_pos.y--;
 		}
 		break;
 
 	case Direction::DOWN:   //move down
 		if (guards[index].is_okay == true)
 		{
-			guards[index].position.y++;
+			guards[index].target_pos = guards[index].position;
+			guards[index].target_pos.y++;
 		}
 		break;
 
 	case Direction::RIGHT:  //move right
 		if (guards[index].is_okay == true)
 		{
-			guards[index].position.x++;
+			guards[index].target_pos = guards[index].position;
+			guards[index].target_pos.x++;
 		}
 		break;
 
 	case Direction::LEFT:   //move left
 		if (guards[index].is_okay == true)
 		{
-			guards[index].position.x--;
+			guards[index].target_pos = guards[index].position;
+			guards[index].target_pos.x--;
 		}
 		break;
 	}
-
 }
 
 void Guard::Change_sight(Map m, int index)
@@ -334,7 +337,7 @@ void Guard::Set_sight()
 		{
 			for (int i = 0; i < sight_size; i++)
 			{
-				guard.sight_position[i].position = { guard.position.x,guard.position.y - (i + 1) };
+				guard.sight_position[i].position = math::vec2{ guard.position.x,guard.position.y - (i + 1.0) };
 			}
 		}
 		break;
@@ -342,7 +345,7 @@ void Guard::Set_sight()
 		{
 			for (int i = 0; i < sight_size; i++)
 			{
-				guard.sight_position[i].position = { guard.position.x,guard.position.y + (i + 1) };
+				guard.sight_position[i].position = math::vec2{ guard.position.x,guard.position.y + (i + 1.0) };
 			}
 		}
 		break;
@@ -350,7 +353,7 @@ void Guard::Set_sight()
 		{
 			for (int i = 0; i < sight_size; i++)
 			{
-				guard.sight_position[i].position = { guard.position.x + (i + 1),guard.position.y };
+				guard.sight_position[i].position = math::vec2{ guard.position.x + (i + 1.0),guard.position.y };
 			}
 		}
 		break;
@@ -358,7 +361,7 @@ void Guard::Set_sight()
 		{
 			for (int i = 0; i < sight_size; i++)
 			{
-				guard.sight_position[i].position = { guard.position.x - (i + 1),guard.position.y };
+				guard.sight_position[i].position = math::vec2{ guard.position.x - (i + 1.0),guard.position.y };
 			}
 		}
 		break;
@@ -405,5 +408,49 @@ bool Guard::Is_trace_sommeone() // 지금 따라오고있는놈이 몇명인지
 	}
 
 	return false;
+}
+
+void Guard::Update_position()
+{
+		//if (is_move == true)
+		{
+			for (auto& guard : guards)
+			{
+				if (guard.position.x > guard.target_pos.x)
+				{
+					guard.position.x -= doodle::DeltaTime * 2;
+					if (guard.position.x <= guard.target_pos.x)
+					{
+						guard.position.x = guard.target_pos.x;
+					}
+				}
+				else if (guard.position.x < guard.target_pos.x)
+				{
+					guard.position.x += doodle::DeltaTime * 2;
+					if (guard.position.x >= guard.target_pos.x)
+					{
+						guard.position.x = guard.target_pos.x;
+					}
+				}
+
+				else if (guard.position.y > guard.target_pos.y)
+				{
+					guard.position.y -= doodle::DeltaTime * 2;
+					if (guard.position.y <= guard.target_pos.y)
+					{
+						guard.position.y = guard.target_pos.y;
+					}
+				}
+				else if (guard.position.y < guard.target_pos.y)
+				{
+					guard.position.y += doodle::DeltaTime * 2;
+					if (guard.position.y >= guard.target_pos.y)
+					{
+						guard.position.y = guard.target_pos.y;
+					}
+				}
+			}
+		}
+	
 }
 

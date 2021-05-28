@@ -79,8 +79,8 @@ void Game::Draw()
 	{
 		doodle::clear_background(0);
 		map.Draw(camera);
-		guard.Draw_sight(camera, map);
 		guard.Draw_guard(camera);
+		guard.Draw_sight(camera, map);
 		minsoo.Draw_minsu(camera, camera_move);
 		draw_text(std::to_string(treasure_count), 500, 80);
 
@@ -99,7 +99,7 @@ void Game::Draw()
 		doodle::draw_text("Bomb item " + std::to_string(minsoo.bomb_item), 50, 250);
 #endif // DEBUG
 
-		Draw_radar();
+		//Draw_radar();
 		pop_settings();
 		if (guard.Is_trace_sommeone() == true) // 한명이라도 따라오는애 있으면 
 		{
@@ -260,37 +260,39 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 		{
 			if (Check(doodleButton) == false && camera_move != true)
 			{
-				minsoo.Set_position(doodleButton);
-
+				if (is_minsoo_move == false)
+				{
+					minsoo.Set_position(doodleButton);
+					is_minsoo_move = true;
 				for (int i = 0; i < static_cast<int>(guard.guards.size()); i++)
 				{
-					Caught_by_guard_current(i);
+					//Caught_by_guard_current(i);
 
 					while (true)
 					{
 						if (Check_guard(i) == false)
 						{
-							if (guard.guards[i].is_trace == true && guard.guards[i].is_okay == true) //시야안에 있는지없는지,개껌안먹었는지 ->있으면 페스파인딩
+							//if (guard.guards[i].is_trace == true && guard.guards[i].is_okay == true) //시야안에 있는지없는지,개껌안먹었는지 ->있으면 페스파인딩
+							//{
+
+							//	math::ivec2 curr_position = guard.guards[i].position;
+							//	if (curr_position != minsoo.Get_position())
+							//	{
+							//		guard.guards[i].position = path_finding<27, 81>(map, minsoo.Get_position(), (guard.guards[i].position)).back().pos;
+
+							//		curr_position -= guard.guards[i].position;  // 페스파인딩으로 다음 갈 곳에 대한 시야 변경
+							//		set_direction(curr_position, i);
+							//		if (path_finding<27, 81>(map, minsoo.Get_position(), (guard.guards[i].position)).empty() != true)
+							//		{
+							//			curr_position = guard.guards[i].position - path_finding<27, 81>(map, minsoo.Get_position(), (guard.guards[i].position)).back().pos;
+							//			set_direction(curr_position, i);
+							//		}
+							//	}
+
+							//}
+							if (guard.guards[i].is_okay == true)
 							{
-
-								math::ivec2 curr_position = guard.guards[i].position;
-								if (curr_position != minsoo.Get_position())
-								{
-									guard.guards[i].position = path_finding<27, 81>(map, minsoo.Get_position(), (guard.guards[i].position)).back().pos;
-
-									curr_position -= guard.guards[i].position;  // 페스파인딩으로 다음 갈 곳에 대한 시야 변경
-									set_direction(curr_position, i);
-									if (path_finding<27, 81>(map, minsoo.Get_position(), (guard.guards[i].position)).empty() != true)
-									{
-										curr_position = guard.guards[i].position - path_finding<27, 81>(map, minsoo.Get_position(), (guard.guards[i].position)).back().pos;
-										set_direction(curr_position, i);
-									}
-								}
-
-							}
-							else if (guard.guards[i].is_okay == true)
-							{
-								guard.Move(i);
+								guard.Set_position(i);
 								if (minsoo.movement % 5 == 0)
 								{
 									guard.Change_sight(map, i);  //5칸 움직이면 시야 바꾸기
@@ -304,14 +306,13 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 									j.trace_movement++;
 								}
 							}
-							guard.Set_sight();  // 지금 방향으로 시야 늘려서 보이기
 							break;
-						}
-
+						}					
+					   }
 					}
 				}
 			}
-			Caught_by_guard_nextmove();
+			//Caught_by_guard_nextmove();
 		}
 		Set_item(doodleButton);
 #ifdef _DEBUG
@@ -383,8 +384,11 @@ void Game::Update()
 		if (camera_move == false)
 		{
 			camera.Update(minsoo.Get_position());
-			//Move_camera(minsoo.Get_position());
-			new_pos = minsoo.Get_position();
+			minsoo.Update_position(is_minsoo_move);
+			guard.Update_position();
+			//std::cout << guard.guards[0].position.x << "       " << guard.guards[0].position.y << std::endl;
+			guard.Set_sight();
+			std::cout << guard.guards[0].sight_position->position.x << "       " << guard.guards[0].sight_position->position.y << std::endl;
 		}
 		if (camera_move == true)
 		{
@@ -932,11 +936,11 @@ void Game::set_direction(math::vec2 position, int index)
 }
 
 
-int Game::Get_count(math::ivec2 exit_pos)
+double Game::Get_count(math::vec2 exit_pos)
 {
 	int count{ 1 };
-	math::ivec2 minsu_pos = minsoo.Get_position();
-	math::ivec2 exit_minsu = exit_pos - minsu_pos;
+	math::vec2 minsu_pos = minsoo.Get_position();
+	math::vec2 exit_minsu = exit_pos - minsu_pos;
 
 	if (exit_minsu.x == 0 && exit_minsu.y == 0)//exit
 	{
@@ -944,7 +948,7 @@ int Game::Get_count(math::ivec2 exit_pos)
 	}
 	else if (exit_minsu.x == 0 || exit_minsu.y == 0)//same x or y
 	{
-		int result = exit_minsu.y == 0 ? exit_minsu.x : exit_minsu.y;
+		double result = exit_minsu.y == 0 ? exit_minsu.x : exit_minsu.y;
 		return abs(result);
 	}
 	else if (exit_minsu.x > 0 && exit_minsu.y > 0)//left top
@@ -953,9 +957,9 @@ int Game::Get_count(math::ivec2 exit_pos)
 		{
 			if (count >= exit_minsu.x)
 			{
-				for (int column = exit_minsu.x, row = 0; row < exit_minsu.x; row++)
+				for (double column = exit_minsu.x, row = 0; row < exit_minsu.x; row++)
 				{
-					if (exit_pos == math::ivec2{ minsu_pos.x + column ,minsu_pos.y + row })
+					if (exit_pos == math::vec2{ minsu_pos.x + column ,minsu_pos.y + row })
 					{
 						return count;
 					}
@@ -963,9 +967,9 @@ int Game::Get_count(math::ivec2 exit_pos)
 			}
 			else
 			{
-				for (int column = count, row = 0; row < count; row++)
+				for (double column = count, row = 0; row < count; row++)
 				{
-					if (exit_pos == math::ivec2{ minsu_pos.x + column ,minsu_pos.y + row })
+					if (exit_pos == math::vec2{ minsu_pos.x + column ,minsu_pos.y + row })
 					{
 						return count;
 					}
@@ -974,9 +978,9 @@ int Game::Get_count(math::ivec2 exit_pos)
 
 			if (count >= exit_minsu.y)
 			{
-				for (int column = 0, row = exit_minsu.y; column <= exit_minsu.y; column++)
+				for (double column = 0, row = exit_minsu.y; column <= exit_minsu.y; column++)
 				{
-					if (exit_pos == math::ivec2{ minsu_pos.x + column ,minsu_pos.y + row })
+					if (exit_pos == math::vec2{ minsu_pos.x + column ,minsu_pos.y + row })
 					{
 						return count;
 					}
@@ -984,9 +988,9 @@ int Game::Get_count(math::ivec2 exit_pos)
 			}
 			else
 			{
-				for (int column = 0, row = count; column <= count; column++)
+				for (double column = 0, row = count; column <= count; column++)
 				{
-					if (exit_pos == math::ivec2{ minsu_pos.x + column ,minsu_pos.y + row })
+					if (exit_pos == math::vec2{ minsu_pos.x + column ,minsu_pos.y + row })
 					{
 						return count;
 					}
@@ -1001,9 +1005,9 @@ int Game::Get_count(math::ivec2 exit_pos)
 		{
 			if (count >= exit_minsu.x)
 			{
-				for (int column = exit_minsu.x, row = 0; row < exit_minsu.x; row++)
+				for (double column = exit_minsu.x, row = 0; row < exit_minsu.x; row++)
 				{
-					if (exit_pos == math::ivec2{ minsu_pos.x + column ,minsu_pos.y - row })
+					if (exit_pos == math::vec2{ minsu_pos.x + column ,minsu_pos.y - row })
 					{
 						return count;
 					}
@@ -1011,9 +1015,9 @@ int Game::Get_count(math::ivec2 exit_pos)
 			}
 			else
 			{
-				for (int column = count, row = 0; row < count; row++)
+				for (double column = count, row = 0; row < count; row++)
 				{
-					if (exit_pos == math::ivec2{ minsu_pos.x + column ,minsu_pos.y - row })
+					if (exit_pos == math::vec2{ minsu_pos.x + column ,minsu_pos.y - row })
 					{
 						return count;
 					}
@@ -1021,9 +1025,9 @@ int Game::Get_count(math::ivec2 exit_pos)
 			}
 			if (count >= -exit_minsu.y)
 			{
-				for (int column = 0, row = -exit_minsu.y; column <= -exit_minsu.y; column++)
+				for (double column = 0, row = -exit_minsu.y; column <= -exit_minsu.y; column++)
 				{
-					if (exit_pos == math::ivec2{ minsu_pos.x + column ,minsu_pos.y - row })
+					if (exit_pos == math::vec2{ minsu_pos.x + column ,minsu_pos.y - row })
 					{
 						return count;
 					}
@@ -1031,9 +1035,9 @@ int Game::Get_count(math::ivec2 exit_pos)
 			}
 			else
 			{
-				for (int column = 0, row = count; column <= count; column++)
+				for (double column = 0, row = count; column <= count; column++)
 				{
-					if (exit_pos == math::ivec2{ minsu_pos.x + column ,minsu_pos.y - row })
+					if (exit_pos == math::vec2{ minsu_pos.x + column ,minsu_pos.y - row })
 					{
 						return count;
 					}
@@ -1048,9 +1052,9 @@ int Game::Get_count(math::ivec2 exit_pos)
 		{
 			if (count >= -exit_minsu.x)
 			{
-				for (int column = -exit_minsu.x, row = 0; row < -exit_minsu.x; row++)
+				for (double column = -exit_minsu.x, row = 0; row < -exit_minsu.x; row++)
 				{
-					if (exit_pos == math::ivec2{ minsu_pos.x - column ,minsu_pos.y + row })
+					if (exit_pos == math::vec2{ minsu_pos.x - column ,minsu_pos.y + row })
 					{
 						return count;
 					}
@@ -1058,9 +1062,9 @@ int Game::Get_count(math::ivec2 exit_pos)
 			}
 			else
 			{
-				for (int column = count, row = 0; row < count; row++)
+				for (double column = count, row = 0; row < count; row++)
 				{
-					if (exit_pos == math::ivec2{ minsu_pos.x - column ,minsu_pos.y + row })
+					if (exit_pos == math::vec2{ minsu_pos.x - column ,minsu_pos.y + row })
 					{
 						return count;
 					}
@@ -1068,9 +1072,9 @@ int Game::Get_count(math::ivec2 exit_pos)
 			}
 			if (count >= exit_minsu.y)
 			{
-				for (int column = 0, row = exit_minsu.y; column <= exit_minsu.y; column++)
+				for (double column = 0, row = exit_minsu.y; column <= exit_minsu.y; column++)
 				{
-					if (exit_pos == math::ivec2{ minsu_pos.x - column ,minsu_pos.y + row })
+					if (exit_pos == math::vec2{ minsu_pos.x - column ,minsu_pos.y + row })
 					{
 						return count;
 					}
@@ -1078,9 +1082,9 @@ int Game::Get_count(math::ivec2 exit_pos)
 			}
 			else
 			{
-				for (int column = 0, row = count; column <= count; column++)
+				for (double column = 0, row = count; column <= count; column++)
 				{
-					if (exit_pos == math::ivec2{ minsu_pos.x - column ,minsu_pos.y + row })
+					if (exit_pos == math::vec2{ minsu_pos.x - column ,minsu_pos.y + row })
 					{
 						return count;
 					}
@@ -1095,9 +1099,9 @@ int Game::Get_count(math::ivec2 exit_pos)
 		{
 			if (count >= -exit_minsu.x)
 			{
-				for (int column = -exit_minsu.x, row = 0; row < -exit_minsu.x; row++)
+				for (double column = -exit_minsu.x, row = 0; row < -exit_minsu.x; row++)
 				{
-					if (exit_pos == math::ivec2{ minsu_pos.x - column ,minsu_pos.y - row })
+					if (exit_pos == math::vec2{ minsu_pos.x - column ,minsu_pos.y - row })
 					{
 						return count;
 					}
@@ -1105,9 +1109,9 @@ int Game::Get_count(math::ivec2 exit_pos)
 			}
 			else
 			{
-				for (int column = count, row = 0; row < count; row++)
+				for (double column = count, row = 0; row < count; row++)
 				{
-					if (exit_pos == math::ivec2{ minsu_pos.x - column ,minsu_pos.y - row })
+					if (exit_pos == math::vec2{ minsu_pos.x - column ,minsu_pos.y - row })
 					{
 						return count;
 					}
@@ -1115,9 +1119,9 @@ int Game::Get_count(math::ivec2 exit_pos)
 			}
 			if (count >= -exit_minsu.y)
 			{
-				for (int column = 0, row = -exit_minsu.y; column <= -exit_minsu.y; column++)
+				for (double column = 0, row = -exit_minsu.y; column <= -exit_minsu.y; column++)
 				{
-					if (exit_pos == math::ivec2{ minsu_pos.x - column ,minsu_pos.y - row })
+					if (exit_pos == math::vec2{ minsu_pos.x - column ,minsu_pos.y - row })
 					{
 						return count;
 					}
@@ -1125,9 +1129,9 @@ int Game::Get_count(math::ivec2 exit_pos)
 			}
 			else
 			{
-				for (int column = 0, row = count; column <= count; column++)
+				for (double column = 0, row = count; column <= count; column++)
 				{
-					if (exit_pos == math::ivec2{ minsu_pos.x - column ,minsu_pos.y - row })
+					if (exit_pos == math::vec2{ minsu_pos.x - column ,minsu_pos.y - row })
 					{
 						return count;
 					}

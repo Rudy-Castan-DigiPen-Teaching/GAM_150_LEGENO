@@ -37,6 +37,11 @@ class Game
 	bool cheat_Z{ false };
 	float current_volume{ 100 };
 
+	bool is_minsoo_move = false;
+
+	bool is_guard_move = false;
+
+
 	doodle::Image digipen_logo{ "assets/DigiPen_BLACK_1024px.png" };
 	doodle::Image clear_scene{ "assets/Clear_scene.png" };
 	doodle::Image main_menu{ "assets/MainMenu.png" };
@@ -56,7 +61,7 @@ class Game
 	doodle::Image sound3{ "assets/Sound3.png" };
 	doodle::Image sound4{ "assets/Sound4.png" };
 
-	int Get_count(math::ivec2 exit_pos);
+	double Get_count(math::vec2 exit_pos);
 public:
 	void Set_up();
 	void Draw();

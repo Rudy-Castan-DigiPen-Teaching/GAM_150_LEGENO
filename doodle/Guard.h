@@ -6,15 +6,16 @@
 #include "Minsoo.h"	// Minsoo class
 struct sight_info
 {
-	math::ivec2 position;
+	math::vec2 position;
 	bool is_valid = true;  // 시야가 벽에 가려있나 안가려있나
 };
 
 struct guard_info
 {
-	math::ivec2 position;
+	math::vec2 position;
 	Direction direction{ Direction::UP };
 	const string guard_type{ "guard" };
+	math::vec2 target_pos = position;
 	bool is_okay{ true };  //개껌먹었는지 안먹었는지
 	bool is_trace{ false }; //민수가 시야에 들어왔는지 안들어왔는지
 	int trace_movement{ 0 };
@@ -28,12 +29,13 @@ public:
 	void Set_up();
 	void Draw_guard(Camera& camera);
 	void Draw_sight(Camera& camera, Map MAP);
-	void Move(int index);              
+	void Set_position(int index);              
 	void Change_sight(Map m, int index);
 	void Guard_movement_update(Map& m, int movement);
 	void Set_sight();           
 	int	 In_guard_sight(Minsoo minsoo); // when minsoo is in guard sight, return what number of guard it is.가드 시야에 있을때 몇번째 인덱스 가드인지 리턴			
 	bool Is_trace_sommeone(); // check if there is a guard chasing minsoo 따라오는새끼 하나라도있는지                                      
+	void Update_position();
 	vector<guard_info> guards;
 
 private:

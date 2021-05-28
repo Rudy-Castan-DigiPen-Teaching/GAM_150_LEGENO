@@ -1,45 +1,23 @@
 #include"Minsoo.h"
 
-void Minsoo::Draw_minsu([[maybe_unused]]Camera camera,bool camera_move)
+void Minsoo::Draw_minsu(Camera camera,[[maybe_unused]]bool camera_move)
 {
 	doodle::set_fill_color(255, 255, 0);
-	if (camera_move == false)
+	switch (direction)
 	{
-			switch (direction)
-			{
-			case Direction::DOWN:
-				doodle::draw_image(Minsoo_Down, (2)* block_size, (2) * block_size, block_size, block_size);
-				break;
-			case Direction::UP:
-				doodle::draw_image(Minsoo_Up, (2) * block_size, (2) * block_size, block_size, block_size);
-				break;
-			case Direction::RIGHT:
-				doodle::draw_image(Minsoo_right, (2) * block_size, (2) * block_size, block_size, block_size);
-				break;
-			case Direction::LEFT:
-				doodle::draw_image(Minsoo_left, (2) * block_size, (2) * block_size, block_size, block_size);
-				break;
-			}
+	case Direction::DOWN:
+		doodle::draw_image(Minsoo_Down, (position.x + camera.Get_position().x) * block_size, (position.y + camera.Get_position().y) * block_size, block_size, block_size);
+		break;
+	case Direction::UP:
+		doodle::draw_image(Minsoo_Up, (position.x + camera.Get_position().x) * block_size, (position.y + camera.Get_position().y) * block_size, block_size, block_size);
+		break;
+	case Direction::RIGHT:
+		doodle::draw_image(Minsoo_right, (position.x + camera.Get_position().x) * block_size, (position.y + camera.Get_position().y) * block_size, block_size, block_size);
+		break;
+	case Direction::LEFT:
+		doodle::draw_image(Minsoo_left, (position.x + camera.Get_position().x) * block_size, (position.y + camera.Get_position().y) * block_size, block_size, block_size);
+		break;
 	}
-	//else
-	//{
-	//	switch (direction)
-	//	{
-	//	case Direction::DOWN:
-	//		doodle::draw_image(Minsoo_Down, (position.x + camera.Get_position().x )* block_size, (position.y + camera.Get_position().y) * block_size, block_size, block_size);
-	//		break;
-	//	case Direction::UP:
-	//		doodle::draw_image(Minsoo_Up, (position.x + camera.Get_position().x) * block_size, (position.y + camera.Get_position().y) * block_size, block_size, block_size);
-	//		break;
-	//	case Direction::RIGHT:
-	//		doodle::draw_image(Minsoo_right, (position.x + camera.Get_position().x) * block_size, (position.y + camera.Get_position().y) * block_size, block_size, block_size);
-	//		break;
-	//	case Direction::LEFT:
-	//		doodle::draw_image(Minsoo_left, (position.x + camera.Get_position().x) * block_size, (position.y + camera.Get_position().y) * block_size, block_size, block_size);
-	//		break;
-	//	}
-
-	//}
 
 
 #ifdef _DEBUG
@@ -71,56 +49,89 @@ void Minsoo::Set_up()
 
 void Minsoo::Set_position(doodle::KeyboardButtons button)
 {
+	target_pos = Get_position();  //fist set curr pos
+
 	switch (button)
 	{
 	case doodle::KeyboardButtons::S:
 	{
-		position.y += 1;
-		movement++;
+		target_pos.y += 1;
 		direction = Direction::DOWN;
-		if(explode_count>0)
-		{
-			explode_count--;
-		}
 	}
 		break;
 	case doodle::KeyboardButtons::A:
 		{
-			position.x -= 1;
-			movement++;
-			direction = Direction::LEFT;
-			if(explode_count>0)
-			{
-				explode_count--;
-			}
+		target_pos.x -= 1;
+		direction = Direction::LEFT;
+
 		}
 		break;
 	case doodle::KeyboardButtons::D:
 		{
-			position.x += 1;
-			movement++;
-			direction = Direction::RIGHT;
-			if(explode_count>0)
-			{
-				explode_count--;
-			}
+		target_pos.x += 1;			
+		direction = Direction::RIGHT;
 		}
 		break;
 	case doodle::KeyboardButtons::W:
 		{
-			position.y -= 1;
-			movement++;
-			direction = Direction::UP;
-			if(explode_count>0)
-			{
-				explode_count--;
-			}
+		target_pos.y -= 1;
+		direction = Direction::UP;
 		}
 		break;
 	}
+
+
 }
 
-math::ivec2 Minsoo::Get_position()
+void Minsoo::Update_position(bool& is_move)
+{
+	if (is_move == true)
+	{
+		if (position.x > target_pos.x)
+		{
+			position.x -= doodle::DeltaTime * 2;
+			if (position.x <= target_pos.x)
+			{
+				position.x = target_pos.x;
+				is_move = false;
+				movement++;
+			}
+		}
+		else if (position.x < target_pos.x)
+		{
+			position.x += doodle::DeltaTime * 2;
+			if (position.x >= target_pos.x)
+			{
+				position.x = target_pos.x;
+				is_move = false;
+				movement++;
+			}
+		}
+
+		else if (position.y > target_pos.y)
+		{
+			position.y -= doodle::DeltaTime * 2;
+			if (position.y <= target_pos.y)
+			{
+				position.y = target_pos.y;
+				is_move = false;
+				movement++;
+			}
+		}
+		else if (position.y < target_pos.y)
+		{
+			position.y += doodle::DeltaTime * 2;
+			if (position.y >= target_pos.y)
+			{
+				position.y = target_pos.y;
+				is_move = false;
+				movement++;
+			}
+		}
+	}
+}
+
+math::vec2 Minsoo::Get_position()
 {
 	return position;
 }
