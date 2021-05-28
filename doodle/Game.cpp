@@ -2,7 +2,7 @@
 
 #include"Game.h"
 #include"Pathfinding.h" //pathfinding logic
-
+#include<iostream>
 using namespace doodle;
 
 void Game::Set_up()
@@ -34,9 +34,9 @@ void Game::Draw()
 		switch (current_menu)
 		{
 			case static_cast<int>(MenuOption::START) : doodle::draw_image(start_button, 0, 0, Width, Height); break;
-				case static_cast<int>(MenuOption::QUIT) : doodle::draw_image(quit_button, 0, 0, Width, Height); break;
-					case static_cast<int>(MenuOption::CREDIT) : doodle::draw_image(credit_button, 0, 0, Width, Height); break;
-						case static_cast<int>(MenuOption::OPTION) : doodle::draw_image(option_button, 0, 0, Width, Height); break;
+			case static_cast<int>(MenuOption::QUIT) : doodle::draw_image(quit_button, 0, 0, Width, Height); break;
+			case static_cast<int>(MenuOption::CREDIT) : doodle::draw_image(credit_button, 0, 0, Width, Height); break;
+			case static_cast<int>(MenuOption::OPTION) : doodle::draw_image(option_button, 0, 0, Width, Height); break;
 		}
 		break;
 	}
@@ -258,65 +258,32 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 		}
 		if (doodleButton == doodle::KeyboardButtons::A || doodleButton == doodle::KeyboardButtons::S || doodleButton == doodle::KeyboardButtons::W || doodleButton == doodle::KeyboardButtons::D)
 		{
-			if (Check(doodleButton) == false)
+			if (Check(doodleButton) == false && camera_move != true)
 			{
 				minsoo.Set_position(doodleButton);
+
 				for (int i = 0; i < static_cast<int>(guard.guards.size()); i++)
 				{
-					if (minsoo.Get_position() == guard.guards[i].position) //가드포지션이랑 민수포지션 같으면 게임오버
-					{
-						sounds.music.stop();
-						current_state = State::GAME_OVER;
-					}
+					Caught_by_guard_current(i);
 
-					while (1)
+					while (true)
 					{
 						if (Check_guard(i) == false)
 						{
 							if (guard.guards[i].is_trace == true && guard.guards[i].is_okay == true) //시야안에 있는지없는지,개껌안먹었는지 ->있으면 페스파인딩
 							{
+
 								math::ivec2 curr_position = guard.guards[i].position;
+								if (curr_position != minsoo.Get_position())
+								{
+									guard.guards[i].position = path_finding<27, 81>(map, minsoo.Get_position(), (guard.guards[i].position)).back().pos;
 
-								//template arguments = map height, map width
-
-								guard.guards[i].position = path_finding<27, 81>(map, minsoo.Get_position(), (guard.guards[i].position)).back().pos;
-
-								curr_position -= guard.guards[i].position;  // 페스파인딩으로 다음 갈 곳에 대한 시야 변경
-								if (curr_position.x == -1)
-								{
-									guard.guards[i].direction = Direction::RIGHT;
-								}
-								if (curr_position.x == 1)
-								{
-									guard.guards[i].direction = Direction::LEFT;
-								}
-								if (curr_position.y == -1)
-								{
-									guard.guards[i].direction = Direction::DOWN;
-								}
-								if (curr_position.y == 1)
-								{
-									guard.guards[i].direction = Direction::UP;
-
-								}
-								if (path_finding<27, 81>(map, minsoo.Get_position(), (guard.guards[i].position)).empty() != true)
-								{
-									curr_position = guard.guards[i].position - path_finding<27, 81>(map, minsoo.Get_position(), (guard.guards[i].position)).back().pos;
-									if (curr_position.x == -1)
+									curr_position -= guard.guards[i].position;  // 페스파인딩으로 다음 갈 곳에 대한 시야 변경
+									set_direction(curr_position, i);
+									if (path_finding<27, 81>(map, minsoo.Get_position(), (guard.guards[i].position)).empty() != true)
 									{
-										guard.guards[i].direction = Direction::RIGHT;
-									}
-									if (curr_position.x == 1)
-									{
-										guard.guards[i].direction = Direction::LEFT;
-									}
-									if (curr_position.y == -1)
-									{
-										guard.guards[i].direction = Direction::DOWN;
-									}
-									if (curr_position.y == 1)
-									{
-										guard.guards[i].direction = Direction::UP;
+										curr_position = guard.guards[i].position - path_finding<27, 81>(map, minsoo.Get_position(), (guard.guards[i].position)).back().pos;
+										set_direction(curr_position, i);
 									}
 								}
 
@@ -337,7 +304,6 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 									j.trace_movement++;
 								}
 							}
-
 							guard.Set_sight();  // 지금 방향으로 시야 늘려서 보이기
 							break;
 						}
@@ -345,7 +311,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 					}
 				}
 			}
-			Caught_by_guard();
+			Caught_by_guard_nextmove();
 		}
 		Set_item(doodleButton);
 #ifdef _DEBUG
@@ -417,12 +383,14 @@ void Game::Update()
 		if (camera_move == false)
 		{
 			camera.Update(minsoo.Get_position());
+			//Move_camera(minsoo.Get_position());
 			new_pos = minsoo.Get_position();
 		}
 		if (camera_move == true)
 		{
-			Ruby_camera();
+			Move_camera(guard.guards.back().position);
 		}
+
 		if (guard.In_guard_sight(minsoo) != -1) //따라오고있는애가 한명은있다
 		{
 			guard.guards[guard.In_guard_sight(minsoo)].is_trace = true;
@@ -461,7 +429,96 @@ void Game::Update()
 
 
 }
+void Game::Move_camera(math::vec2 position)
+{
+	math::vec2 target_pos = position;
+	math::vec2 init_pos = new_pos;
 
+	if (camera_move != true)
+	{
+		if (new_pos.x > target_pos.x)
+		{
+			new_pos.x -= doodle::DeltaTime;
+			if (new_pos.x <= target_pos.x)
+			{
+				new_pos = minsoo.Get_position();
+			}
+		}
+		else if (new_pos.x < target_pos.x)
+		{
+			new_pos.x += doodle::DeltaTime;
+			if (new_pos.x >= target_pos.x)
+			{
+				new_pos = minsoo.Get_position();
+
+			}
+		}
+
+		else if (new_pos.y > target_pos.y)
+		{
+			new_pos.y -= doodle::DeltaTime;
+			if (new_pos.y <= target_pos.y)
+			{
+				new_pos = minsoo.Get_position();
+
+			}
+			//new_pos.y =  (target_pos.y - init_pos.y)/(target_pos.x - init_pos.x)  * (new_pos.x - init_pos.x) + init_pos.y;
+		}
+		else if (new_pos.y < target_pos.y)
+		{
+			new_pos.y += doodle::DeltaTime;
+			if (new_pos.y >= target_pos.y)
+			{
+				new_pos = minsoo.Get_position();
+			}
+			//new_pos.y = (target_pos.y - init_pos.y) / (target_pos.x - init_pos.x) * (new_pos.x - init_pos.x) + init_pos.y;
+		}
+		//std::cout << new_pos.x << "     " << new_pos.y << std::endl;
+		camera.Update(new_pos);
+
+	}
+	//루비 먹었을때
+		if (camera_move == true)
+		{
+			if (new_pos.x > target_pos.x)
+			{
+				new_pos.x -= 10*doodle::DeltaTime;
+			}
+			if (new_pos.x < target_pos.x)
+			{
+				new_pos.x += 10 * doodle::DeltaTime;
+			}
+
+			if (new_pos.y > target_pos.y)
+			{
+				
+				new_pos.y =  (target_pos.y - init_pos.y)/(target_pos.x - init_pos.x)  * (new_pos.x - init_pos.x) + init_pos.y;
+			}
+			if (new_pos.y < target_pos.y)
+			{
+				
+				new_pos.y = (target_pos.y - init_pos.y) / (target_pos.x - init_pos.x) * (new_pos.x - init_pos.x) + init_pos.y;
+			}
+			camera.Update(new_pos);
+
+
+			if (new_pos.x >= target_pos.x && new_pos.y >= target_pos.y)
+			{
+				if (start_camera_count == false)
+				{
+					curr_timer = timer;
+					start_camera_count = true;
+				}
+				double Target_time = 2;
+				if (curr_timer - timer > Target_time)
+				{
+					camera_move = false;
+					new_pos = minsoo.Get_position();
+					camera.Update(new_pos);
+				}
+			}
+		}
+}
 void Game::Reset()
 {
 	timer = total_time;
@@ -546,7 +603,16 @@ bool Game::Check(doodle::KeyboardButtons doodleButton)
 	return false;
 }
 
-void Game::Caught_by_guard()
+void Game::Caught_by_guard_current(int index)
+{
+	if (minsoo.Get_position() == guard.guards[index].position) //가드포지션이랑 민수포지션 같으면 게임오버
+	{
+		sounds.music.stop();
+		current_state = State::GAME_OVER;
+	}
+}
+
+void Game::Caught_by_guard_nextmove()
 {
 	math::vec2 position = minsoo.Get_position();
 	for (auto& i : guard.guards)
@@ -844,40 +910,24 @@ void Game::Draw_radar()
 	}
 }
 
-void Game::Ruby_camera()
+
+void Game::set_direction(math::vec2 position, int index)
 {
-	if (camera_move == true)
+	if (position.x == -1)
 	{
-		if (new_pos.x > guard.guards.back().position.x)
-		{
-			new_pos.x -= 10*doodle::DeltaTime;
-		}
-		if (new_pos.x < guard.guards.back().position.x)
-		{
-			new_pos.x += 10 * doodle::DeltaTime;
-		}
-		if (new_pos.y > guard.guards.back().position.y)
-		{
-			new_pos.y -= 10 * doodle::DeltaTime;
-		}
-		if (new_pos.y < guard.guards.back().position.y)
-		{
-			new_pos.y += 10 * doodle::DeltaTime;
-		}
-		camera.Update(new_pos);
+		guard.guards[index].direction = Direction::RIGHT;
 	}
-	if (new_pos.x >= guard.guards.back().position.x && new_pos.y >= guard.guards.back().position.y)
+	if (position.x == 1)
 	{
-		if (start_camera_count == false)
-		{
-			curr_timer = timer;
-			start_camera_count = true;
-		}
-		double Target_time = 2;
-		if (curr_timer - timer > Target_time)
-		{
-			camera_move = false;
-		}
+		guard.guards[index].direction = Direction::LEFT;
+	}
+	if (position.y == -1)
+	{
+		guard.guards[index].direction = Direction::DOWN;
+	}
+	if (position.y == 1)
+	{
+		guard.guards[index].direction = Direction::UP;
 	}
 }
 

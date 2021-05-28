@@ -62,7 +62,8 @@ public:
 	void Draw();
 	void Get_inputkey(doodle::KeyboardButtons doodleButton);
 	bool Check(doodle::KeyboardButtons doodleButton); // check blocks around minsoo
-	void Caught_by_guard();   // if minsoo caught by guard, change state to Game Over
+	void Caught_by_guard_current(int index);
+	void Caught_by_guard_nextmove();   // if minsoo caught by guard, change state to Game Over
 	void Reset();
 	void Update();
 	bool Check_guard(int index);  // when a guard is looking a wall, change the direction
@@ -70,7 +71,9 @@ public:
 	void Set_item(doodle::KeyboardButtons button);	// put items on the map
 	void Radar_obtain();	//when minsoo gets radar, add Exit, add Ruby, ready to show Ruby 
 	void Draw_radar();
-	void Ruby_camera(); // camera shows Ruby for a while
+	void Move_camera(math::vec2 position); // camera shows Ruby for a while
+	void set_direction(math::vec2 position, int index);
+
 
 	math::vec2 new_pos{ minsoo.Get_position() };
 	double curr_timer{ 0 };

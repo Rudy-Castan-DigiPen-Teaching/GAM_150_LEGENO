@@ -6,16 +6,16 @@ void Guard::Set_up()
 	how_many_guards_tracing = 0;
 	//guards.push_back(guard_info{ math::ivec2(4, 3) , Direction::UP });
 	guards.push_back(guard_info{ math::ivec2(8, 2), Direction::LEFT });
-	guards.push_back(guard_info{ math::ivec2(7, 9), Direction::UP });
-	guards.push_back(guard_info{ math::ivec2(6, 8), Direction::DOWN });
-	guards.push_back(guard_info{ math::ivec2(11,8), Direction::UP });
-	guards.push_back(guard_info{ math::ivec2(14, 8), Direction::RIGHT });
-	guards.push_back(guard_info{ math::ivec2(4, 15), Direction::DOWN });
-	guards.push_back(guard_info{ math::ivec2(7, 16), Direction::UP });
-	guards.push_back(guard_info{ math::ivec2(15, 17), Direction::UP });
-	guards.push_back(guard_info{ math::ivec2(21, 9), Direction::DOWN });
-	guards.push_back(guard_info{ math::ivec2(25, 9), Direction::UP });
-	guards.push_back(guard_info{ math::ivec2(27, 11), Direction::UP });
+	//guards.push_back(guard_info{ math::ivec2(7, 9), Direction::UP });
+	//guards.push_back(guard_info{ math::ivec2(6, 8), Direction::DOWN });
+	//guards.push_back(guard_info{ math::ivec2(11,8), Direction::UP });
+	//guards.push_back(guard_info{ math::ivec2(14, 8), Direction::RIGHT });
+	//guards.push_back(guard_info{ math::ivec2(4, 15), Direction::DOWN });
+	//guards.push_back(guard_info{ math::ivec2(7, 16), Direction::UP });
+	//guards.push_back(guard_info{ math::ivec2(15, 17), Direction::UP });
+	//guards.push_back(guard_info{ math::ivec2(21, 9), Direction::DOWN });
+	//guards.push_back(guard_info{ math::ivec2(25, 9), Direction::UP });
+	//guards.push_back(guard_info{ math::ivec2(27, 11), Direction::UP });
 
 	Set_sight();
 

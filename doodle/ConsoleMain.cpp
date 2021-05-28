@@ -12,7 +12,7 @@ Game game;
 int main(void)
 try
 {
-    doodle::create_window(1200,1200);
+    doodle::create_window();
     doodle::set_frame_of_reference(doodle::FrameOfReference::LeftHanded_OriginTopLeft);
     game.Set_up();
     while (!doodle::is_window_closed())

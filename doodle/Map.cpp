@@ -1,6 +1,6 @@
 #include "Map.h"
 #include <fstream> // to load file
-
+#include<iostream>
 using namespace doodle;
 
 void Map::Set_up()
