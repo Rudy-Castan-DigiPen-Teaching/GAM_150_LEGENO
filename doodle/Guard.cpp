@@ -64,12 +64,12 @@ void Guard::Set_up(int level)
 void Guard::Draw_guard(Camera& camera)
 {
 	doodle::set_fill_color(255, 0, 0);
-	for (auto &p : guards)
+	for (auto& p : guards)
 	{
-		
-		if (p.is_okay == true )
+
+		if (p.is_okay == true)
 		{
-			if( p.guard_type == "guard")
+			if (p.guard_type == "guard")
 			{
 				if (p.is_trace == true)
 				{
@@ -114,7 +114,7 @@ void Guard::Draw_guard(Camera& camera)
 				}
 			}
 		}
-		else if(p.is_okay == false)
+		else if (p.is_okay == false)
 		{
 			doodle::draw_image(Guard_CHEW_image, (p.position.x + camera.Get_position().x) * block_size, (p.position.y + camera.Get_position().y) * block_size, block_size + 10.0, block_size + 10.0);
 		}
@@ -122,7 +122,7 @@ void Guard::Draw_guard(Camera& camera)
 	}
 }
 
-void Guard::Draw_sight(Camera& camera,Map MAP)
+void Guard::Draw_sight(Camera& camera, Map MAP)
 {
 
 	for (auto& guard : guards)
@@ -130,8 +130,8 @@ void Guard::Draw_sight(Camera& camera,Map MAP)
 		for (int i = 0; i < sight_size; i++)
 		{
 			for (auto& m : MAP.map)
-			{		
-				if (static_cast<int>(guard.sight_position[i].position.x) == m.position.x && static_cast<int>(guard.sight_position[i].position.y) == m.position.y && guard.sight_position[i].is_valid == true )
+			{
+				if (static_cast<int>(guard.sight_position[i].position.x) == m.position.x && static_cast<int>(guard.sight_position[i].position.y) == m.position.y && guard.sight_position[i].is_valid == true)
 				{
 					if (m.type != Type::WALL)
 					{
@@ -169,24 +169,24 @@ void Guard::Draw_sight(Camera& camera,Map MAP)
 							}
 						}
 						break;
-						
+
 						case Direction::RIGHT:
 						{
-					switch (i)
-					{
-					case 0:
-						doodle::draw_image(Sight1_right_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
+							switch (i)
+							{
+							case 0:
+								doodle::draw_image(Sight1_right_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
+								break;
+							case 1:
+								doodle::draw_image(Sight2_right_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
+								break;
+							case 2:
+								doodle::draw_image(Sight3_right_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
+								break;
+							}
+						}
 						break;
-					case 1:
-						doodle::draw_image(Sight2_right_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
-						break;
-					case 2:
-						doodle::draw_image(Sight3_right_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
-						break;
-					}
-				}
-						break;
-					
+
 						case Direction::LEFT:
 						{
 							switch (i)
@@ -197,7 +197,7 @@ void Guard::Draw_sight(Camera& camera,Map MAP)
 							case 1:
 								doodle::draw_image(Sight2_left_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
 								break;
-							case 2:							
+							case 2:
 								doodle::draw_image(Sight3_left_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
 								break;
 							}
@@ -218,7 +218,7 @@ void Guard::Draw_sight(Camera& camera,Map MAP)
 		}
 	}
 }
-	
+
 
 void Guard::Set_position(int index)
 {
@@ -329,7 +329,7 @@ void Guard::Change_sight(Map m, int index)
 
 }
 
-void Guard::Guard_movement_update(Map& m, int movement) //�����Ծ�����, Ʈ���̽� Ʈ���϶� ������ ����� ����
+void Guard::Guard_movement_update(Map& m, int movement) 
 {
 	for (auto& i : guards)
 	{
@@ -411,7 +411,7 @@ void Guard::Set_sight()
 
 int Guard::In_guard_sight(Minsoo minsoo)
 {
-	for (int i=0; i<static_cast<int>(guards.size()); i++)
+	for (int i = 0; i < static_cast<int>(guards.size()); i++)
 	{
 		for (int j = 0; j < sight_size; j++)
 		{
@@ -424,12 +424,12 @@ int Guard::In_guard_sight(Minsoo minsoo)
 	return -1;
 }
 
-bool Guard::Is_trace_sommeone() // ���� ��������ִ³��� ������� 
+bool Guard::Is_trace_sommeone() // 
 {
 	how_many_guards_tracing = 0;
 	for (auto& i : guards)
 	{
-		if (i.is_trace == true && i.is_okay == false) //�����Ծ�����
+		if (i.is_trace == true && i.is_okay == false) //
 		{
 			i.is_trace = false;
 		}
@@ -452,46 +452,46 @@ bool Guard::Is_trace_sommeone() // ���� ��������ִ³��
 
 void Guard::Update_position()
 {
-		//if (is_move == true)
+	//if (is_move == true)
+	{
+		for (auto& guard : guards)
 		{
-			for (auto& guard : guards)
+			if (guard.position.x > guard.target_pos.x)
 			{
-				if (guard.position.x > guard.target_pos.x)
+				guard.position.x -= doodle::DeltaTime * 2;
+				if (guard.position.x <= guard.target_pos.x)
 				{
-					guard.position.x -= doodle::DeltaTime * 2;
-					if (guard.position.x <= guard.target_pos.x)
-					{
-						guard.position.x = guard.target_pos.x;
-					}
+					guard.position.x = guard.target_pos.x;
 				}
-				else if (guard.position.x < guard.target_pos.x)
+			}
+			else if (guard.position.x < guard.target_pos.x)
+			{
+				guard.position.x += doodle::DeltaTime * 2;
+				if (guard.position.x >= guard.target_pos.x)
 				{
-					guard.position.x += doodle::DeltaTime * 2;
-					if (guard.position.x >= guard.target_pos.x)
-					{
-						guard.position.x = guard.target_pos.x;
-					}
+					guard.position.x = guard.target_pos.x;
 				}
+			}
 
-				else if (guard.position.y > guard.target_pos.y)
+			else if (guard.position.y > guard.target_pos.y)
+			{
+				guard.position.y -= doodle::DeltaTime * 2;
+				if (guard.position.y <= guard.target_pos.y)
 				{
-					guard.position.y -= doodle::DeltaTime * 2;
-					if (guard.position.y <= guard.target_pos.y)
-					{
-						guard.position.y = guard.target_pos.y;
-					}
+					guard.position.y = guard.target_pos.y;
 				}
-				else if (guard.position.y < guard.target_pos.y)
+			}
+			else if (guard.position.y < guard.target_pos.y)
+			{
+				guard.position.y += doodle::DeltaTime * 2;
+				if (guard.position.y >= guard.target_pos.y)
 				{
-					guard.position.y += doodle::DeltaTime * 2;
-					if (guard.position.y >= guard.target_pos.y)
-					{
-						guard.position.y = guard.target_pos.y;
-					}
+					guard.position.y = guard.target_pos.y;
 				}
 			}
 		}
-	
+	}
+
 }
 
 void Guard::Check_watching_wall(Map m)
@@ -507,7 +507,7 @@ void Guard::Check_watching_wall(Map m)
 				if (i.position.x == guards[index].position.x && i.position.y == guards[index].position.y - 1 && i.type == Type::WALL)
 				{
 					Change_sight(m, index);
-			
+
 				}
 			}
 		}
@@ -518,14 +518,14 @@ void Guard::Check_watching_wall(Map m)
 				if (i.position.x == guards[index].position.x && i.position.y == guards[index].position.y + 1 && i.type == Type::WALL)
 				{
 					Change_sight(m, index);
-		
+
 				}
 			}
 			break;
 		case Direction::RIGHT:   //move right
 			for (auto& i : m.map)
 			{
-				if (i.position.x == guards[index].position.x + 1 && i.position.y ==guards[index].position.y && i.type == Type::WALL)
+				if (i.position.x == guards[index].position.x + 1 && i.position.y == guards[index].position.y && i.type == Type::WALL)
 				{
 					Change_sight(m, index);;
 

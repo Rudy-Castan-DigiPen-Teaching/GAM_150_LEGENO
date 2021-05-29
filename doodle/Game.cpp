@@ -444,39 +444,6 @@ void Game::Move_camera(math::vec2 position)
 			}
 		}
 }
-void Game::Collision_check()
-{
-	for (auto& Guard : guard.guards)
-	{
-		if (minsoo.Get_position() == Guard.position) //가드포지션이랑 민수포지션 같으면 게임오버
-		{
-			sounds.music.stop();
-			current_state = State::GAME_OVER;
-		}
-		math::vec2 pos;
-		pos = minsoo.Get_position() - Guard.position;
-		double difference = abs(pos.x) + abs(pos.y);
-		if (difference <= 0.5)
-		{
-			sounds.music.stop();
-			current_state = State::GAME_OVER;
-		}
-	}
-}
-void Game::Change_sight()
-{
-	if (is_minsoo_move == false)
-	{
-		if (minsoo.movement % 5 == 0 && is_sight_changed == false)
-		{
-			for (int i = 0; i < static_cast<int>(guard.guards.size()); i++)
-			{
-				guard.Change_sight(map, i);  
-			}
-			is_sight_changed = true;
-		}
-	}
-}
 void Game::Reset()
 {
 	timer = total_time;
@@ -1181,10 +1148,15 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 		is_music_playing = false;
 		current_state = State::START;
 	}
+
+#ifdef DEBUG
 	if (doodleButton == doodle::KeyboardButtons::Z)
 	{
 		cheat_Z = !cheat_Z;
 	}
+#else
+#endif // DEBUG
+
 	if (doodleButton == doodle::KeyboardButtons::Left || doodleButton == doodle::KeyboardButtons::Down || doodleButton == doodle::KeyboardButtons::Up || doodleButton == doodle::KeyboardButtons::Right)
 	{
 		if (Check(doodleButton) == false && camera_move != true)
