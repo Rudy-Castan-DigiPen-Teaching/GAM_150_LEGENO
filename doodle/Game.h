@@ -13,7 +13,7 @@ Author:
 #include "Guard.h"	//	Guard class
 #include "Sound.h"	//	Sound class
 #include "Camera.h"	//	Camera class
-
+#include<cmath>    //abs
 class Game
 {
 	Sound sounds;

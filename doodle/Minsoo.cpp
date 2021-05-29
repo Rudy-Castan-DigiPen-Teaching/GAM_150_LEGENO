@@ -51,6 +51,7 @@ void Minsoo::Set_up()
 	chew_item = 3;
 	bomb_item = 1;
 	explode_count = -1;
+	target_pos = position;
 }
 
 void Minsoo::Set_position(doodle::KeyboardButtons button)

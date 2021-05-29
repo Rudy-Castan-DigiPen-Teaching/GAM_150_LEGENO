@@ -329,7 +329,7 @@ void Guard::Change_sight(Map m, int index)
 
 }
 
-void Guard::Guard_movement_update(Map& m, int movement) //°³²­¸Ô¾úÀ»¶§, Æ®·¹ÀÌ½º Æ®·çÀÏ¶§ ¿òÁ÷ÀÓ °è»êÈÄ ¸®¼Â
+void Guard::Guard_movement_update(Map& m, int movement) //ï¿½ï¿½ï¿½ï¿½ï¿½Ô¾ï¿½ï¿½ï¿½ï¿½ï¿½, Æ®ï¿½ï¿½ï¿½Ì½ï¿½ Æ®ï¿½ï¿½ï¿½Ï¶ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 {
 	for (auto& i : guards)
 	{
@@ -424,12 +424,12 @@ int Guard::In_guard_sight(Minsoo minsoo)
 	return -1;
 }
 
-bool Guard::Is_trace_sommeone() // Áö±Ý µû¶ó¿À°íÀÖ´Â³ðÀÌ ¸î¸íÀÎÁö 
+bool Guard::Is_trace_sommeone() // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´Â³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
 {
 	how_many_guards_tracing = 0;
 	for (auto& i : guards)
 	{
-		if (i.is_trace == true && i.is_okay == false) //°³²­¸Ô¾úÀ¸¸é
+		if (i.is_trace == true && i.is_okay == false) //ï¿½ï¿½ï¿½ï¿½ï¿½Ô¾ï¿½ï¿½ï¿½ï¿½ï¿½
 		{
 			i.is_trace = false;
 		}
