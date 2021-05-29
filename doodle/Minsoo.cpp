@@ -104,6 +104,10 @@ void Minsoo::Update_position(bool& is_move)
 				position.x = target_pos.x;
 				is_move = false;
 				movement++;
+				if (explode_count != 0)
+				{	
+					explode_count--;
+				}
 			}
 		}
 		else if (position.x < target_pos.x)
@@ -114,6 +118,10 @@ void Minsoo::Update_position(bool& is_move)
 				position.x = target_pos.x;
 				is_move = false;
 				movement++;
+				if (explode_count != 0)
+				{
+					explode_count--;
+				}
 			}
 		}
 
@@ -125,6 +133,10 @@ void Minsoo::Update_position(bool& is_move)
 				position.y = target_pos.y;
 				is_move = false;
 				movement++;
+				if (explode_count != 0)
+				{
+					explode_count--;
+				}
 			}
 		}
 		else if (position.y < target_pos.y)
@@ -135,6 +147,10 @@ void Minsoo::Update_position(bool& is_move)
 				position.y = target_pos.y;
 				is_move = false;
 				movement++;
+				if (explode_count != 0)
+				{
+					explode_count--;
+				}
 			}
 		}
 	}

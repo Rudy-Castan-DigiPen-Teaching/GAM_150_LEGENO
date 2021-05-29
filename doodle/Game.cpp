@@ -342,6 +342,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 	}
 
 }
+
 void Game::Update()
 {
 	switch (current_state)
@@ -397,12 +398,113 @@ void Game::Update()
 
 
 }
+
+void Game::Update_level()
+{
+	if (is_music_playing == false)
+	{
+		if (is_in_guard_sight == true)
+		{
+			sounds.SetMusic("assets/Siren.ogg", true);
+			sounds.music.play();
+			is_music_playing = true;
+		}
+		else
+		{
+			sounds.SetMusic("assets/BasicBGM.ogg", true);
+			sounds.music.play();
+			is_music_playing = true;
+		}
+	}
+	timer = total_time - static_cast<int>(doodle::ElapsedTime);
+	score = timer * (treasure_count + 1) * 10;
+	if (camera_move == false)
+		{
+			camera.Update(minsoo.Get_position());
+			minsoo.Update_position(is_minsoo_move);
+			guard.Update_position();
+			Collision_check();
+			if (is_minsoo_move == false)
+			{
+				guard.Check_watching_wall(map);
+				Radar_obtain();
+				Check_bomb();
+			}
+			for (int i = 0; i < static_cast<int>(guard.guards.size()); i++)
+			{
+				if (guard.guards[i].is_trace == true && guard.guards[i].is_okay == true)
+				{
+					math::ivec2 curr_position = math::ivec2{ static_cast<int>(guard.guards[i].position.x) ,static_cast<int>(guard.guards[i].position.y) };
+
+					if (path_finding<27, 81>(map, minsoo.target_pos, curr_position).empty() != true)
+					{
+						curr_position = path_finding<27, 81>(map, minsoo.target_pos, curr_position).back().pos;
+					}
+					curr_position = math::ivec2{ static_cast<int>(guard.guards[i].position.x) ,static_cast<int>(guard.guards[i].position.y) } - curr_position;  // 페스파인딩으로 다음 갈 곳에 대한 시야 변경
+					set_direction(curr_position, i);
+				}
+			}
+			guard.Set_sight();
+		}
+	if (camera_move == true)
+	{
+		Move_camera(guard.guards.back().position);
+	}
+
+	if (guard.In_guard_sight(minsoo) != -1) //따라오고있는애가 한명은있다
+	{
+		guard.guards[guard.In_guard_sight(minsoo)].is_trace = true;
+		guard.guards[guard.In_guard_sight(minsoo)].trace_movement = 0;
+		if (is_chased_state == false)
+		{
+			is_music_playing = false;
+		}
+		is_in_guard_sight = true;
+		is_chased_state = true;
+	}
+	else // 시야에 안잡히면
+	{
+		if (is_chased_state == true)
+		{
+			is_music_playing = false;
+		}
+		is_in_guard_sight = false;
+		is_chased_state = false;
+	}
+	guard.Guard_movement_update(map, minsoo.movement);
+	if (timer <= 0)
+	{
+		sounds.music.stop();
+		is_music_playing = false;
+		current_state = State::GAME_OVER;
+	}
+}
+
+void Game::Check_bomb()
+{
+			if (minsoo.explode_count == 0)
+			{
+				for (int i{ 0 }; i < map.map.size(); i++)
+				{
+					if (map.map[i].type == Type::BOMB)
+					{
+						if (is_exit == true)
+						{
+							map.map[i].type = Type::CAN_ESCAPE;
+						}
+						else
+						{
+							map.map[i].type = Type::ROAD;
+						}
+					}
+				}
+			}
+}
+
 void Game::Move_camera(math::vec2 position)
 {
 	math::vec2 target_pos = position;
 	math::vec2 init_pos = new_pos;
-
-	//루비 먹었을때
 		if (camera_move == true)
 		{
 			if (new_pos.x > target_pos.x)
@@ -444,6 +546,7 @@ void Game::Move_camera(math::vec2 position)
 			}
 		}
 }
+
 void Game::Reset()
 {
 	timer = total_time;
@@ -460,7 +563,7 @@ void Game::Reset()
 	camera_move = false;
 	curr_timer = 0;
 	start_camera_count = false;
-
+	is_minsoo_move = false;
 	map.Set_up(curr_level);
 	minsoo.Set_up();
 	guard.Set_up(curr_level);
@@ -528,8 +631,6 @@ bool Game::Check(doodle::KeyboardButtons doodleButton)
 	return false;
 }
 
-
-
 bool Game::Check_guard(int index)  // 가드가 벽을 보고있을때 시야방향 바꾸기
 {
 
@@ -594,7 +695,7 @@ void Game::Collision_check()
 		math::vec2 pos;
 		pos = minsoo.Get_position() - Guard.position;
 		double difference = abs(pos.x) + abs(pos.y);
-		if (difference <= 0.1)
+		if (difference <= 0.5)
 		{
 			sounds.music.stop();
 			current_state = State::GAME_OVER;
@@ -674,34 +775,11 @@ void Game::set_direction(math::vec2 position, int index)
 	}
 }
 
-
-
 void Game::Set_item(doodle::KeyboardButtons button)
 {
 	switch (button)
 	{
-	case doodle::KeyboardButtons::W:
-	case doodle::KeyboardButtons::A:
-	case doodle::KeyboardButtons::S:
-	case doodle::KeyboardButtons::D:
-		if (minsoo.explode_count == 0)
-		{
-			for (int i{ 0 }; i < map.map.size(); i++)
-			{
-				if (map.map[i].type == Type::BOMB)
-				{
-					if (is_exit == true)
-					{
-						map.map[i].type = Type::CAN_ESCAPE;
-					}
-					else
-					{
-						map.map[i].type = Type::ROAD;
-					}
-				}
-			}
-		}
-		break;
+
 	case doodle::KeyboardButtons::_1:
 	{
 		if (minsoo.chew_item > 0)
@@ -816,10 +894,6 @@ void Game::Draw_radar()
 		}
 	}
 }
-
-
-
-
 
 double Game::Get_count(math::vec2 exit_pos)
 {
@@ -1217,86 +1291,6 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 #endif
 }
 
-void Game::Update_level()
-{
-	if (is_music_playing == false)
-	{
-		if (is_in_guard_sight == true)
-		{
-			sounds.SetMusic("assets/Siren.ogg", true);
-			sounds.music.play();
-			is_music_playing = true;
-		}
-		else
-		{
-			sounds.SetMusic("assets/BasicBGM.ogg", true);
-			sounds.music.play();
-			is_music_playing = true;
-		}
-	}
-	timer = total_time - static_cast<int>(doodle::ElapsedTime);
-	score = timer * (treasure_count + 1) * 10;
-	if (camera_move == false)
-		{
-			camera.Update(minsoo.Get_position());
-			minsoo.Update_position(is_minsoo_move);
-			guard.Update_position();
-			Collision_check();
-			if (is_minsoo_move == false)
-			{
-				guard.Check_watching_wall(map);
-			}
-			for (int i = 0; i < static_cast<int>(guard.guards.size()); i++)
-			{
-				if (guard.guards[i].is_trace == true && guard.guards[i].is_okay == true)
-				{
-					math::ivec2 curr_position = math::ivec2{ static_cast<int>(guard.guards[i].position.x) ,static_cast<int>(guard.guards[i].position.y) };
-
-					if (path_finding<27, 81>(map, minsoo.target_pos, curr_position).empty() != true)
-					{
-						curr_position = path_finding<27, 81>(map, minsoo.target_pos, curr_position).back().pos;
-					}
-					curr_position = math::ivec2{ static_cast<int>(guard.guards[i].position.x) ,static_cast<int>(guard.guards[i].position.y) } - curr_position;  // 페스파인딩으로 다음 갈 곳에 대한 시야 변경
-					set_direction(curr_position, i);
-				}
-			}
-			guard.Set_sight();
-		}
-	if (camera_move == true)
-	{
-		Move_camera(guard.guards.back().position);
-	}
-
-	if (guard.In_guard_sight(minsoo) != -1) //따라오고있는애가 한명은있다
-	{
-		guard.guards[guard.In_guard_sight(minsoo)].is_trace = true;
-		guard.guards[guard.In_guard_sight(minsoo)].trace_movement = 0;
-		if (is_chased_state == false)
-		{
-			is_music_playing = false;
-		}
-		is_in_guard_sight = true;
-		is_chased_state = true;
-	}
-	else // 시야에 안잡히면
-	{
-		if (is_chased_state == true)
-		{
-			is_music_playing = false;
-		}
-		is_in_guard_sight = false;
-		is_chased_state = false;
-	}
-	guard.Guard_movement_update(map, minsoo.movement);
-	if (timer <= 0)
-	{
-		sounds.music.stop();
-		is_music_playing = false;
-		current_state = State::GAME_OVER;
-	}
-
-	Radar_obtain();
-}
 
 void Game::Change_sight()
 {

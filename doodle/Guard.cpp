@@ -14,7 +14,7 @@ void Guard::Set_up(int level)
 	how_many_guards_tracing = 0;
 	if (level == static_cast<int>(State::LEVEL_1))
 	{
-		//guards.push_back(guard_info{ math::ivec2(4, 3) , Direction::UP });
+		//guards.push_back(guard_info{ math::ivec2(2, 3) , Direction::UP });
 		//guards.push_back(guard_info{ math::ivec2(8, 2), Direction::LEFT });
 		//guards.push_back(guard_info{ math::ivec2(7, 9), Direction::UP });
 		//guards.push_back(guard_info{ math::ivec2(6, 8), Direction::DOWN });

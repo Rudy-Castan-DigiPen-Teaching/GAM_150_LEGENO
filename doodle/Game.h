@@ -100,6 +100,8 @@ public:
 	void Input_level(doodle::KeyboardButtons doodleButton);
 	void Update_level();
 
+	void Check_bomb();
+
 	math::vec2 new_pos{ minsoo.Get_position() };
 	double curr_timer{ 0 };
 	bool start_camera_count{ false };
