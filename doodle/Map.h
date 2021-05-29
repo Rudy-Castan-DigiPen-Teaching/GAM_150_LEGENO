@@ -18,6 +18,7 @@ struct info
 {
 	math::ivec2 position{ 0,0 };
 	Type type{ Type::WALL };
+	int random_num;
 };
 
 
@@ -27,11 +28,31 @@ protected:
 	int block_size{ 100 };
 public:
 	doodle::Image Dog_chew{ "assets/Dog_chew.png" };
-	doodle::Image Road{ "assets/Road.png" };
-	doodle::Image Wall{ "assets/Wall.png" };
+	doodle::Image Road1{ "assets/Road1.png" };
+	doodle::Image Road2{ "assets/Road2.png" };
+	doodle::Image Road3{ "assets/Road3.png" };
 	doodle::Image Bomb{ "assets/Bomb.png" };
 	doodle::Image Breakable_wall{ "assets/Breakable_wall.png" };
 	doodle::Image Radar{ "assets/Radar.png" };
+
+	doodle::Image WallWall{ "assets/wallwall.png" };
+	doodle::Image Wall_Side_Up{ "assets/Wall_Side_Up.png" };
+	doodle::Image Wall_Side_Down{ "assets/Wall_Side_Down.png" };
+	doodle::Image Wall_Side_Left{ "assets/Wall_Side_Left.png" };
+	doodle::Image Wall_Side_Right{ "assets/Wall_Side_Right.png" };
+
+	doodle::Image Wall_Edge_1{ "assets/Wall_Edge_1.png" };
+	doodle::Image Wall_Edge_2{ "assets/Wall_Edge_2.png" };
+	doodle::Image Wall_Edge_3{ "assets/Wall_Edge_3.png" };
+	doodle::Image Wall_Edge_4{ "assets/Wall_Edge_4.png" };
+
+	doodle::Image Wall_Corner_1{ "assets/Wall_Corner_1.png" };
+	doodle::Image Wall_Corner_2{ "assets/Wall_Corner_2.png" };
+	doodle::Image Wall_Corner_3{ "assets/Wall_Corner_3.png" };
+	doodle::Image Wall_Corner_4{ "assets/Wall_Corner_4.png" };
+
+
+
 	int map_width{ 43 };
 	int map_height{ 25 };
 
@@ -39,4 +60,6 @@ public:
 	void Set_up(int level);
 	void Draw(Camera& camera);
 	vector<info> map;
+
+	doodle::Image& Set_wall(info& value);
 };
