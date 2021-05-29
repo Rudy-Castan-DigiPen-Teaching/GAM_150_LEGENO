@@ -79,8 +79,6 @@ public:
 	void Draw();
 	void Get_inputkey(doodle::KeyboardButtons doodleButton);
 	bool Check(doodle::KeyboardButtons doodleButton); // check blocks around minsoo
-	void Caught_by_guard_current(int index);
-	void Caught_by_guard_nextmove();   // if minsoo caught by guard, change state to Game Over
 	void Reset();
 	void Update();
 	bool Check_guard(int index);  // when a guard is looking a wall, change the direction
@@ -100,8 +98,9 @@ public:
 	void Input_level(doodle::KeyboardButtons doodleButton);
 	void Update_level();
 
-	void Check_bomb();
+	void Check_bomb(); //3blockss move --> pung~
 
+	void Set_Ingame_Music();
 	math::vec2 new_pos{ minsoo.Get_position() };
 	double curr_timer{ 0 };
 	bool start_camera_count{ false };

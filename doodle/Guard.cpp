@@ -14,13 +14,12 @@ void Guard::Set_up(int level)
 	how_many_guards_tracing = 0;
 	if (level == static_cast<int>(State::LEVEL_1))
 	{
-		//guards.push_back(guard_info{ math::ivec2(2, 3) , Direction::UP });
-		//guards.push_back(guard_info{ math::ivec2(8, 2), Direction::LEFT });
-		//guards.push_back(guard_info{ math::ivec2(7, 9), Direction::UP });
-		//guards.push_back(guard_info{ math::ivec2(6, 8), Direction::DOWN });
-		//guards.push_back(guard_info{ math::ivec2(11,8), Direction::UP });
-		//guards.push_back(guard_info{ math::ivec2(14, 8), Direction::RIGHT });
-		//guards.push_back(guard_info{ math::ivec2(4, 15), Direction::DOWN });
+		
+		//guards.push_back(guard_info{ math::ivec2(3, 2), Direction::LEFT });
+		//guards.push_back(guard_info{ math::ivec2(3, 3), Direction::UP });
+		//guards.push_back(guard_info{ math::ivec2(2,3), Direction::UP });
+		//guards.push_back(guard_info{ math::ivec2(11, 21), Direction::RIGHT });
+		//guards.push_back(guard_info{ math::ivec2(5, 26), Direction::DOWN });
 		//guards.push_back(guard_info{ math::ivec2(7, 16), Direction::UP });
 		//guards.push_back(guard_info{ math::ivec2(15, 17), Direction::UP });
 		//guards.push_back(guard_info{ math::ivec2(21, 9), Direction::DOWN });
@@ -409,7 +408,7 @@ void Guard::Set_sight()
 	}
 }
 
-int Guard::In_guard_sight(Minsoo minsoo)
+void Guard::Tracing_check(Minsoo minsoo)
 {
 	for (int i = 0; i < static_cast<int>(guards.size()); i++)
 	{
@@ -417,14 +416,13 @@ int Guard::In_guard_sight(Minsoo minsoo)
 		{
 			if (minsoo.Get_position() == guards[i].sight_position[j].position && guards[i].sight_position[j].is_valid == true && guards[i].is_okay == true)
 			{
-				return i;
+				guards[i].is_trace = true;
 			}
 		}
 	}
-	return -1;
 }
 
-bool Guard::Is_trace_sommeone() // 
+bool Guard::Is_trace_sommeone() 
 {
 	how_many_guards_tracing = 0;
 	for (auto& i : guards)

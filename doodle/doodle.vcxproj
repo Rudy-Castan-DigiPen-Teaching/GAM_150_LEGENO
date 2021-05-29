@@ -119,6 +119,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="WinMain.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -137,6 +138,7 @@
     </ClInclude>
     <ClInclude Include="resource.h" />
     <ClInclude Include="Sound.h" />
+    <ClInclude Include="Sprite.h" />
     <ClInclude Include="vec2.h" />
   </ItemGroup>
   <ItemGroup>

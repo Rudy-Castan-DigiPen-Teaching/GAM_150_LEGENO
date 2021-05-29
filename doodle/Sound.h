@@ -14,7 +14,7 @@ Author:
 struct Sound
 {
 public:
-     void SetUpSound();
+    void SetUpSound();
     void SetMusic(const std::string& file_path, bool isLoop);
     void LoadSound(const std::string& file_path);
     void PlaySound(const int soundType);

@@ -14,16 +14,16 @@ void Minsoo::Draw_minsu(Camera camera,[[maybe_unused]]bool camera_move)
 	switch (direction)
 	{
 	case Direction::DOWN:
-		doodle::draw_image(Minsoo_Down, (position.x + camera.Get_position().x) * block_size, (position.y + camera.Get_position().y) * block_size, block_size, block_size);
-		break;
+		doodle::draw_image(Minsoo_Down.image, (position.x + camera.Get_position().x) * block_size, (position.y + camera.Get_position().y) * block_size, block_size, block_size, Minsoo_Down.GetDrawPos().x, 0);
+		break; 
 	case Direction::UP:
-		doodle::draw_image(Minsoo_Up, (position.x + camera.Get_position().x) * block_size, (position.y + camera.Get_position().y) * block_size, block_size, block_size);
+		doodle::draw_image(Minsoo_Up.image, (position.x + camera.Get_position().x) * block_size, (position.y + camera.Get_position().y) * block_size, block_size, block_size, Minsoo_Up.GetDrawPos().x, 0);
 		break;
 	case Direction::RIGHT:
-		doodle::draw_image(Minsoo_right, (position.x + camera.Get_position().x) * block_size, (position.y + camera.Get_position().y) * block_size, block_size, block_size);
-		break;
+		doodle::draw_image(Minsoo_right.image, (position.x + camera.Get_position().x) * block_size, (position.y + camera.Get_position().y) * block_size, block_size, block_size, Minsoo_right.GetDrawPos().x, 0);
+		break; 
 	case Direction::LEFT:
-		doodle::draw_image(Minsoo_left, (position.x + camera.Get_position().x) * block_size, (position.y + camera.Get_position().y) * block_size, block_size, block_size);
+		doodle::draw_image(Minsoo_left.image, (position.x + camera.Get_position().x) * block_size, (position.y + camera.Get_position().y) * block_size, block_size, block_size, Minsoo_left.GetDrawPos().x,0);
 		break;
 	}
 
@@ -99,25 +99,31 @@ void Minsoo::Update_position(bool& is_move)
 		if (position.x > target_pos.x)
 		{
 			position.x -= doodle::DeltaTime * 2;
+			Update_allSprites();
+
 			if (position.x <= target_pos.x)
 			{
 				position.x = target_pos.x;
 				is_move = false;
 				movement++;
+				Reset_allSprites();
 				if (explode_count != 0)
 				{	
 					explode_count--;
 				}
 			}
+
 		}
 		else if (position.x < target_pos.x)
 		{
 			position.x += doodle::DeltaTime * 2;
+			Update_allSprites();
 			if (position.x >= target_pos.x)
 			{
 				position.x = target_pos.x;
 				is_move = false;
 				movement++;
+				Reset_allSprites();
 				if (explode_count != 0)
 				{
 					explode_count--;
@@ -128,11 +134,13 @@ void Minsoo::Update_position(bool& is_move)
 		else if (position.y > target_pos.y)
 		{
 			position.y -= doodle::DeltaTime * 2;
+			Update_allSprites();
 			if (position.y <= target_pos.y)
 			{
 				position.y = target_pos.y;
 				is_move = false;
 				movement++;
+				Reset_allSprites();
 				if (explode_count != 0)
 				{
 					explode_count--;
@@ -142,11 +150,13 @@ void Minsoo::Update_position(bool& is_move)
 		else if (position.y < target_pos.y)
 		{
 			position.y += doodle::DeltaTime * 2;
+			Update_allSprites();
 			if (position.y >= target_pos.y)
 			{
 				position.y = target_pos.y;
 				is_move = false;
 				movement++;
+				Reset_allSprites();
 				if (explode_count != 0)
 				{
 					explode_count--;
@@ -154,6 +164,22 @@ void Minsoo::Update_position(bool& is_move)
 			}
 		}
 	}
+}
+
+void Minsoo::Update_allSprites()
+{
+	Minsoo_left.Update();
+	Minsoo_Up.Update();
+	Minsoo_Down.Update();
+	Minsoo_right.Update();
+}
+
+void Minsoo::Reset_allSprites()
+{
+	Minsoo_left.currAnim = 0;
+	Minsoo_Up.currAnim = 0;
+	Minsoo_Down.currAnim = 0;
+	Minsoo_right.currAnim = 0;
 }
 
 math::vec2 Minsoo::Get_position()

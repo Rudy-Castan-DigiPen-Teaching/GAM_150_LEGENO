@@ -401,21 +401,6 @@ void Game::Update()
 
 void Game::Update_level()
 {
-	if (is_music_playing == false)
-	{
-		if (is_in_guard_sight == true)
-		{
-			sounds.SetMusic("assets/Siren.ogg", true);
-			sounds.music.play();
-			is_music_playing = true;
-		}
-		else
-		{
-			sounds.SetMusic("assets/BasicBGM.ogg", true);
-			sounds.music.play();
-			is_music_playing = true;
-		}
-	}
 	timer = total_time - static_cast<int>(doodle::ElapsedTime);
 	score = timer * (treasure_count + 1) * 10;
 	if (camera_move == false)
@@ -450,27 +435,8 @@ void Game::Update_level()
 	{
 		Move_camera(guard.guards.back().position);
 	}
-
-	if (guard.In_guard_sight(minsoo) != -1) //따라오고있는애가 한명은있다
-	{
-		guard.guards[guard.In_guard_sight(minsoo)].is_trace = true;
-		guard.guards[guard.In_guard_sight(minsoo)].trace_movement = 0;
-		if (is_chased_state == false)
-		{
-			is_music_playing = false;
-		}
-		is_in_guard_sight = true;
-		is_chased_state = true;
-	}
-	else // 시야에 안잡히면
-	{
-		if (is_chased_state == true)
-		{
-			is_music_playing = false;
-		}
-		is_in_guard_sight = false;
-		is_chased_state = false;
-	}
+	guard.Tracing_check(minsoo); //check position if it is in guard sight
+	Set_Ingame_Music();
 	guard.Guard_movement_update(map, minsoo.movement);
 	if (timer <= 0)
 	{
@@ -501,6 +467,35 @@ void Game::Check_bomb()
 			}
 }
 
+void Game::Set_Ingame_Music()
+{
+	if (guard.Is_trace_sommeone() == true && is_music_playing == false)
+	{
+		is_music_playing = true;
+		is_chased_state = true;
+		sounds.SetMusic("assets/Siren.ogg", true);
+		sounds.music.play();
+	}
+	if (guard.Is_trace_sommeone() == false && is_chased_state == true)
+	{
+		is_music_playing = false;
+		is_chased_state = false;
+	}
+
+	if (guard.Is_trace_sommeone() == true && is_chased_state == false)
+	{
+		is_music_playing = false;
+		is_chased_state = true;
+	}
+
+	if (guard.Is_trace_sommeone() == false && is_music_playing == false)
+	{
+		is_music_playing = true;
+		sounds.SetMusic("assets/BasicBGM.ogg", true);
+		sounds.music.play();
+	}
+}
+
 void Game::Move_camera(math::vec2 position)
 {
 	math::vec2 target_pos = position;
@@ -527,8 +522,6 @@ void Game::Move_camera(math::vec2 position)
 				new_pos.y = (target_pos.y - init_pos.y) / (target_pos.x - init_pos.x) * (new_pos.x - init_pos.x) + init_pos.y;
 			}
 			camera.Update(new_pos);
-
-
 			if (new_pos.x >= target_pos.x && new_pos.y >= target_pos.y)
 			{
 				if (start_camera_count == false)

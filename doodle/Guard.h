@@ -41,7 +41,7 @@ public:
 	void Change_sight(Map m, int index);
 	void Guard_movement_update(Map& m, int movement);
 	void Set_sight();           
-	int	 In_guard_sight(Minsoo minsoo); // when minsoo is in guard sight, return what number of guard it is.가드 시야에 있을때 몇번째 인덱스 가드인지 리턴			
+	void Tracing_check(Minsoo minsoo); // when minsoo is in guard sight, return what number of guard it is.가드 시야에 있을때 몇번째 인덱스 가드인지 리턴			
 	bool Is_trace_sommeone(); // check if there is a guard chasing minsoo 따라오는새끼 하나라도있는지                                      
 	void Update_position();
 	void Check_watching_wall(Map m);
