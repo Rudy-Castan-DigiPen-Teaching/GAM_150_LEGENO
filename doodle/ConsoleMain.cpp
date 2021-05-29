@@ -1,3 +1,11 @@
+/*--------------------------------------------------------------
+Copyright (C) 2021 DigiPen Institute of Technology.
+Reproduction or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+File Name: Collision.cpp
+Project: GAM150
+Author:
+-----------------------------------------------------------------*/
 #include "Sketch.h"
 #include <doodle/window.hpp>
 #include <exception>

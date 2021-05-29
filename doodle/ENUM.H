@@ -1,3 +1,11 @@
+/*--------------------------------------------------------------
+Copyright (C) 2021 DigiPen Institute of Technology.
+Reproduction or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+File Name: Collision.cpp
+Project: GAM150
+Author:
+-----------------------------------------------------------------*/
 #pragma once
 enum class State
 {
@@ -6,7 +14,9 @@ enum class State
 	CREDIT,
 	OPTION,
 	LEVEL_SELECT,
-	IN_GAME,
+	LEVEL_1,
+	LEVEL_2,
+	LEVEL_3,
 	CLEAR,
 	GAME_OVER
 };
@@ -41,6 +51,28 @@ enum class Direction
 
 enum class SoundType
 {
-	
+	Bite,
+	BombFuse,
+	ChewingGum,
+	CrashWall,
+	ETC,
+	Explosion,
+	FootStep,
+	GetTreasure,
+	Meow,
+	PutItem,
+	Radar,
+	RubyAppear,
+	SelectEffect,
+	SelectLimitEffect,
+	TimerTic,
+	TimesUp,
+	Win,
 };
 
+/* BGM
+* BasicBGM
+* Siren
+* MainMenuBGM
+* LevelSelectMenuBGM
+*/

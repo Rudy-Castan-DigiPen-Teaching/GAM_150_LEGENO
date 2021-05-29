@@ -1,3 +1,11 @@
+/*--------------------------------------------------------------
+Copyright (C) 2021 DigiPen Institute of Technology.
+Reproduction or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+File Name: Collision.cpp
+Project: GAM150
+Author:
+-----------------------------------------------------------------*/
 #pragma once
 #include"vec2.h"// vec2 struct
 #include"Map.h"	// Map class
@@ -26,7 +34,7 @@ struct guard_info
 class Guard : Map
 {
 public:
-	void Set_up();
+	void Set_up(int level);
 	void Draw_guard(Camera& camera);
 	void Draw_sight(Camera& camera, Map MAP);
 	void Set_position(int index);              
@@ -36,6 +44,7 @@ public:
 	int	 In_guard_sight(Minsoo minsoo); // when minsoo is in guard sight, return what number of guard it is.가드 시야에 있을때 몇번째 인덱스 가드인지 리턴			
 	bool Is_trace_sommeone(); // check if there is a guard chasing minsoo 따라오는새끼 하나라도있는지                                      
 	void Update_position();
+	void Check_watching_wall(Map m);
 	vector<guard_info> guards;
 
 private:

@@ -1,3 +1,11 @@
+/*--------------------------------------------------------------
+Copyright (C) 2021 DigiPen Institute of Technology.
+Reproduction or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+File Name: Collision.cpp
+Project: GAM150
+Author:
+-----------------------------------------------------------------*/
 #include "doodle/doodle.hpp" // doodle image & functions 
 #include "ENUM.h"	//	enum classes
 #include "Map.h"	//	Map class
@@ -23,15 +31,18 @@ class Game
 	double speed{ 10 };
 	int treasure_count{ 0 };
 	int score{ 0 };
+	double splash_timer{ 3 };
 
 	bool is_exit{ false };
 	bool is_in_guard_sight{ false };
 	bool is_music_playing{ false };
 	bool is_chased_state{ false };
+	bool is_digipen_splash_done{ false };
 
 	State current_state{ State::SPLASH };
 	int current_menu{ static_cast<int>(MenuOption::START) };
-	int curr_level{ 1 };
+	int curr_level{ static_cast<int>(State::LEVEL_1) };
+	int unlock_level{ static_cast<int>(State::LEVEL_1) };
 
 	bool camera_move{ false };
 	bool cheat_Z{ false };
@@ -41,8 +52,9 @@ class Game
 
 	bool is_guard_move = false;
 
-
+	bool is_sight_changed = false;
 	doodle::Image digipen_logo{ "assets/DigiPen_BLACK_1024px.png" };
+	doodle::Image game_logo{ "assets/Treasure_Hunter_Logo.jpg" };
 	doodle::Image clear_scene{ "assets/Clear_scene.png" };
 	doodle::Image main_menu{ "assets/MainMenu.png" };
 	doodle::Image level_select{ "assets/Level_select.png" };
@@ -77,8 +89,16 @@ public:
 	void Radar_obtain();	//when minsoo gets radar, add Exit, add Ruby, ready to show Ruby 
 	void Draw_radar();
 	void Move_camera(math::vec2 position); // camera shows Ruby for a while
-	void set_direction(math::vec2 position, int index);
 
+	void set_direction(math::vec2 position, int index);
+	void Collision_check();
+	void Change_sight();
+
+	void Draw_level1();
+	void Draw_level2();
+	void Draw_level3();
+	void Input_level(doodle::KeyboardButtons doodleButton);
+	void Update_level();
 
 	math::vec2 new_pos{ minsoo.Get_position() };
 	double curr_timer{ 0 };

@@ -1,14 +1,22 @@
+/*--------------------------------------------------------------
+Copyright (C) 2021 DigiPen Institute of Technology.
+Reproduction or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+File Name: Collision.cpp
+Project: GAM150
+Author:
+-----------------------------------------------------------------*/
 #include "Map.h"
 #include <fstream> // to load file
 #include<iostream>
 using namespace doodle;
 
-void Map::Set_up()
+void Map::Set_up(int level)
 {
     map.clear();
     std::ifstream readFile;
 
-    readFile.open("assets/Maze2.txt");
+    readFile.open("assets/Map" + to_string(level - (static_cast<int>(State::LEVEL_1) - 1)) + ".txt");
     int width = 0;
     int height = 0;
    

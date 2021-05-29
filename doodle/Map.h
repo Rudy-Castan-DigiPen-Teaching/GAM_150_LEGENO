@@ -1,3 +1,11 @@
+/*--------------------------------------------------------------
+Copyright (C) 2021 DigiPen Institute of Technology.
+Reproduction or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+File Name: Collision.cpp
+Project: GAM150
+Author:
+-----------------------------------------------------------------*/
 #pragma once
 #include<vector>	// std::vector
 #include"vec2.h"	// vec2 struct
@@ -24,11 +32,11 @@ public:
 	doodle::Image Bomb{ "assets/Bomb.png" };
 	doodle::Image Breakable_wall{ "assets/Breakable_wall.png" };
 	doodle::Image Radar{ "assets/Radar.png" };
-	int map_width{ 81 };
-	int map_height{ 27 };
+	int map_width{ 43 };
+	int map_height{ 25 };
 
 public:
-	void Set_up();
+	void Set_up(int level);
 	void Draw(Camera& camera);
 	vector<info> map;
 };

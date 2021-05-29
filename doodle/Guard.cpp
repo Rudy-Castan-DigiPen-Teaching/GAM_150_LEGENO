@@ -1,24 +1,64 @@
+/*--------------------------------------------------------------
+Copyright (C) 2021 DigiPen Institute of Technology.
+Reproduction or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+File Name: Collision.cpp
+Project: GAM150
+Author:
+-----------------------------------------------------------------*/
 #include "Guard.h"
 
-void Guard::Set_up()
+void Guard::Set_up(int level)
 {
 	guards.clear();
 	how_many_guards_tracing = 0;
-	//guards.push_back(guard_info{ math::ivec2(4, 3) , Direction::UP });
-	guards.push_back(guard_info{ math::ivec2(8, 2), Direction::LEFT });
-	//guards.push_back(guard_info{ math::ivec2(7, 9), Direction::UP });
-	//guards.push_back(guard_info{ math::ivec2(6, 8), Direction::DOWN });
-	//guards.push_back(guard_info{ math::ivec2(11,8), Direction::UP });
-	//guards.push_back(guard_info{ math::ivec2(14, 8), Direction::RIGHT });
-	//guards.push_back(guard_info{ math::ivec2(4, 15), Direction::DOWN });
-	//guards.push_back(guard_info{ math::ivec2(7, 16), Direction::UP });
-	//guards.push_back(guard_info{ math::ivec2(15, 17), Direction::UP });
-	//guards.push_back(guard_info{ math::ivec2(21, 9), Direction::DOWN });
-	//guards.push_back(guard_info{ math::ivec2(25, 9), Direction::UP });
-	//guards.push_back(guard_info{ math::ivec2(27, 11), Direction::UP });
+	if (level == static_cast<int>(State::LEVEL_1))
+	{
+		//guards.push_back(guard_info{ math::ivec2(4, 3) , Direction::UP });
+		//guards.push_back(guard_info{ math::ivec2(8, 2), Direction::LEFT });
+		//guards.push_back(guard_info{ math::ivec2(7, 9), Direction::UP });
+		//guards.push_back(guard_info{ math::ivec2(6, 8), Direction::DOWN });
+		//guards.push_back(guard_info{ math::ivec2(11,8), Direction::UP });
+		//guards.push_back(guard_info{ math::ivec2(14, 8), Direction::RIGHT });
+		//guards.push_back(guard_info{ math::ivec2(4, 15), Direction::DOWN });
+		//guards.push_back(guard_info{ math::ivec2(7, 16), Direction::UP });
+		//guards.push_back(guard_info{ math::ivec2(15, 17), Direction::UP });
+		//guards.push_back(guard_info{ math::ivec2(21, 9), Direction::DOWN });
+		//guards.push_back(guard_info{ math::ivec2(25, 9), Direction::UP });
+		//guards.push_back(guard_info{ math::ivec2(27, 11), Direction::UP });
+	}
+	else if (level == static_cast<int>(State::LEVEL_2))
+	{
+		//guards.push_back(guard_info{ math::ivec2(4, 3) , Direction::UP });
+		//guards.push_back(guard_info{ math::ivec2(8, 2), Direction::LEFT });
+		//guards.push_back(guard_info{ math::ivec2(7, 9), Direction::UP });
+		//guards.push_back(guard_info{ math::ivec2(6, 8), Direction::DOWN });
+		//guards.push_back(guard_info{ math::ivec2(11,8), Direction::UP });
+		//guards.push_back(guard_info{ math::ivec2(14, 8), Direction::RIGHT });
+		//guards.push_back(guard_info{ math::ivec2(4, 15), Direction::DOWN });
+		//guards.push_back(guard_info{ math::ivec2(7, 16), Direction::UP });
+		//guards.push_back(guard_info{ math::ivec2(15, 17), Direction::UP });
+		//guards.push_back(guard_info{ math::ivec2(21, 9), Direction::DOWN });
+		//guards.push_back(guard_info{ math::ivec2(25, 9), Direction::UP });
+		//guards.push_back(guard_info{ math::ivec2(27, 11), Direction::UP });
+	}
+	else if (level == static_cast<int>(State::LEVEL_3))
+	{
+		//guards.push_back(guard_info{ math::ivec2(4, 3) , Direction::UP });
+		//push_back(guard_info{ math::ivec2(8, 2), Direction::LEFT });
+		//guards.push_back(guard_info{ math::ivec2(7, 9), Direction::UP });
+		//guards.push_back(guard_info{ math::ivec2(6, 8), Direction::DOWN });
+		//guards.push_back(guard_info{ math::ivec2(11,8), Direction::UP });
+		//guards.push_back(guard_info{ math::ivec2(14, 8), Direction::RIGHT });
+		//guards.push_back(guard_info{ math::ivec2(4, 15), Direction::DOWN });
+		//guards.push_back(guard_info{ math::ivec2(7, 16), Direction::UP });
+		//guards.push_back(guard_info{ math::ivec2(15, 17), Direction::UP });
+		//guards.push_back(guard_info{ math::ivec2(21, 9), Direction::DOWN });
+		//guards.push_back(guard_info{ math::ivec2(25, 9), Direction::UP });
+		//guards.push_back(guard_info{ math::ivec2(27, 11), Direction::UP });
+	}
 
 	Set_sight();
-
 }
 
 void Guard::Draw_guard(Camera& camera)
@@ -89,11 +129,11 @@ void Guard::Draw_sight(Camera& camera,Map MAP)
 	{
 		for (int i = 0; i < sight_size; i++)
 		{
-			//for (auto& m : MAP.map)
+			for (auto& m : MAP.map)
 			{		
-				//if (guard.sight_position[i].position.x == m.position.x && guard.sight_position[i].position.y == m.position.y && guard.sight_position[i].is_valid == true )
+				if (static_cast<int>(guard.sight_position[i].position.x) == m.position.x && static_cast<int>(guard.sight_position[i].position.y) == m.position.y && guard.sight_position[i].is_valid == true )
 				{
-					//if (m.type == Type::ROAD)
+					if (m.type != Type::WALL)
 					{
 						switch (guard.direction)
 						{
@@ -166,13 +206,13 @@ void Guard::Draw_sight(Camera& camera,Map MAP)
 						}
 					}
 
-					//if (m.type == Type::WALL)
-					//{
-					//	while (i < sight_size)
-					//	{
-					//		guard.sight_position[i++].is_valid = false;
-					//	}
-					//}
+					if (m.type == Type::WALL)
+					{
+						while (i < sight_size)
+						{
+							guard.sight_position[i++].is_valid = false;
+						}
+					}
 				}
 			}
 		}
@@ -454,3 +494,55 @@ void Guard::Update_position()
 	
 }
 
+void Guard::Check_watching_wall(Map m)
+{
+	for (int index = 0; index < guards.size(); index++)
+	{
+		switch (guards[index].direction)
+		{
+		case Direction::UP:   //move up
+		{
+			for (auto& i : m.map)
+			{
+				if (i.position.x == guards[index].position.x && i.position.y == guards[index].position.y - 1 && i.type == Type::WALL)
+				{
+					Change_sight(m, index);
+			
+				}
+			}
+		}
+		break;
+		case Direction::DOWN:   //move down
+			for (auto& i : m.map)
+			{
+				if (i.position.x == guards[index].position.x && i.position.y == guards[index].position.y + 1 && i.type == Type::WALL)
+				{
+					Change_sight(m, index);
+		
+				}
+			}
+			break;
+		case Direction::RIGHT:   //move right
+			for (auto& i : m.map)
+			{
+				if (i.position.x == guards[index].position.x + 1 && i.position.y ==guards[index].position.y && i.type == Type::WALL)
+				{
+					Change_sight(m, index);;
+
+				}
+			}
+			break;
+		case Direction::LEFT:   //move left
+			for (auto& i : m.map)
+			{
+				if (i.position.x == guards[index].position.x - 1 && i.position.y == guards[index].position.y && i.type == Type::WALL)
+				{
+					Change_sight(m, index);
+
+				}
+			}
+			break;
+		}
+	}
+
+}
