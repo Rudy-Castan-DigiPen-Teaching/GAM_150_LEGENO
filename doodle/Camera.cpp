@@ -37,6 +37,6 @@ const math::vec2& Camera::Get_position() const
 void Camera::Update(const math::vec2& followObjPos)
 {
 	//math::vec2 hotspot = { doodle::Width/250.0,doodle::Height/250.0 };
-	math::vec2 hotspot = {doodle::Width/250.0,doodle::Height/250.0};
+	math::vec2 hotspot = {doodle::Width/220.0,doodle::Height/270.0};
 	position = -(followObjPos-hotspot);
 }
