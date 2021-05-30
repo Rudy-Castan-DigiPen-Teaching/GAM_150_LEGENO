@@ -48,6 +48,7 @@ void Minsoo::Draw_minsu(Camera camera,[[maybe_unused]]bool camera_move)
 }
 void Minsoo::Set_up()
 {
+	is_dead = false;
 	position = math::ivec2{ 2,2 };
 	movement = 0;
 	chew_item = 3;

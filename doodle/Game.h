@@ -53,6 +53,8 @@ class Game
 	bool is_guard_move = false;
 
 	bool is_sight_changed = false;
+
+	bool is_played_bite = false;
 	doodle::Image digipen_logo{ "assets/DigiPen_BLACK_1024px.png" };
 	doodle::Image game_logo{ "assets/Treasure_Hunter_Logo.jpg" };
 	doodle::Image clear_scene{ "assets/Clear_scene.png" };
@@ -98,8 +100,9 @@ public:
 	void Input_level(doodle::KeyboardButtons doodleButton);
 	void Update_level();
 
-	void Check_bomb(); //3blockss move --> pung~
+	void Explode_bomb(); //3blockss move --> pung~  Check_bomb() -> Explode_bomb()
 
+	bool Is_sound_playing();
 	void Set_Ingame_Music();
 	math::vec2 new_pos{ minsoo.Get_position() };
 	double curr_timer{ 0 };

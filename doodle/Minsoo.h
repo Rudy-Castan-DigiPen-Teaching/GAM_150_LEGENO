@@ -22,6 +22,7 @@ public:
 	math::vec2 Get_position();
 	void Set_up();
 
+	bool is_dead{ false };
 	int movement{ 0 };
 	int chew_item{ 3 };
 	int bomb_item{ 1 };

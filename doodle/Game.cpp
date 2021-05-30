@@ -325,6 +325,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 
 	case State::CLEAR:
 	{
+		sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
 		current_state = State::START;
 		if (unlock_level < static_cast<int>(State::LEVEL_3))
 		{
@@ -334,6 +335,8 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 	}
 	case State::GAME_OVER:
 	{
+		sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+		is_played_bite = false;
 		curr_level = static_cast<int>(State::LEVEL_1);
 		current_state = State::START;
 		break;
@@ -392,11 +395,19 @@ void Game::Update()
 		break;
 	}
 	case State::CLEAR:
-
+	{
 		break;
 	}
-
-
+	case State::GAME_OVER:
+	{
+		if (is_played_bite == false)
+		{
+			sounds.PlaySound(static_cast<int>(SoundType::Bite));
+			is_played_bite = true;
+		}
+		break;
+	}
+	}
 }
 
 void Game::Update_level()
@@ -413,7 +424,7 @@ void Game::Update_level()
 			{
 				guard.Check_watching_wall(map);
 				Radar_obtain();
-				Check_bomb();
+				Explode_bomb();
 			}
 			for (int i = 0; i < static_cast<int>(guard.guards.size()); i++)
 			{
@@ -438,61 +449,99 @@ void Game::Update_level()
 	guard.Tracing_check(minsoo); //check position if it is in guard sight
 	Set_Ingame_Music();
 	guard.Guard_movement_update(map, minsoo.movement);
-	if (timer <= 0)
+	if (timer < 20 && timer > 0)
 	{
+		if (Is_sound_playing() == false)
+		{
+			sounds.PlaySound(static_cast<int>(SoundType::TimerTic));
+		}
+	}
+	else if (timer <= 0)
+	{
+		sounds.PlaySound(static_cast<int>(SoundType::TimesUp));
 		sounds.music.stop();
 		is_music_playing = false;
 		current_state = State::GAME_OVER;
+
+	}
+	if (radar_start == true)
+	{
+		if (Is_sound_playing() == false)
+		{
+			sounds.PlaySound(static_cast<int>(SoundType::Radar));
+		}
+	}
+	for (auto i : guard.guards)
+	{
+		if (i.is_okay == false)
+		{
+			if (Is_sound_playing() == false)
+			{
+				sounds.PlaySound(static_cast<int>(SoundType::ChewingGum));
+			}
+		}
+
 	}
 }
 
-void Game::Check_bomb()
+void Game::Explode_bomb()
 {
+	for (int i{ 0 }; i < map.map.size(); i++)
+	{
+		if (map.map[i].type == Type::BOMB)
+		{
 			if (minsoo.explode_count == 0)
 			{
-				for (int i{ 0 }; i < map.map.size(); i++)
+				sounds.PlaySound(static_cast<int>(SoundType::Explosion));
+				if (is_exit == true)
 				{
-					if (map.map[i].type == Type::BOMB)
-					{
-						if (is_exit == true)
-						{
-							map.map[i].type = Type::CAN_ESCAPE;
-						}
-						else
-						{
-							map.map[i].type = Type::ROAD;
-						}
-					}
+					map.map[i].type = Type::CAN_ESCAPE;
+				}
+				else
+				{
+					map.map[i].type = Type::ROAD;
 				}
 			}
+			else
+			{
+				if (Is_sound_playing() == false)
+				{
+					sounds.PlaySound(static_cast<int>(SoundType::BombFuse));
+				}
+			}
+		}
+	}
 }
 
 void Game::Set_Ingame_Music()
 {
-	if (guard.Is_trace_sommeone() == true && is_music_playing == false)
+	if (minsoo.is_dead == false)
 	{
-		is_music_playing = true;
-		is_chased_state = true;
-		sounds.SetMusic("assets/Siren.ogg", true);
-		sounds.music.play();
-	}
-	if (guard.Is_trace_sommeone() == false && is_chased_state == true)
-	{
-		is_music_playing = false;
-		is_chased_state = false;
-	}
+		if (guard.Is_trace_sommeone() == true && is_music_playing == false)
+		{
+			is_music_playing = true;
+			is_chased_state = true;
+			sounds.SetMusic("assets/Siren.ogg", true);
+			sounds.music.play();
+		}
+		if (guard.Is_trace_sommeone() == false && is_chased_state == true)
+		{
+			is_music_playing = false;
+			is_chased_state = false;
+		}
 
-	if (guard.Is_trace_sommeone() == true && is_chased_state == false)
-	{
-		is_music_playing = false;
-		is_chased_state = true;
-	}
+		if (guard.Is_trace_sommeone() == true && is_chased_state == false)
+		{
+			is_music_playing = false;
+			is_chased_state = true;
+		}
 
-	if (guard.Is_trace_sommeone() == false && is_music_playing == false)
-	{
-		is_music_playing = true;
-		sounds.SetMusic("assets/BasicBGM.ogg", true);
-		sounds.music.play();
+		if (guard.Is_trace_sommeone() == false && is_music_playing == false)
+		{
+			is_music_playing = true;
+			sounds.SetMusic("assets/BasicBGM.ogg", true);
+			sounds.music.play();
+		}
 	}
 }
 
@@ -553,6 +602,7 @@ void Game::Reset()
 	is_in_guard_sight = false;
 	is_music_playing = false;
 	is_chased_state = false;
+	is_played_bite = false;
 	camera_move = false;
 	curr_timer = 0;
 	start_camera_count = false;
@@ -602,6 +652,7 @@ bool Game::Check(doodle::KeyboardButtons doodleButton)
 	{
 		if (map.map[i].position == position && map.map[i].type == Type::WALL)
 		{
+			sounds.PlaySound(static_cast<int>(SoundType::CrashWall));
 			return true;
 		}
 		else if (map.map[i].position == position && map.map[i].type == Type::RADAR)
@@ -611,12 +662,15 @@ bool Game::Check(doodle::KeyboardButtons doodleButton)
 		}
 		else if (map.map[i].position == position && map.map[i].type == Type::TREASURE)
 		{
+			sounds.PlaySound(static_cast<int>(SoundType::GetTreasure));
 			map.map[i].type = Type::ROAD;
 			treasure_count++;
 		}
 		else if (map.map[i].position == position && map.map[i].type == Type::CAN_ESCAPE)
 		{
+			sounds.PlaySound(static_cast<int>(SoundType::Win));
 			sounds.music.stop();
+			is_music_playing = false;
 			current_state = State::CLEAR;
 			return true;
 		}
@@ -680,17 +734,15 @@ void Game::Collision_check()
 {
 	for (auto& Guard : guard.guards)
 	{
-		if (minsoo.Get_position() == Guard.position) //가드포지션이랑 민수포지션 같으면 게임오버
-		{
-			sounds.music.stop();
-			current_state = State::GAME_OVER;
-		}
 		math::vec2 pos;
 		pos = minsoo.Get_position() - Guard.position;
 		double difference = abs(pos.x) + abs(pos.y);
 		if (difference <= 0.5)
 		{
+			sounds.PlaySound(static_cast<int>(SoundType::Meow));
 			sounds.music.stop();
+			is_music_playing = false;
+			minsoo.is_dead = true;
 			current_state = State::GAME_OVER;
 		}
 	}
@@ -781,6 +833,7 @@ void Game::Set_item(doodle::KeyboardButtons button)
 			{
 				if (map.map[i].position == minsoo.Get_position())
 				{
+					sounds.PlaySound(static_cast<int>(SoundType::PutItem));
 					map.map[i].type = Type::DOG_CHEW;
 					minsoo.chew_item--;
 				}
@@ -796,8 +849,7 @@ void Game::Set_item(doodle::KeyboardButtons button)
 			{
 				if (map.map[i].position == minsoo.Get_position())
 				{
-
-
+					sounds.PlaySound(static_cast<int>(SoundType::PutItem));
 					if (map.map[i].type == Type::EXIT)
 					{
 						is_exit = true;
@@ -815,6 +867,7 @@ void Game::Set_item(doodle::KeyboardButtons button)
 	}
 }
 
+// 레이더 빨라지는게 어딘지는 모르겠는데 sounds.sounds[static_cast<int>(SoundType::Radar)].setVolume() 이런식으로 조정하면 될듯
 void Game::Radar_obtain()
 {
 	if (did_abtain_radar == true)
@@ -1230,6 +1283,7 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 		{
 				if (is_minsoo_move == false)
 				{
+					sounds.PlaySound(static_cast<int>(SoundType::FootStep));
 					minsoo.Set_position(doodleButton);
 
 					is_minsoo_move = true;
@@ -1277,6 +1331,7 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 	}
 	if (doodleButton == doodle::KeyboardButtons::K)
 	{
+		sounds.PlaySound(static_cast<int>(SoundType::Win));
 		sounds.music.stop();
 		current_state = State::CLEAR;
 		is_music_playing = false;
@@ -1304,4 +1359,17 @@ void Game::Change_sight()
 		}
 		is_sight_changed = true;
 	}
+}
+
+bool Game::Is_sound_playing()
+{
+	for (auto& s : sounds.sounds)
+	{
+		if (s.getStatus() == sf::SoundSource::Playing)
+		{
+			return true;
+		}
+	}
+	return false;
+	//return sounds.sounds[soundType].getStatus() == sf::SoundSource::Playing;
 }

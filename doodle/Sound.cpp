@@ -16,14 +16,12 @@ void Sound::SetUpSound()
     LoadSound("assets/BombFuse.ogg");
     LoadSound("assets/ChewingGum.ogg");
     LoadSound("assets/CrashWall.ogg");
-    LoadSound("assets/ETC.ogg");
     LoadSound("assets/Explosion.ogg");
     LoadSound("assets/FootStep.ogg");
     LoadSound("assets/GetTreasure.ogg");
     LoadSound("assets/Meow.ogg");
     LoadSound("assets/PutItem.ogg");
     LoadSound("assets/Radar.ogg");
-    LoadSound("assets/RubyAppear.ogg");
     LoadSound("assets/SelectEffect.ogg");
     LoadSound("assets/SelectLimitEffect.ogg");
     LoadSound("assets/TimerTic.ogg");
