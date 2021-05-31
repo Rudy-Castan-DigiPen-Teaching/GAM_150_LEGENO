@@ -16,11 +16,9 @@ void Guard::Set_up(int level)
 	{
 		
 		guards.push_back(guard_info{ math::ivec2(3, 2), Direction::LEFT });
-		//guards.push_back(guard_info{ math::ivec2(3, 3), Direction::UP });
-		//guards.push_back(guard_info{ math::ivec2(2,3), Direction::UP });
-		//guards.push_back(guard_info{ math::ivec2(11, 21), Direction::RIGHT });
-		//guards.push_back(guard_info{ math::ivec2(5, 26), Direction::DOWN });
-		//guards.push_back(guard_info{ math::ivec2(7, 16), Direction::UP });
+		guards.push_back(guard_info{ math::ivec2(6, 3), Direction::DOWN });
+		guards.push_back(guard_info{ math::ivec2(7, 16), Direction::UP });
+		//guards.push_back(guard_info{ math::ivec2(11, 21), Direction::LEFT });
 		//guards.push_back(guard_info{ math::ivec2(15, 17), Direction::UP });
 		//guards.push_back(guard_info{ math::ivec2(21, 9), Direction::DOWN });
 		//guards.push_back(guard_info{ math::ivec2(25, 9), Direction::UP });

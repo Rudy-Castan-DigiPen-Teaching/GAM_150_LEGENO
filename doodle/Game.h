@@ -32,6 +32,8 @@ class Game
 	int treasure_count{ 0 };
 	int score{ 0 };
 	double splash_timer{ 3 };
+	double screen_pos = doodle::Width;
+
 
 	bool is_exit{ false };
 	bool is_in_guard_sight{ false };
