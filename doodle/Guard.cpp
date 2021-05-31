@@ -15,7 +15,7 @@ void Guard::Set_up(int level)
 	if (level == static_cast<int>(State::LEVEL_1))
 	{
 		
-		guards.push_back(guard_info{ math::ivec2(3, 2), Direction::LEFT });
+		guards.push_back(guard_info{ math::ivec2(3, 2), Direction::DOWN });
 		guards.push_back(guard_info{ math::ivec2(6, 3), Direction::DOWN });
 		guards.push_back(guard_info{ math::ivec2(7, 16), Direction::UP });
 		//guards.push_back(guard_info{ math::ivec2(11, 21), Direction::LEFT });
