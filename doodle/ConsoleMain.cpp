@@ -26,7 +26,12 @@ try
     while (!doodle::is_window_closed())
     {
         doodle::update_window();
+
         game.Update();
+        //if (doodle::Width != 1200)
+        //{
+        //    doodle::create_window(1200, 800);
+        //}
         game.Draw();
     }
     return 0;
@@ -42,3 +47,7 @@ void on_key_pressed(doodle::KeyboardButtons doodleButton)
         doodleButton = doodle::KeyboardButtons::None;
 }
 
+//void on_window_resized(int new_width, int new_height)
+//{
+//
+//}

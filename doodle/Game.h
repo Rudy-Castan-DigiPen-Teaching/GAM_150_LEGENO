@@ -76,7 +76,6 @@ class Game
 	doodle::Image sound2{ "assets/Sound2.png" };
 	doodle::Image sound3{ "assets/Sound3.png" };
 	doodle::Image sound4{ "assets/Sound4.png" };
-
 	double Get_count(math::vec2 exit_pos);
 public:
 	void Set_up();

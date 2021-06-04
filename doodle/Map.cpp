@@ -57,6 +57,7 @@ void Map::Set_up(int level)
         int rand = doodle::random(0, 15);
         i.random_num = rand;
     }
+    bomb_target_time = 2;
 }
 
 doodle::Image& Map::Set_wall(info& value)
@@ -274,9 +275,7 @@ void Map::Draw(Camera& camera)
             break;
         case Type::DOG_CHEW:
             push_settings();
-
             draw_image(Road2, (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
-
             draw_image(Dog_chew, (i.position.x + camera.Get_position().x) * block_size, (i.position.y + camera.Get_position().y) * block_size, block_size, block_size);
             pop_settings();
             break;
@@ -290,11 +289,17 @@ void Map::Draw(Camera& camera)
             pop_settings();
             break;
         case Type::CAN_ESCAPE:
-            push_settings();
-            set_fill_color(200, 40, 200);
-            set_outline_width(1);
-            set_outline_color(255);
-            draw_rectangle((i.position.x + camera.Get_position().x) * block_size, (i.position.y + camera.Get_position().y) * block_size, block_size);
+            push_settings();          
+            bomb_target_time -= doodle::DeltaTime;
+            //draw_image(Road2, (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
+            //여기 출구 그리기!
+            draw_image(Explode.image, (i.position.x + camera.Get_position().x) * block_size, (i.position.y + camera.Get_position().y) * block_size, block_size,block_size,Explode.GetDrawPos().x,0);
+            Explode.Update();
+            if (bomb_target_time < 0)
+            {
+                Explode.currAnim = 0;
+                draw_image(Road2, (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
+            }
             pop_settings();
             break;
         }

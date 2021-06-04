@@ -102,12 +102,14 @@ void Game::Draw()
 	case State::LEVEL_2:
 	{
 		Draw_level2();
+		Draw_radar();
 		break;
 	}
 
 	case State::LEVEL_3:
 	{
 		Draw_level3();
+		Draw_radar();
 		break;
 	}
 
@@ -349,6 +351,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 
 void Game::Update()
 {
+
 	switch (current_state)
 	{
 	case State::SPLASH:
@@ -524,10 +527,22 @@ void Game::Explode_bomb()
 
 		if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::CAN_ESCAPE)
 		{
+
 			sounds.PlaySound(static_cast<int>(SoundType::Win));
 			sounds.music.stop();
-			is_music_playing = false;
 			current_state = State::CLEAR;
+		}
+
+		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::RADAR)
+		{
+			map.map[i].type = Type::ROAD;
+			did_abtain_radar = true;
+		}
+		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::TREASURE)
+		{
+			sounds.PlaySound(static_cast<int>(SoundType::GetTreasure));
+			map.map[i].type = Type::ROAD;
+			treasure_count++;
 		}
 	}
 }
@@ -660,31 +675,19 @@ bool Game::Check(doodle::KeyboardButtons doodleButton)
 	default:
 		return true;
 	}
-
-	if (cheat_Z == true)
-	{
-		return false;
-	}
-
-	for (int i{ 0 }; i < map.map.size(); i++)
+	for (int i = 0; i < map.map.size(); i++)
 	{
 		if (map.map[i].position == position && map.map[i].type == Type::WALL)
 		{
 			sounds.PlaySound(static_cast<int>(SoundType::CrashWall));
 			return true;
 		}
-		else if (map.map[i].position == position && map.map[i].type == Type::RADAR)
-		{ 
-			map.map[i].type = Type::ROAD;
-			did_abtain_radar = true;
-		}
-		else if (map.map[i].position == position && map.map[i].type == Type::TREASURE)
-		{
-			sounds.PlaySound(static_cast<int>(SoundType::GetTreasure));
-			map.map[i].type = Type::ROAD;
-			treasure_count++;
-		}
 	}
+	if (cheat_Z == true)
+	{
+		return false;
+	}
+
 	return false;
 }
 
@@ -1187,7 +1190,15 @@ void Game::Draw_level1()
 	if (guard.Is_trace_sommeone() == true) // 한명이라도 따라오는애 있으면 
 	{
 		push_settings();
-		if (timer % 2 == 0)  // 1초마다 화면 빨간색 넣기
+		static bool red_screen = false;
+		static double target_time = 0;
+		target_time += doodle::DeltaTime;
+		if (target_time > 0.5)
+		{
+			red_screen = !red_screen;
+			target_time = 0;
+		}
+		if (red_screen == true)  // 1초마다 화면 빨간색 넣기
 		{
 			set_fill_color(255, 0, 0, 100);
 			draw_rectangle(0, 0, Width, Height);

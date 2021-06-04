@@ -17,6 +17,7 @@ enum class State
 	LEVEL_1,
 	LEVEL_2,
 	LEVEL_3,
+	PAUSE,
 	CLEAR,
 	GAME_OVER
 };

@@ -12,6 +12,7 @@ Author:
 #include "ENUM.h"	// enum classes
 #include "Camera.h"	// Camera class
 #include"doodle/doodle.hpp" // doodle image & draw functions 
+#include"Sprite.h"
 using namespace std;
 
 struct info
@@ -51,11 +52,11 @@ public:
 	doodle::Image Wall_Corner_3{ "assets/Wall_Corner_3.png" };
 	doodle::Image Wall_Corner_4{ "assets/Wall_Corner_4.png" };
 
-
+	Sprite Explode{ "assets/hit.png",4,0.1 };
 
 	int map_width{ 43 };
 	int map_height{ 25 };
-
+	double bomb_target_time = 2;
 public:
 	void Set_up(int level);
 	void Draw(Camera& camera);

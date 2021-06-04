@@ -1,3 +1,4 @@
+#pragma once
 #include"vec2.h"// vec2 struct
 #include"doodle/doodle.hpp"	// doodle image & functions 
 
@@ -9,7 +10,7 @@ public:
     void Load(const std::filesystem::path& spriteInfoFile);
     void Update();
     void PlayAnimation(int anim);
- 
+    
     bool IsAnimationDone();
     //int GetCurrentAnim();
     math::ivec2 GetHotSpot(int index);
