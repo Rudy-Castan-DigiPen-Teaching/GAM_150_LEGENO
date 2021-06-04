@@ -30,6 +30,13 @@ enum class MenuOption
 	OPTION,
 };
 
+enum class PauseOption
+{
+	SOUND,
+	RESTART,
+	MAIN_MENU,
+};
+
 enum class Type
 {
 	WALL,
