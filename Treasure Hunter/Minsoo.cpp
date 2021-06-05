@@ -27,21 +27,18 @@ void Minsoo::Draw_minsu(Camera camera,[[maybe_unused]]bool camera_move)
 		break;
 	}
 
-#ifdef _DEBUG
-#else
-	if (camera_move == false)
-	{
-		doodle::push_settings();
-		for (int i{ 0 }; i < 200; i++)
-		{
-			doodle::no_fill();
-			doodle::set_outline_width(100);
-			doodle::set_outline_color(0);
-			doodle::draw_ellipse((position.x + 0.5 + camera.Get_position().x) * block_size, (position.y + 0.5 + camera.Get_position().y) * block_size, 350 + i * 10.0);
-		}
-		doodle::pop_settings();
-	}
-#endif
+//#ifdef _DEBUG
+//#else
+//		doodle::push_settings();
+//		for (int i{ 0 }; i < 200; i++)
+//		{
+//			doodle::no_fill();
+//			doodle::set_outline_width(100);
+//			doodle::set_outline_color(0);
+//			doodle::draw_ellipse((position.x + 0.5 + camera.Get_position().x) * block_size, (position.y + 0.5 + camera.Get_position().y) * block_size, 350 + i * 10.0);
+//		}
+//		doodle::pop_settings();
+//#endif
 
 
 	doodle::draw_text(to_string(movement),0,80);
@@ -100,14 +97,13 @@ void Minsoo::Update_position(bool& is_move)
 		if (position.x > target_pos.x)
 		{
 			position.x -= doodle::DeltaTime * 2;
-			Update_allSprites();
-
+			Minsoo_left.Update();
 			if (position.x <= target_pos.x)
 			{
 				position.x = target_pos.x;
 				is_move = false;
 				movement++;
-				Reset_allSprites();
+				Minsoo_left.currAnim = 0;
 				if (explode_count != 0)
 				{	
 					explode_count--;
@@ -118,13 +114,13 @@ void Minsoo::Update_position(bool& is_move)
 		else if (position.x < target_pos.x)
 		{
 			position.x += doodle::DeltaTime * 2;
-			Update_allSprites();
+			Minsoo_right.Update();
 			if (position.x >= target_pos.x)
 			{
 				position.x = target_pos.x;
 				is_move = false;
 				movement++;
-				Reset_allSprites();
+				Minsoo_right.currAnim = 0;
 				if (explode_count != 0)
 				{
 					explode_count--;
@@ -135,13 +131,13 @@ void Minsoo::Update_position(bool& is_move)
 		else if (position.y > target_pos.y)
 		{
 			position.y -= doodle::DeltaTime * 2;
-			Update_allSprites();
+			Minsoo_Up.Update();
 			if (position.y <= target_pos.y)
 			{
 				position.y = target_pos.y;
 				is_move = false;
 				movement++;
-				Reset_allSprites();
+				Minsoo_Up.currAnim = 0;
 				if (explode_count != 0)
 				{
 					explode_count--;
@@ -151,13 +147,13 @@ void Minsoo::Update_position(bool& is_move)
 		else if (position.y < target_pos.y)
 		{
 			position.y += doodle::DeltaTime * 2;
-			Update_allSprites();
+			Minsoo_Down.Update();
 			if (position.y >= target_pos.y)
 			{
 				position.y = target_pos.y;
 				is_move = false;
 				movement++;
-				Reset_allSprites();
+				Minsoo_Down.currAnim = 0;
 				if (explode_count != 0)
 				{
 					explode_count--;
@@ -165,22 +161,6 @@ void Minsoo::Update_position(bool& is_move)
 			}
 		}
 	}
-}
-
-void Minsoo::Update_allSprites()
-{
-	Minsoo_left.Update();
-	Minsoo_Up.Update();
-	Minsoo_Down.Update();
-	Minsoo_right.Update();
-}
-
-void Minsoo::Reset_allSprites()
-{
-	Minsoo_left.currAnim = 0;
-	Minsoo_Up.currAnim = 0;
-	Minsoo_Down.currAnim = 0;
-	Minsoo_right.currAnim = 0;
 }
 
 math::vec2 Minsoo::Get_position()

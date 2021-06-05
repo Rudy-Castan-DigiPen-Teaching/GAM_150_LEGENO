@@ -34,6 +34,7 @@ public:
 	doodle::Image Road3{ "assets/Road3.png" };
 	doodle::Image Bomb{ "assets/Bomb.png" };
 	doodle::Image Breakable_wall{ "assets/Breakable_wall.png" };
+	doodle::Image Escape{ "assets/Escape.png" };
 	doodle::Image Radar{ "assets/Radar.png" };
 
 	doodle::Image WallWall{ "assets/wallwall.png" };
@@ -52,7 +53,9 @@ public:
 	doodle::Image Wall_Corner_3{ "assets/Wall_Corner_3.png" };
 	doodle::Image Wall_Corner_4{ "assets/Wall_Corner_4.png" };
 
-	Sprite Explode{ "assets/hit.png",4,0.1 };
+	
+
+	Sprite Explode{ "assets/hit.png",4,0.01 };
 
 	int map_width{ 43 };
 	int map_height{ 25 };

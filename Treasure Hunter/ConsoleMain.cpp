@@ -15,7 +15,6 @@ Author:
 #include "doodle/doodle.hpp"
 #include"Game.h"
 
-
 Game game;
 int main(void)
 try
@@ -28,10 +27,6 @@ try
         doodle::update_window();
 
         game.Update();
-        //if (doodle::Width != 1200)
-        //{
-        //    doodle::create_window(1200, 800);
-        //}
         game.Draw();
     }
     return 0;
@@ -43,11 +38,7 @@ catch (std::exception& e)
 }
 void on_key_pressed(doodle::KeyboardButtons doodleButton)
 {
-        game.Get_inputkey(doodleButton);
-        doodleButton = doodle::KeyboardButtons::None;
+     game.Get_inputkey(doodleButton);
+     doodleButton = doodle::KeyboardButtons::None;
 }
 
-//void on_window_resized(int new_width, int new_height)
-//{
-//
-//}

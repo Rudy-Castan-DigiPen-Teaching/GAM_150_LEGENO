@@ -51,9 +51,9 @@ void Game::Draw()
 		switch (current_menu)
 		{
 			case static_cast<int>(MenuOption::START) : doodle::draw_image(start_button, 0, 0, Width, Height); break;
-				case static_cast<int>(MenuOption::QUIT) : doodle::draw_image(quit_button, 0, 0, Width, Height); break;
-					case static_cast<int>(MenuOption::CREDIT) : doodle::draw_image(credit_button, 0, 0, Width, Height); break;
-						case static_cast<int>(MenuOption::OPTION) : doodle::draw_image(option_button, 0, 0, Width, Height); break;
+			case static_cast<int>(MenuOption::QUIT) : doodle::draw_image(quit_button, 0, 0, Width, Height); break;
+			case static_cast<int>(MenuOption::CREDIT) : doodle::draw_image(credit_button, 0, 0, Width, Height); break;
+			case static_cast<int>(MenuOption::OPTION) : doodle::draw_image(option_button, 0, 0, Width, Height); break;
 		}
 		break;
 	}
@@ -99,26 +99,42 @@ void Game::Draw()
 		break;
 	}
 
-	case State::LEVEL_2:
+	case State::LEVEL_2:   ////draw level1 통일 ㄱㄴ?
 	{
-		Draw_level2();
+		Draw_level1();
 		Draw_radar();
 		break;
 	}
-
-	case State::LEVEL_3:
+	 
+	case State::LEVEL_3:   ////draw level1 통일 ㄱㄴ?
 	{
-		Draw_level3();
+		Draw_level1();
 		Draw_radar();
 		break;
 	}
 	case State::PAUSE:
 	{
-		switch (current_menu)
+
+		doodle::draw_image(Pause_screen, 0, 0, Width, Height);
+		switch (static_cast<int>(current_volume))
 		{
-			case static_cast<int>(PauseOption::SOUND) : draw_text("Pausing Now~ : SOUND", 100.0, Height * 0.5); break;
-				case static_cast<int>(PauseOption::RESTART) : draw_text("Pausing Now~ : RESTART", 100.0, Height * 0.5); break;
-					case static_cast<int>(PauseOption::MAIN_MENU) : draw_text("Pausing Now~ : MAINMENU", 100.0, Height * 0.5); break;
+		 case 25: doodle::draw_image(pause_sound1, 0, 0, Width, Height); break;
+		 case 50: doodle::draw_image(pause_sound2, 0, 0, Width, Height); break;
+		 case 75: doodle::draw_image(pause_sound3, 0, 0, Width, Height); break;
+		 case 100: doodle::draw_image(pause_sound4, 0, 0, Width, Height); break;
+		}
+		switch (current_menu)
+		{		
+			case static_cast<int>(PauseOption::RESTART) : 
+			{
+				doodle::draw_image(Pause_Restart, 0, 0, Width, Height);
+				break;
+			}
+			case static_cast<int>(PauseOption::MAIN_MENU) : 
+			{ 
+				doodle::draw_image(Pause_Quit, 0, 0, Width, Height);
+				break;
+			}
 		}
 		break;
 	}
@@ -254,7 +270,6 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			current_state = previous_state;
 		}
 		break;
-
 	case State::LEVEL_SELECT:  //todo 1레벨 클리어 해야지 2렙갈수있는거
 	{
 		if (doodleButton == doodle::KeyboardButtons::Up)
@@ -358,14 +373,9 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 		if (doodleButton == doodle::KeyboardButtons::Enter)
 		{
 			sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+
 			switch (current_menu)
 			{
-				case static_cast<int>(PauseOption::SOUND) :
-				{
-					previous_state = current_state;
-					current_state = State::OPTION;
-					break;
-				}
 				case static_cast<int>(PauseOption::RESTART) :
 				{
 					switch (curr_level)
@@ -418,6 +428,38 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			else
 			{
 				sounds.PlaySound(static_cast<int>(SoundType::SelectLimitEffect));
+			}
+		}
+		else if (doodleButton == doodle::KeyboardButtons::Right)
+		{
+			if (current_menu == static_cast<int>(PauseOption::SOUND))
+			{
+				if (current_volume < 100)
+				{
+					sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+					current_volume += 25;
+					sounds.music.setVolume(current_volume);
+				}
+				else
+				{
+					sounds.PlaySound(static_cast<int>(SoundType::SelectLimitEffect));
+				}
+			}
+		}
+		else if (doodleButton == doodle::KeyboardButtons::Left)
+		{
+			if (current_menu == static_cast<int>(PauseOption::SOUND))
+			{
+				if (current_volume > 0)
+				{
+					sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+					current_volume -= 25;
+					sounds.music.setVolume(current_volume);
+				}
+				else
+				{
+					sounds.PlaySound(static_cast<int>(SoundType::SelectLimitEffect));
+				}
 			}
 		}
 		break;
@@ -1008,9 +1050,6 @@ void Game::Draw_radar()
 {
 	if (radar_start == true)
 	{
-		set_fill_color(0, 255, 0);
-		draw_rectangle(100 * 9.0, 100 * 0, 100);
-
 		math::ivec2 exit_pos;
 		for (auto& m : map.map)
 		{
@@ -1031,7 +1070,7 @@ void Game::Draw_radar()
 		}
 
 		double off_spd = offset * speed;
-		draw_image(map.Radar, 100 * 9.0 + (off_spd / 2), 100 * 0 + (off_spd / 2), 100 - off_spd, 100 - off_spd);
+		draw_image(map.Radar, Width * 0.035 + (off_spd / 2), Height * 0.8 + (off_spd / 2), 100 - off_spd, 100 - off_spd);
 		if (make_radar_big == false)
 		{
 			off_spd = ++offset * speed;
@@ -1268,15 +1307,60 @@ void Game::Draw_level1()
 	guard.Draw_guard(camera);
 	guard.Draw_sight(camera, map);
 	minsoo.Draw_minsu(camera, camera_move);
+	doodle::draw_image(Sight_limit, (minsoo.Get_position().x + camera.Get_position().x-1), (minsoo.Get_position().y + camera.Get_position().y-20));
+	draw_image(UI, 0, 0, doodle::Width, doodle::Height);
+
+	switch (minsoo.chew_item)
+	{
+	case 1: 
+	{	
+		draw_image(Chew_num1, 0, 0, doodle::Width, doodle::Height);
+		break; 
+	}
+	case 2:
+	{
+		draw_image(Chew_num2, 0, 0, doodle::Width, doodle::Height);
+		break;
+	}
+	case 3:	
+	{
+		draw_image(Chew_num3, 0, 0, doodle::Width, doodle::Height);
+		break;
+	} 
+	default:
+		break;
+	}
+
+	switch (minsoo.bomb_item)
+	{
+	case 1:
+	{
+		draw_image(Bomb_num1, 0, 0, doodle::Width, doodle::Height);
+		break;
+	}
+	case 2:
+	{
+		draw_image(Bomb_num2, 0, 0, doodle::Width, doodle::Height);
+		break;
+	}
+	case 3:
+	{
+		draw_image(Bomb_num3, 0, 0, doodle::Width, doodle::Height);
+		break;
+	}
+	default:
+		break;
+	}
+
 	draw_text(std::to_string(treasure_count), 500, 80);
 
 	push_settings();
 	set_outline_width(5);
 	set_outline_color(0);
 	set_fill_color(255);
-	draw_ellipse(200, 50, 100);
+	draw_ellipse(85, 100, 100);
 	set_outline_color(255, 0, 0);
-	draw_line(200, 50, 200 + 50 * sin((PI / 50) * (100 - static_cast<double>(timer))), 50 + 50 * cos((PI) * ((static_cast<double>(timer)) / 50 - 1)));
+	draw_line(85, 100, 85 + 50 * sin((PI / 50) * (100 - static_cast<double>(timer))), 100 + 50 * cos((PI) * ((static_cast<double>(timer)) / 50 - 1)));
 
 	set_font_size(30);
 #ifdef _DEBUG
@@ -1288,21 +1372,8 @@ void Game::Draw_level1()
 	pop_settings();
 	if (guard.Is_trace_sommeone() == true) // 한명이라도 따라오는애 있으면 
 	{
-		push_settings();
-		static bool red_screen = false;
-		static double target_time = 0;
-		target_time += doodle::DeltaTime;
-		if (target_time > 0.5)
-		{
-			red_screen = !red_screen;
-			target_time = 0;
-		}
-		if (red_screen == true)  // 1초마다 화면 빨간색 넣기
-		{
-			set_fill_color(255, 0, 0, 100);
-			draw_rectangle(0, 0, Width, Height);
-		}
-		doodle::pop_settings();
+		draw_image(Siren_sprite.image, 500,100, Siren_sprite.GetFrameSize().x, Siren_sprite.GetFrameSize().y, Siren_sprite.GetDrawPos().x, 0);
+		Siren_sprite.Update();
 	}
 }
 

@@ -14,6 +14,7 @@ Author:
 #include "Sound.h"	//	Sound class
 #include "Camera.h"	//	Camera class
 #include<cmath>    //abs
+#include"Sprite.h" //animation
 class Game
 {
 	Sound sounds;
@@ -79,6 +80,27 @@ class Game
 	doodle::Image sound2{ "assets/Sound2.png" };
 	doodle::Image sound3{ "assets/Sound3.png" };
 	doodle::Image sound4{ "assets/Sound4.png" };
+	doodle::Image pause_sound1{ "assets/pause_volume1.png" };
+	doodle::Image pause_sound2{ "assets/pause_volume2.png" };
+	doodle::Image pause_sound3{ "assets/pause_volume3.png" };
+	doodle::Image pause_sound4{ "assets/pause_volume4.png" };
+	doodle::Image UI{ "assets/UI.png" };
+	doodle::Image Pause_screen{ "assets/Pause_screen.png" };
+	doodle::Image Pause_Restart{ "assets/Pause_Restart.png" };
+	doodle::Image Pause_Quit{ "assets/Pause_Quit.png" };
+
+	doodle::Image Chew_num1{ "assets/chew_num1.png" };
+	doodle::Image Chew_num2{ "assets/chew_num2.png" };
+	doodle::Image Chew_num3{ "assets/chew_num3.png" };
+
+	doodle::Image Bomb_num1{ "assets/bomb_num1.png" };
+	doodle::Image Bomb_num2{ "assets/bomb_num2.png" };
+	doodle::Image Bomb_num3{ "assets/bomb_num3.png" };
+
+	doodle::Image Sight_limit{ "assets/Sight_limit.png" };
+
+	Sprite Siren_sprite{ "assets/siren_sprite.png",9,0.05 };
+
 	double Get_count(math::vec2 exit_pos);
 public:
 	void Set_up();

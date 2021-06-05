@@ -21,6 +21,11 @@ void Sprite::Update()
 	}
 }
 
+math::ivec2 Sprite::GetFrameSize() const
+{
+	return frameSize;
+}
+
 math::ivec2 Sprite::GetDrawPos()
 {
 	math::ivec2 pos;

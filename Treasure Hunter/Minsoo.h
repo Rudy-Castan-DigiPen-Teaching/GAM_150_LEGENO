@@ -17,8 +17,6 @@ public:
 	void Draw_minsu(Camera camera, bool camera_move);
 	void Set_position(doodle::KeyboardButtons button);
 	void Update_position(bool& is_move);
-	void Update_allSprites();
-	void Reset_allSprites();
 	math::vec2 Get_position();
 	void Set_up();
 
