@@ -23,7 +23,6 @@ class Game
 	Camera camera;
 
 	int timer{ 100 };
-	double pause_timer{ 0 };
 	const int total_time{ 100 };
 	bool did_abtain_radar{ false };
 	bool radar_start{ false };
@@ -41,10 +40,8 @@ class Game
 	bool is_music_playing{ false };
 	bool is_chased_state{ false };
 	bool is_digipen_splash_done{ false };
-	bool is_paused{ false };
 
 	State current_state{ State::SPLASH };
-	State previous_state{ State::SPLASH };
 	int current_menu{ static_cast<int>(MenuOption::START) };
 	int curr_level{ static_cast<int>(State::LEVEL_1) };
 	int unlock_level{ static_cast<int>(State::LEVEL_1) };

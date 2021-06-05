@@ -43,7 +43,7 @@ void Game::Draw()
 		doodle::pop_settings();
 		break;
 	}
-
+	
 	case State::START:
 	{
 		clear_background();
@@ -51,9 +51,9 @@ void Game::Draw()
 		switch (current_menu)
 		{
 			case static_cast<int>(MenuOption::START) : doodle::draw_image(start_button, 0, 0, Width, Height); break;
-				case static_cast<int>(MenuOption::QUIT) : doodle::draw_image(quit_button, 0, 0, Width, Height); break;
-					case static_cast<int>(MenuOption::CREDIT) : doodle::draw_image(credit_button, 0, 0, Width, Height); break;
-						case static_cast<int>(MenuOption::OPTION) : doodle::draw_image(option_button, 0, 0, Width, Height); break;
+			case static_cast<int>(MenuOption::QUIT) : doodle::draw_image(quit_button, 0, 0, Width, Height); break;
+			case static_cast<int>(MenuOption::CREDIT) : doodle::draw_image(credit_button, 0, 0, Width, Height); break;
+			case static_cast<int>(MenuOption::OPTION) : doodle::draw_image(option_button, 0, 0, Width, Height); break;
 		}
 		break;
 	}
@@ -112,16 +112,7 @@ void Game::Draw()
 		Draw_radar();
 		break;
 	}
-	case State::PAUSE:
-	{
-		switch (current_menu)
-		{
-			case static_cast<int>(PauseOption::SOUND) : draw_text("Pausing Now~ : SOUND", 100.0, Height * 0.5); break;
-				case static_cast<int>(PauseOption::RESTART) : draw_text("Pausing Now~ : RESTART", 100.0, Height * 0.5); break;
-					case static_cast<int>(PauseOption::MAIN_MENU) : draw_text("Pausing Now~ : MAINMENU", 100.0, Height * 0.5); break;
-		}
-		break;
-	}
+
 	case State::CLEAR:
 	{
 		push_settings();
@@ -152,66 +143,54 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 	switch (current_state)
 	{
 	case State::START:
+	{if (doodleButton == doodle::KeyboardButtons::Enter)
 	{
-		if (doodleButton == doodle::KeyboardButtons::Enter)
+		sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+		switch (current_menu)
 		{
-			sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
-			switch (current_menu)
+			case static_cast<int>(MenuOption::START) :
 			{
-				case static_cast<int>(MenuOption::START) :
-				{
-					previous_state = current_state;
-					current_state = State::LEVEL_SELECT;
-					doodle::clear_background(0);
-					sounds.music.stop();
-					is_music_playing = false;
-					break;
-				}
-				case static_cast<int>(MenuOption::OPTION) :
-				{
-					previous_state = current_state;
-					current_state = State::OPTION;
-					break;
-				}
-				case static_cast<int>(MenuOption::QUIT) :
-				{
-					doodle::close_window();
-					break;
-				}
-				case static_cast<int>(MenuOption::CREDIT) :
-				{
-					previous_state = current_state;
-					current_state = State::CREDIT;
-					break;
-				}
+				current_state = State::LEVEL_SELECT;
+				doodle::clear_background(0);
+				sounds.music.stop();
+				is_music_playing = false;
+				break;
 			}
-		}
-		if (doodleButton == doodle::KeyboardButtons::Up)
-		{
-			if (current_menu > static_cast<int>(MenuOption::START))
+			case static_cast<int>(MenuOption::OPTION) :
 			{
-				sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
-				current_menu--;
+				current_state = State::OPTION;
+				break;
 			}
-			else
-			{
-				sounds.PlaySound(static_cast<int>(SoundType::SelectLimitEffect));
-			}
-		}
-		else if (doodleButton == doodle::KeyboardButtons::Down)
-		{
-			if (current_menu < static_cast<int>(MenuOption::OPTION))
-			{
-				sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
-				current_menu++;
-			}
-			else
-			{
-				sounds.PlaySound(static_cast<int>(SoundType::SelectLimitEffect));
-			}
+			case static_cast<int>(MenuOption::QUIT) : doodle::close_window(); break;
+				case static_cast<int>(MenuOption::CREDIT) : current_state = State::CREDIT; break;
 		}
 	}
-	break;
+	if (doodleButton == doodle::KeyboardButtons::Up)
+	{
+		if (current_menu > static_cast<int>(MenuOption::START))
+		{
+			sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+			current_menu--;
+		}
+		else
+		{
+			sounds.PlaySound(static_cast<int>(SoundType::SelectLimitEffect));
+		}
+	}
+	else if (doodleButton == doodle::KeyboardButtons::Down)
+	{
+		if (current_menu < static_cast<int>(MenuOption::OPTION))
+		{
+			sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+			current_menu++;
+		}
+		else
+		{
+			sounds.PlaySound(static_cast<int>(SoundType::SelectLimitEffect));
+		}
+	}
+	}
+		break;
 	case State::OPTION:
 	{
 		if (doodleButton == doodle::KeyboardButtons::Right)
@@ -243,7 +222,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 		if (doodleButton == doodle::KeyboardButtons::Enter)
 		{
 			sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
-			current_state = previous_state;
+			current_state = State::START;
 		}
 	}
 	break;
@@ -251,7 +230,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 		if (doodleButton == doodle::KeyboardButtons::Escape)
 		{
 			sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
-			current_state = previous_state;
+			current_state = State::START;
 		}
 		break;
 
@@ -284,7 +263,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 		else if (doodleButton == doodle::KeyboardButtons::Escape)
 		{
 			sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
-			current_state = previous_state;
+			current_state = State::START;
 		}
 		else if (doodleButton == doodle::KeyboardButtons::Enter)
 		{
@@ -347,81 +326,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 		Input_level(doodleButton);
 		break;
 	}
-	case State::PAUSE:
-	{
-		if (doodleButton == doodle::KeyboardButtons::Escape)
-		{
-			is_paused = false;
-			current_state = previous_state;
-			doodle::ElapsedTime = pause_timer;
-		}
-		if (doodleButton == doodle::KeyboardButtons::Enter)
-		{
-			sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
-			switch (current_menu)
-			{
-				case static_cast<int>(PauseOption::SOUND) :
-				{
-					previous_state = current_state;
-					current_state = State::OPTION;
-					break;
-				}
-				case static_cast<int>(PauseOption::RESTART) :
-				{
-					switch (curr_level)
-					{
-						case static_cast<int>(State::LEVEL_1) :
-						{
-							current_state = State::LEVEL_1;
-							break;
-						}
-						case static_cast<int>(State::LEVEL_2) :
-						{
-							current_state = State::LEVEL_2;
-							break;
-						}
-						case static_cast<int>(State::LEVEL_3) :
-						{
-							current_state = State::LEVEL_3;
-							break;
-						}
-					}
-					Reset();
-					break;
-				}
-				case static_cast<int>(PauseOption::MAIN_MENU) :
-				{
-					current_state = State::START;
-					break;
-				}
-			}
-		}
-		if (doodleButton == doodle::KeyboardButtons::Up)
-		{
-			if (current_menu > static_cast<int>(PauseOption::SOUND))
-			{
-				sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
-				current_menu--;
-			}
-			else
-			{
-				sounds.PlaySound(static_cast<int>(SoundType::SelectLimitEffect));
-			}
-		}
-		else if (doodleButton == doodle::KeyboardButtons::Down)
-		{
-			if (current_menu < static_cast<int>(PauseOption::MAIN_MENU))
-			{
-				sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
-				current_menu++;
-			}
-			else
-			{
-				sounds.PlaySound(static_cast<int>(SoundType::SelectLimitEffect));
-			}
-		}
-		break;
-	}
+
 	case State::CLEAR:
 	{
 		sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
@@ -462,7 +367,6 @@ void Game::Update()
 			is_digipen_splash_done = false;
 			splash_timer = 3;
 			current_state = State::START;
-			current_menu = static_cast<int>(MenuOption::START);
 		}
 		break;
 	}
@@ -491,10 +395,7 @@ void Game::Update()
 	case State::LEVEL_2:
 	case State::LEVEL_3:
 	{
-		if (is_paused == false)
-		{
-			Update_level();
-		}
+		Update_level();
 		break;
 	}
 	case State::CLEAR:
@@ -526,33 +427,33 @@ void Game::Update_level()
 	timer = total_time - static_cast<int>(doodle::ElapsedTime);
 	score = timer * (treasure_count + 1) * 10;
 	if (camera_move == false)
-	{
-		camera.Update(minsoo.Get_position());
-		minsoo.Update_position(is_minsoo_move);
-		guard.Update_position();
-		Collision_check();
-		if (is_minsoo_move == false)  //when minsoo moving finished
 		{
-			guard.Check_watching_wall(map);  // if guard's direction is toward the wall
-			Radar_obtain();
-			Explode_bomb();
-		}
-		for (int i = 0; i < static_cast<int>(guard.guards.size()); i++)
-		{
-			if (guard.guards[i].is_trace == true && guard.guards[i].is_okay == true)
+			camera.Update(minsoo.Get_position());  
+			minsoo.Update_position(is_minsoo_move); 
+			guard.Update_position();
+			Collision_check();
+			if (is_minsoo_move == false)  //when minsoo moving finished
 			{
-				math::ivec2 curr_position = math::ivec2{ static_cast<int>(guard.guards[i].position.x) ,static_cast<int>(guard.guards[i].position.y) };
-
-				if (path_finding<27, 81>(map, minsoo.target_pos, curr_position).empty() != true)
-				{
-					curr_position = path_finding<27, 81>(map, minsoo.target_pos, curr_position).back().pos;
-				}
-				curr_position = math::ivec2{ static_cast<int>(guard.guards[i].position.x) ,static_cast<int>(guard.guards[i].position.y) } - curr_position;  // 페스파인딩으로 다음 갈 곳에 대한 시야 변경
-				set_direction(curr_position, i);
+				guard.Check_watching_wall(map);  // if guard's direction is toward the wall
+				Radar_obtain();
+				Explode_bomb();
 			}
+			for (int i = 0; i < static_cast<int>(guard.guards.size()); i++)
+			{
+				if (guard.guards[i].is_trace == true && guard.guards[i].is_okay == true)
+				{
+					math::ivec2 curr_position = math::ivec2{ static_cast<int>(guard.guards[i].position.x) ,static_cast<int>(guard.guards[i].position.y) };
+
+					if (path_finding<27, 81>(map, minsoo.target_pos, curr_position).empty() != true)
+					{
+						curr_position = path_finding<27, 81>(map, minsoo.target_pos, curr_position).back().pos;
+					}
+					curr_position = math::ivec2{ static_cast<int>(guard.guards[i].position.x) ,static_cast<int>(guard.guards[i].position.y) } - curr_position;  // 페스파인딩으로 다음 갈 곳에 대한 시야 변경
+					set_direction(curr_position, i);
+				}
+			}
+			guard.Set_sight();
 		}
-		guard.Set_sight();
-	}
 	if (camera_move == true)
 	{
 		Move_camera(guard.guards.back().position);
@@ -682,44 +583,44 @@ void Game::Move_camera(math::vec2 position)
 {
 	math::vec2 target_pos = position;
 	math::vec2 init_pos = new_pos;
-	if (camera_move == true)
-	{
-		if (new_pos.x > target_pos.x)
+		if (camera_move == true)
 		{
-			new_pos.x -= 10 * doodle::DeltaTime;
-		}
-		if (new_pos.x < target_pos.x)
-		{
-			new_pos.x += 10 * doodle::DeltaTime;
-		}
-
-		if (new_pos.y > target_pos.y)
-		{
-
-			new_pos.y = (target_pos.y - init_pos.y) / (target_pos.x - init_pos.x) * (new_pos.x - init_pos.x) + init_pos.y;
-		}
-		if (new_pos.y < target_pos.y)
-		{
-
-			new_pos.y = (target_pos.y - init_pos.y) / (target_pos.x - init_pos.x) * (new_pos.x - init_pos.x) + init_pos.y;
-		}
-		camera.Update(new_pos);
-		if (new_pos.x >= target_pos.x && new_pos.y >= target_pos.y)
-		{
-			if (start_camera_count == false)
+			if (new_pos.x > target_pos.x)
 			{
-				curr_timer = timer;
-				start_camera_count = true;
+				new_pos.x -= 10*doodle::DeltaTime;
 			}
-			double Target_time = 2;
-			if (curr_timer - timer > Target_time)
+			if (new_pos.x < target_pos.x)
 			{
-				camera_move = false;
-				new_pos = minsoo.Get_position();
-				camera.Update(new_pos);
+				new_pos.x += 10 * doodle::DeltaTime;
+			}
+
+			if (new_pos.y > target_pos.y)
+			{
+				
+				new_pos.y =  (target_pos.y - init_pos.y)/(target_pos.x - init_pos.x)  * (new_pos.x - init_pos.x) + init_pos.y;
+			}
+			if (new_pos.y < target_pos.y)
+			{
+				
+				new_pos.y = (target_pos.y - init_pos.y) / (target_pos.x - init_pos.x) * (new_pos.x - init_pos.x) + init_pos.y;
+			}
+			camera.Update(new_pos);
+			if (new_pos.x >= target_pos.x && new_pos.y >= target_pos.y)
+			{
+				if (start_camera_count == false)
+				{
+					curr_timer = timer;
+					start_camera_count = true;
+				}
+				double Target_time = 2;
+				if (curr_timer - timer > Target_time)
+				{
+					camera_move = false;
+					new_pos = minsoo.Get_position();
+					camera.Update(new_pos);
+				}
 			}
 		}
-	}
 }
 
 void Game::Reset()
@@ -736,7 +637,6 @@ void Game::Reset()
 	is_music_playing = false;
 	is_chased_state = false;
 	is_played_bite = false;
-	is_paused = false;
 	camera_move = false;
 	curr_timer = 0;
 	screen_pos = doodle::Width;
@@ -839,6 +739,7 @@ bool Game::Check_guard(int index)  // 가드가 벽을 보고있을때 시야방
 		}
 		break;
 	}
+
 	return false;
 }
 
@@ -1386,12 +1287,7 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 	{
 		sounds.music.stop();
 		is_music_playing = false;
-		previous_state = current_state;
-		current_state = State::PAUSE;
-		current_menu = static_cast<int>(PauseOption::SOUND);
-		pause_timer = doodle::ElapsedTime;
-		is_paused = true;
-
+		current_state = State::START;
 	}
 
 #ifdef DEBUG
@@ -1406,12 +1302,12 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 	{
 		if (Check(doodleButton) == false && camera_move != true)
 		{
-			if (is_minsoo_move == false)
-			{
-				sounds.PlaySound(static_cast<int>(SoundType::FootStep));
-				minsoo.Set_position(doodleButton);
+				if (is_minsoo_move == false)
+				{
+					sounds.PlaySound(static_cast<int>(SoundType::FootStep));
+					minsoo.Set_position(doodleButton);
 
-				is_minsoo_move = true;
+					is_minsoo_move = true;
 
 				for (int i = 0; i < static_cast<int>(guard.guards.size()); i++)
 				{
@@ -1423,8 +1319,8 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 						{
 							curr_position = path_finding<27, 81>(map, minsoo.target_pos, curr_position).back().pos;
 						}
-
-						curr_position = math::ivec2{ static_cast<int>(guard.guards[i].position.x) ,static_cast<int>(guard.guards[i].position.y) } - curr_position;  // 페스파인딩으로 다음 갈 곳에 대한 시야 변경
+						
+						curr_position =  math::ivec2{ static_cast<int>(guard.guards[i].position.x) ,static_cast<int>(guard.guards[i].position.y) } - curr_position;  // 페스파인딩으로 다음 갈 곳에 대한 시야 변경
 						set_direction(curr_position, i);
 					}
 
@@ -1434,7 +1330,7 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 						{
 							if (minsoo.movement % 5 == 0)
 							{
-								guard.Change_sight(map, i);
+								guard.Change_sight(map,i);
 							}
 							else
 							{
@@ -1443,7 +1339,7 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 						}
 					}
 					guard.Set_position(i);
-
+					
 				}
 			}
 		}
