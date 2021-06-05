@@ -61,6 +61,8 @@ class Game
 	bool is_sight_changed = false;
 
 	bool is_played_bite = false;
+
+	bool Get_treasure[4] = { false, };
 	doodle::Image digipen_logo{ "assets/DigiPen_BLACK_1024px.png" };
 	doodle::Image game_logo{ "assets/Treasure_Hunter_Logo.jpg" };
 	doodle::Image clear_scene{ "assets/Clear_scene.png" };
@@ -96,8 +98,12 @@ class Game
 	doodle::Image Bomb_num1{ "assets/bomb_num1.png" };
 	doodle::Image Bomb_num2{ "assets/bomb_num2.png" };
 	doodle::Image Bomb_num3{ "assets/bomb_num3.png" };
-
 	doodle::Image Sight_limit{ "assets/Sight_limit.png" };
+
+	doodle::Image Treasure_1_UI{ "assets/Treasure_1_UI.png" };
+	doodle::Image Treasure_2_UI{ "assets/Treasure_2_UI.png" };
+	doodle::Image Treasure_3_UI{ "assets/Treasure_3_UI.png" };
+	doodle::Image Treasure_4_UI{ "assets/Treasure_4_UI.png" };
 
 	Sprite Siren_sprite{ "assets/siren_sprite.png",9,0.05 };
 
@@ -126,8 +132,8 @@ public:
 	void Input_level(doodle::KeyboardButtons doodleButton);
 	void Update_level();
 
-	void Explode_bomb(); //3blockss move --> pung~  Check_bomb() -> Explode_bomb()
-
+	void Tile_check(); //3blockss move --> pung~  Check_bomb() -> Tile_check()
+	void Draw_treasure();
 	bool Is_sound_playing();
 	void Set_Ingame_Music();
 	math::vec2 new_pos{ minsoo.Get_position() };

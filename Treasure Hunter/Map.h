@@ -25,9 +25,9 @@ struct info
 
 class Map
 {
-protected:
-	int block_size{ 100 };
+
 public:
+	int block_size{ 100 };
 	doodle::Image Dog_chew{ "assets/Dog_chew.png" };
 	doodle::Image Road1{ "assets/Road1.png" };
 	doodle::Image Road2{ "assets/Road2.png" };
@@ -37,6 +37,11 @@ public:
 	doodle::Image Escape{ "assets/Escape.png" };
 	doodle::Image Radar{ "assets/Radar.png" };
 
+	doodle::Image Treasure_1{ "assets/Treasure_1.png" };
+	doodle::Image Treasure_2{ "assets/Treasure_2.png" };
+	doodle::Image Treasure_3{ "assets/Treasure_3.png" };
+	doodle::Image Treasure_4{ "assets/Treasure_4.png" };
+	
 	doodle::Image WallWall{ "assets/wallwall.png" };
 	doodle::Image Wall_Side_Up{ "assets/Wall_Side_Up.png" };
 	doodle::Image Wall_Side_Down{ "assets/Wall_Side_Down.png" };
@@ -53,7 +58,6 @@ public:
 	doodle::Image Wall_Corner_3{ "assets/Wall_Corner_3.png" };
 	doodle::Image Wall_Corner_4{ "assets/Wall_Corner_4.png" };
 
-	
 
 	Sprite Explode{ "assets/hit.png",4,0.01 };
 
@@ -64,6 +68,6 @@ public:
 	void Set_up(int level);
 	void Draw(Camera& camera);
 	vector<info> map;
-
 	doodle::Image& Set_wall(info& value);
+	int treasure_num = 4;
 };

@@ -6,14 +6,12 @@ File Name: Collision.cpp
 Project: GAM150
 Author:
 -----------------------------------------------------------------*/
-#include "Sketch.h"
 #include <doodle/window.hpp>
 #include <exception>
 #include <iostream>
-#include "Map.h"
-#include "Minsoo.h"
 #include "doodle/doodle.hpp"
 #include"Game.h"
+
 
 Game game;
 int main(void)
@@ -41,4 +39,3 @@ void on_key_pressed(doodle::KeyboardButtons doodleButton)
      game.Get_inputkey(doodleButton);
      doodleButton = doodle::KeyboardButtons::None;
 }
-

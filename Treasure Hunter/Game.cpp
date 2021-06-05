@@ -577,7 +577,7 @@ void Game::Update_level()
 		{
 			guard.Check_watching_wall(map);  // if guard's direction is toward the wall
 			Radar_obtain();
-			Explode_bomb();
+			Tile_check();
 		}
 		for (int i = 0; i < static_cast<int>(guard.guards.size()); i++)
 		{
@@ -639,7 +639,7 @@ void Game::Update_level()
 	}
 }
 
-void Game::Explode_bomb()
+void Game::Tile_check()
 {
 	for (int i{ 0 }; i < map.map.size(); i++)
 	{
@@ -679,15 +679,73 @@ void Game::Explode_bomb()
 			map.map[i].type = Type::ROAD;
 			did_abtain_radar = true;
 		}
-		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::TREASURE)
+		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::TREASURE_crown)
 		{
 			sounds.PlaySound(static_cast<int>(SoundType::GetTreasure));
 			map.map[i].type = Type::ROAD;
+			Get_treasure[0] = true;
+			treasure_count++;
+		}
+		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::TREASURE_key)
+		{
+			sounds.PlaySound(static_cast<int>(SoundType::GetTreasure));
+			map.map[i].type = Type::ROAD;
+			Get_treasure[1] = true;
+			treasure_count++;
+		}
+		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::TREASURE_coin)
+		{
+			sounds.PlaySound(static_cast<int>(SoundType::GetTreasure));
+			map.map[i].type = Type::ROAD;
+			Get_treasure[2] = true;
+			treasure_count++;
+		}
+		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::TREASURE_dia)
+		{
+			sounds.PlaySound(static_cast<int>(SoundType::GetTreasure));
+			map.map[i].type = Type::ROAD;
+			Get_treasure[3] = true;
 			treasure_count++;
 		}
 	}
 }
 
+void Game::Draw_treasure()
+{
+	for(int i=0; i<4; i++)
+	{
+		if(Get_treasure[i] == true)
+		{
+			switch(i)
+			{
+			case 0:
+				{
+					draw_image(Treasure_1_UI, 0,0, Width,Height);
+					break;
+				}
+
+			case 1:
+			{
+				draw_image(Treasure_2_UI, 0, 0, Width, Height);
+				break;
+			}
+
+			case 2:
+			{
+				draw_image(Treasure_3_UI, 0, 0, Width, Height);
+				break;
+			}
+
+			case 3:
+			{
+				draw_image(Treasure_4_UI, 0, 0, Width, Height);
+				break;
+			}
+			}
+		}
+	}
+}
+//740 40
 void Game::Set_Ingame_Music()
 {
 	if (minsoo.is_dead == false)
@@ -787,6 +845,11 @@ void Game::Reset()
 	map.Set_up(curr_level);
 	minsoo.Set_up();
 	guard.Set_up(curr_level);
+
+	for(int i=0; i<4; i++)
+	{
+		Get_treasure[i] = false;
+	}
 	minsoo.direction = Direction::DOWN;
 	new_pos = minsoo.Get_position();
 }
@@ -1070,7 +1133,7 @@ void Game::Draw_radar()
 		}
 
 		double off_spd = offset * speed;
-		draw_image(map.Radar, Width * 0.035 + (off_spd / 2), Height * 0.8 + (off_spd / 2), 100 - off_spd, 100 - off_spd);
+		draw_image(map.Radar, Width * 0.035 + (off_spd / 2), Height * 0.8 + (off_spd / 2), doodle::Width/12.0 - off_spd, doodle::Height/10.0 - off_spd);
 		if (make_radar_big == false)
 		{
 			off_spd = ++offset * speed;
@@ -1307,7 +1370,7 @@ void Game::Draw_level1()
 	guard.Draw_guard(camera);
 	guard.Draw_sight(camera, map);
 	minsoo.Draw_minsu(camera, camera_move);
-	doodle::draw_image(Sight_limit, (minsoo.Get_position().x + camera.Get_position().x-1), (minsoo.Get_position().y + camera.Get_position().y-20));
+	doodle::draw_image(Sight_limit, (minsoo.Get_position().x + camera.Get_position().x-1), (minsoo.Get_position().y + camera.Get_position().y-20),doodle::Width,doodle::Height);
 	draw_image(UI, 0, 0, doodle::Width, doodle::Height);
 
 	switch (minsoo.chew_item)
@@ -1352,29 +1415,24 @@ void Game::Draw_level1()
 		break;
 	}
 
-	draw_text(std::to_string(treasure_count), 500, 80);
-
 	push_settings();
 	set_outline_width(5);
 	set_outline_color(0);
 	set_fill_color(255);
-	draw_ellipse(85, 100, 100);
+	
 	set_outline_color(255, 0, 0);
-	draw_line(85, 100, 85 + 50 * sin((PI / 50) * (100 - static_cast<double>(timer))), 100 + 50 * cos((PI) * ((static_cast<double>(timer)) / 50 - 1)));
+	draw_line(doodle::Width* 0.07, doodle::Height * 0.12, Width *0.07 + Width*0.05 * sin((PI / 50) * (100 - static_cast<double>(timer))), doodle::Height * 0.12 + Height*0.075 * cos((PI) * ((static_cast<double>(timer)) / 50 - 1)));
 
 	set_font_size(30);
-#ifdef _DEBUG
-	draw_text("Chew item " + std::to_string(minsoo.chew_item), 50, 200);
-	doodle::draw_text("Bomb item " + std::to_string(minsoo.bomb_item), 50, 250);
-#endif // DEBUG
-
-	//Draw_radar();
 	pop_settings();
 	if (guard.Is_trace_sommeone() == true) // 한명이라도 따라오는애 있으면 
 	{
 		draw_image(Siren_sprite.image, 500,100, Siren_sprite.GetFrameSize().x, Siren_sprite.GetFrameSize().y, Siren_sprite.GetDrawPos().x, 0);
 		Siren_sprite.Update();
 	}
+
+
+	Draw_treasure();
 }
 
 void Game::Draw_level2()
@@ -1395,12 +1453,7 @@ void Game::Draw_level2()
 	draw_line(200, 50, 200 + 50 * sin((PI / 50) * (100 - static_cast<double>(timer))), 50 + 50 * cos((PI) * ((static_cast<double>(timer)) / 50 - 1)));
 
 	set_font_size(30);
-#ifdef _DEBUG
-	draw_text("Chew item " + std::to_string(minsoo.chew_item), 50, 200);
-	doodle::draw_text("Bomb item " + std::to_string(minsoo.bomb_item), 50, 250);
-#endif // DEBUG
 
-	//Draw_radar();
 	pop_settings();
 	if (guard.Is_trace_sommeone() == true) // 한명이라도 따라오는애 있으면 
 	{
@@ -1432,10 +1485,7 @@ void Game::Draw_level3()
 	draw_line(200, 50, 200 + 50 * sin((PI / 50) * (100 - static_cast<double>(timer))), 50 + 50 * cos((PI) * ((static_cast<double>(timer)) / 50 - 1)));
 
 	set_font_size(30);
-#ifdef _DEBUG
-	draw_text("Chew item " + std::to_string(minsoo.chew_item), 50, 200);
-	doodle::draw_text("Bomb item " + std::to_string(minsoo.bomb_item), 50, 250);
-#endif // DEBUG
+
 
 	//Draw_radar();
 	pop_settings();
