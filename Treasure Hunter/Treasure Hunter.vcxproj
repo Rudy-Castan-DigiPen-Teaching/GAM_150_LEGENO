@@ -69,8 +69,10 @@
       <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>xcopy /y /d /s "$(ProjectDir)assets" "$(TargetDir)assets\"
+xcopy /y /d "$(SolutionDir)external\SFML\$(Platform)\bin\openal32.dll" "$(TargetDir)"
+xcopy /y /d "$(SolutionDir)external\SFML\$(Platform)\bin\sfml-audio-d-2.dll" "$(TargetDir)"
+xcopy /y /d "$(SolutionDir)external\SFML\$(Platform)\bin\sfml-system-d-2.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -101,8 +103,10 @@
       <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>xcopy /y /d /s "$(ProjectDir)assets" "$(TargetDir)assets\"
+xcopy /y /d "$(SolutionDir)external\SFML\$(Platform)\bin\openal32.dll" "$(TargetDir)"
+xcopy /y /d "$(SolutionDir)external\SFML\$(Platform)\bin\sfml-audio-2.dll" "$(TargetDir)"
+xcopy /y /d "$(SolutionDir)external\SFML\$(Platform)\bin\sfml-system-2.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

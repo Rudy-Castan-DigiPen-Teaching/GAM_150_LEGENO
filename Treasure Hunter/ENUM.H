@@ -30,6 +30,13 @@ enum class MenuOption
 	OPTION,
 };
 
+enum class PauseOption
+{
+	SOUND,
+	RESTART,
+	MAIN_MENU,
+};
+
 enum class Type
 {
 	WALL,
@@ -56,7 +63,7 @@ enum class SoundType
 	BombFuse,
 	ChewingGum,
 	CrashWall,
-	Explosion, 
+	Explosion,
 	FootStep,
 	GetTreasure,
 	Meow,
