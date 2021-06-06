@@ -48,7 +48,7 @@ class Game
 	State previous_state{ State::SPLASH };
 	int current_menu{ static_cast<int>(MenuOption::START) };
 	int curr_level{ static_cast<int>(State::LEVEL_1) };
-	int unlock_level{ static_cast<int>(State::LEVEL_1) };
+	int unlock_level{ static_cast<int>(State::LEVEL_3) };
 
 	bool camera_move{ false };
 	bool cheat_Z{ false };
@@ -126,9 +126,9 @@ public:
 	void Collision_check();
 	void Change_sight();
 
-	void Draw_level1();
-	void Draw_level2();
-	void Draw_level3();
+	void Draw_level();
+	//void Draw_level2();
+	//void Draw_level3();
 	void Input_level(doodle::KeyboardButtons doodleButton);
 	void Update_level();
 

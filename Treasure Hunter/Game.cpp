@@ -93,22 +93,10 @@ void Game::Draw()
 	}
 
 	case State::LEVEL_1:
-	{
-		Draw_level1();
-		Draw_radar();
-		break;
-	}
-
 	case State::LEVEL_2:   ////draw level1 통일 ㄱㄴ?
-	{
-		Draw_level1();
-		Draw_radar();
-		break;
-	}
-	 
 	case State::LEVEL_3:   ////draw level1 통일 ㄱㄴ?
 	{
-		Draw_level1();
+		Draw_level();
 		Draw_radar();
 		break;
 	}
@@ -402,6 +390,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 				case static_cast<int>(PauseOption::MAIN_MENU) :
 				{
 					current_state = State::START;
+					current_menu = static_cast<int>(MenuOption::START);
 					break;
 				}
 			}
@@ -1118,7 +1107,7 @@ void Game::Radar_obtain()
 
 void Game::Draw_radar()
 {
-	if (radar_start == true)
+	if (radar_start == true && is_exit == false)
 	{
 		math::ivec2 exit_pos;
 		for (auto& m : map.map)
@@ -1140,7 +1129,7 @@ void Game::Draw_radar()
 		}
 
 		double off_spd = offset * speed;
-		draw_image(map.Radar, Width * 0.035 + (off_spd / 2), Height * 0.8 + (off_spd / 2), doodle::Width/12.0 - off_spd, doodle::Height/10.0 - off_spd);
+		draw_image(map.Radar, Width * 0.035 + (off_spd / 2), Height * 0.80625 + (off_spd / 2), doodle::Width * 0.083 - off_spd, doodle::Height * 0.125 - off_spd);
 		if (make_radar_big == false)
 		{
 			off_spd = ++offset * speed;
@@ -1370,7 +1359,7 @@ double Game::Get_count(math::vec2 exit_pos)
 	return -1;
 }
 
-void Game::Draw_level1()
+void Game::Draw_level()
 {
 	doodle::clear_background(0);
 	map.Draw(camera);
@@ -1443,71 +1432,71 @@ void Game::Draw_level1()
 	Draw_treasure();
 }
 
-void Game::Draw_level2()
-{
-	doodle::clear_background(0);
-	map.Draw(camera);
-	guard.Draw_guard(camera);
-	guard.Draw_sight(camera, map);
-	minsoo.Draw_minsu(camera, camera_move);
-	draw_text(std::to_string(treasure_count), 500, 80);
-
-	push_settings();
-	set_outline_width(5);
-	set_outline_color(0);
-	set_fill_color(255);
-	draw_ellipse(200, 50, 100);
-	set_outline_color(255, 0, 0);
-	draw_line(200, 50, 200 + 50 * sin((PI / 50) * (100 - static_cast<double>(timer))), 50 + 50 * cos((PI) * ((static_cast<double>(timer)) / 50 - 1)));
-
-	set_font_size(30);
-
-	pop_settings();
-	if (guard.Is_trace_sommeone() == true) // 한명이라도 따라오는애 있으면 
-	{
-		push_settings();
-		if (timer % 2 == 0)  // 1초마다 화면 빨간색 넣기
-		{
-			set_fill_color(255, 0, 0, 100);
-			draw_rectangle(0, 0, Width, Height);
-		}
-		doodle::pop_settings();
-	}
-}
-
-void Game::Draw_level3()
-{
-	doodle::clear_background(0);
-	map.Draw(camera);
-	guard.Draw_guard(camera);
-	guard.Draw_sight(camera, map);
-	minsoo.Draw_minsu(camera, camera_move);
-	draw_text(std::to_string(treasure_count), 500, 80);
-
-	push_settings();
-	set_outline_width(5);
-	set_outline_color(0);
-	set_fill_color(255);
-	draw_ellipse(200, 50, 100);
-	set_outline_color(255, 0, 0);
-	draw_line(200, 50, 200 + 50 * sin((PI / 50) * (100 - static_cast<double>(timer))), 50 + 50 * cos((PI) * ((static_cast<double>(timer)) / 50 - 1)));
-
-	set_font_size(30);
-
-
-	//Draw_radar();
-	pop_settings();
-	if (guard.Is_trace_sommeone() == true) // 한명이라도 따라오는애 있으면 
-	{
-		push_settings();
-		if (timer % 2 == 0)  // 1초마다 화면 빨간색 넣기
-		{
-			set_fill_color(255, 0, 0, 100);
-			draw_rectangle(0, 0, Width, Height);
-		}
-		doodle::pop_settings();
-	}
-}
+//void Game::Draw_level2()
+//{
+//	doodle::clear_background(0);
+//	map.Draw(camera);
+//	guard.Draw_guard(camera);
+//	guard.Draw_sight(camera, map);
+//	minsoo.Draw_minsu(camera, camera_move);
+//	draw_text(std::to_string(treasure_count), 500, 80);
+//
+//	push_settings();
+//	set_outline_width(5);
+//	set_outline_color(0);
+//	set_fill_color(255);
+//	draw_ellipse(200, 50, 100);
+//	set_outline_color(255, 0, 0);
+//	draw_line(200, 50, 200 + 50 * sin((PI / 50) * (100 - static_cast<double>(timer))), 50 + 50 * cos((PI) * ((static_cast<double>(timer)) / 50 - 1)));
+//
+//	set_font_size(30);
+//
+//	pop_settings();
+//	if (guard.Is_trace_sommeone() == true) // 한명이라도 따라오는애 있으면 
+//	{
+//		push_settings();
+//		if (timer % 2 == 0)  // 1초마다 화면 빨간색 넣기
+//		{
+//			set_fill_color(255, 0, 0, 100);
+//			draw_rectangle(0, 0, Width, Height);
+//		}
+//		doodle::pop_settings();
+//	}
+//}
+//
+//void Game::Draw_level3()
+//{
+//	doodle::clear_background(0);
+//	map.Draw(camera);
+//	guard.Draw_guard(camera);
+//	guard.Draw_sight(camera, map);
+//	minsoo.Draw_minsu(camera, camera_move);
+//	draw_text(std::to_string(treasure_count), 500, 80);
+//
+//	push_settings();
+//	set_outline_width(5);
+//	set_outline_color(0);
+//	set_fill_color(255);
+//	draw_ellipse(200, 50, 100);
+//	set_outline_color(255, 0, 0);
+//	draw_line(200, 50, 200 + 50 * sin((PI / 50) * (100 - static_cast<double>(timer))), 50 + 50 * cos((PI) * ((static_cast<double>(timer)) / 50 - 1)));
+//
+//	set_font_size(30);
+//
+//
+//	//Draw_radar();
+//	pop_settings();
+//	if (guard.Is_trace_sommeone() == true) // 한명이라도 따라오는애 있으면 
+//	{
+//		push_settings();
+//		if (timer % 2 == 0)  // 1초마다 화면 빨간색 넣기
+//		{
+//			set_fill_color(255, 0, 0, 100);
+//			draw_rectangle(0, 0, Width, Height);
+//		}
+//		doodle::pop_settings();
+//	}
+//}
 
 void Game::Input_level(doodle::KeyboardButtons doodleButton)
 {

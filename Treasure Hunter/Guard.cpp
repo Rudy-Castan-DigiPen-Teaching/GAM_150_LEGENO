@@ -21,10 +21,10 @@ void Guard::Set_up(int level)
 	else if (level == static_cast<int>(State::LEVEL_2))
 	{
 		guards.push_back(guard_info{ math::ivec2(8, 3) , Direction::DOWN });
-		guards.push_back(guard_info{ math::ivec2(18, 4), Direction::LEFT });
+		guards.push_back(guard_info{ math::ivec2(18, 3), Direction::LEFT });
 		guards.push_back(guard_info{ math::ivec2(15, 17), Direction::UP });
 		guards.push_back(guard_info{ math::ivec2(28, 8), Direction::DOWN });
-		guards.push_back(guard_info{ math::ivec2(32, 19), Direction::RIGHT });
+		guards.push_back(guard_info{ math::ivec2(32, 18), Direction::RIGHT });
 
 	}
 	else if (level == static_cast<int>(State::LEVEL_3))
@@ -35,7 +35,7 @@ void Guard::Set_up(int level)
 		guards.push_back(guard_info{ math::ivec2(20, 12), Direction::LEFT });
 		guards.push_back(guard_info{ math::ivec2(19, 17), Direction::RIGHT });
 		guards.push_back(guard_info{ math::ivec2(23, 5), Direction::LEFT });
-		guards.push_back(guard_info{ math::ivec2(25, 21), Direction::DOWN });
+		guards.push_back(guard_info{ math::ivec2(26, 21), Direction::DOWN });
 		guards.push_back(guard_info{ math::ivec2(34, 9), Direction::UP });
 		guards.push_back(guard_info{ math::ivec2(35, 17), Direction::LEFT });
 		guards.push_back(guard_info{ math::ivec2(40, 7), Direction::DOWN });
