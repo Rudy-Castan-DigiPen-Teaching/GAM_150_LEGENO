@@ -721,25 +721,25 @@ void Game::Draw_treasure()
 			{
 			case 0:
 				{
-					draw_image(Treasure_1_UI, 0,0, Width,Height);
+					draw_image(Treasure_1_UI, 10,0, Width,Height);
 					break;
 				}
 
 			case 1:
 			{
-				draw_image(Treasure_2_UI, 0, 0, Width, Height);
+				draw_image(Treasure_2_UI, 10, 0, Width, Height);
 				break;
 			}
 
 			case 2:
 			{
-				draw_image(Treasure_3_UI, 0, 0, Width, Height);
+				draw_image(Treasure_3_UI, 10, 0, Width, Height);
 				break;
 			}
 
 			case 3:
 			{
-				draw_image(Treasure_4_UI, 0, 0, Width, Height);
+				draw_image(Treasure_4_UI, 10, 0, Width, Height);
 				break;
 			}
 			}
