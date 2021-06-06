@@ -614,6 +614,7 @@ void Game::Update_level()
 	}
 	else if (timer <= 0)
 	{
+		sounds.StopSound();
 		sounds.PlaySound(static_cast<int>(SoundType::TimesUp));
 		sounds.music.stop();
 		is_music_playing = false;
@@ -851,7 +852,13 @@ void Game::Reset()
 		Get_treasure[i] = false;
 	}
 	minsoo.direction = Direction::DOWN;
-	new_pos = minsoo.Get_position();
+	for (int i = 0; i < map.map.size(); i++)
+	{
+		if (map.map[i].type == Type::RADAR)
+		{
+			new_pos = map.map[i].position;
+		}
+	}
 }
 
 bool Game::Check(doodle::KeyboardButtons doodleButton)
@@ -1101,7 +1108,7 @@ void Game::Radar_obtain()
 					item_num--;
 					did_abtain_radar = false;
 					radar_start = true;
-					guard.guards.push_back(guard_info{ math::ivec2(20, 18), Direction::LEFT ,"Ruby" }); //minsu start pos
+					guard.guards.push_back(guard_info{ math::ivec2(39, 21), Direction::LEFT ,"Ruby" }); //minsu start pos
 					camera_move = true;
 				}
 			}
@@ -1504,7 +1511,8 @@ void Game::Draw_level3()
 void Game::Input_level(doodle::KeyboardButtons doodleButton)
 {
 	if (doodleButton == doodle::KeyboardButtons::Escape)
-	{
+	{	
+		sounds.StopSound();
 		sounds.music.stop();
 		is_music_playing = false;
 		previous_state = current_state;
@@ -1578,6 +1586,7 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 	if (doodleButton == doodle::KeyboardButtons::K)
 	{
 		sounds.PlaySound(static_cast<int>(SoundType::Win));
+		sounds.StopSound();
 		sounds.music.stop();
 		current_state = State::CLEAR;
 		is_music_playing = false;
@@ -1617,5 +1626,4 @@ bool Game::Is_sound_playing()
 		}
 	}
 	return false;
-	//return sounds.sounds[soundType].getStatus() == sf::SoundSource::Playing;
 }

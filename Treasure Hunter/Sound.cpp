@@ -62,3 +62,15 @@ void Sound::PlaySound(int soundType)
     sounds.emplace_back(soundBuffers[soundType]);
     sounds.back().play();
 }
+
+void Sound::StopSound()
+{
+    for (auto& sound : sounds)
+    {
+        if (sound.getStatus() == sf::SoundSource::Playing)
+        {
+            sound.stop();
+            return;
+        }
+    }
+}
