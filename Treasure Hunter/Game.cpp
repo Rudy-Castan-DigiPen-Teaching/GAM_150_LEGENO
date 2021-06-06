@@ -1432,9 +1432,10 @@ void Game::Draw_level1()
 
 	set_font_size(30);
 	pop_settings();
+
 	if (guard.Is_trace_sommeone() == true) // 한명이라도 따라오는애 있으면 
 	{
-		draw_image(Siren_sprite.image, 500,100, Siren_sprite.GetFrameSize().x, Siren_sprite.GetFrameSize().y, Siren_sprite.GetDrawPos().x, 0);
+		draw_image(Siren_sprite.image, 300,0, Siren_sprite.GetFrameSize().x, Siren_sprite.GetFrameSize().y, Siren_sprite.GetDrawPos().x, 0);
 		Siren_sprite.Update();
 	}
 

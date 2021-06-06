@@ -323,7 +323,8 @@ void Map::Draw(Camera& camera)
             set_fill_color(255, 40, 0);
             set_outline_width(1);
             set_outline_color(255);
-            draw_image(Breakable_wall, (i.position.x + camera.Get_position().x) * block_size, (i.position.y + camera.Get_position().y) * block_size, block_size, block_size);            pop_settings();
+            draw_image(Breakable_wall, (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
+            pop_settings();
             break;
         }
         case Type::DOG_CHEW:
