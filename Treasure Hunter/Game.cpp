@@ -627,7 +627,7 @@ void Game::Update_level()
 
 	Set_Ingame_Music();
 
-	guard.Guard_movement_update(map, minsoo.movement);
+	guard.Guard_movement_update(exit_pos, map, minsoo.movement);
 	if (timer < 20 && timer > 0)
 	{
 		if (Is_sound_playing() == false)
@@ -1097,7 +1097,7 @@ void Game::Set_item(doodle::KeyboardButtons button)
 				if (map.map[i].position == minsoo.Get_position())
 				{
 					sounds.PlaySound(static_cast<int>(SoundType::PutItem));
-					if (map.map[i].type == Type::EXIT)
+					if (map.map[i].position == exit_pos)
 					{
 						is_exit = true;
 					}
@@ -1128,6 +1128,7 @@ void Game::Radar_obtain()
 				if (m.position == pos && m.type == Type::ROAD)
 				{
 					m.type = Type::EXIT;
+					exit_pos = m.position;
 					item_num--;
 					did_abtain_radar = false;
 					radar_start = true;
@@ -1143,23 +1144,13 @@ void Game::Draw_radar()
 {
 	if (radar_start == true && is_exit == false)
 	{
-		math::ivec2 exit_pos;
-		for (auto& m : map.map)
-		{
-			if (m.type == Type::EXIT)
-			{
-				exit_pos = m.position;
-			}
-		}
-
-
-		if (Get_count(exit_pos) == 0)
+		if (Get_count() == 0)
 		{
 			speed = 25;
 		}
 		else
 		{
-			speed = 20. / Get_count(exit_pos);
+			speed = 20. / Get_count();
 		}
 
 		double off_spd = offset * speed;
@@ -1185,7 +1176,7 @@ void Game::Draw_radar()
 	}
 }
 
-double Game::Get_count(math::vec2 exit_pos)
+double Game::Get_count()
 {
 	int count{ 1 };
 	math::vec2 minsu_pos = minsoo.target_pos;

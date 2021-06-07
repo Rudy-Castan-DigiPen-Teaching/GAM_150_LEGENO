@@ -313,7 +313,7 @@ void Guard::Change_sight(Map m, int index)
 
 }
 
-void Guard::Guard_movement_update(Map& m, int movement) 
+void Guard::Guard_movement_update(math::ivec2 exit_pos, Map& m, int movement) 
 {
 	for (auto& i : guards)
 	{
@@ -323,7 +323,14 @@ void Guard::Guard_movement_update(Map& m, int movement)
 			{
 				i.is_okay = false;
 				i.movement = movement;
-				j.type = Type::ROAD;
+				if (i.position == exit_pos)
+				{
+					j.type = Type::EXIT;
+				}
+				else
+				{
+					j.type = Type::ROAD;
+				}
 			}
 		}
 	}

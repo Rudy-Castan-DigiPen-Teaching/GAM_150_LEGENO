@@ -35,7 +35,7 @@ class Game
 	int score{ 0 };
 	double splash_timer{ 3 };
 	double screen_pos = doodle::Width;
-
+	math::ivec2 exit_pos{ 0 };
 
 	bool is_exit{ false };
 	bool is_in_guard_sight{ false };
@@ -49,7 +49,7 @@ class Game
 	State previous_state{ State::SPLASH };
 	int current_menu{ static_cast<int>(MenuOption::START) };
 	int curr_level{ static_cast<int>(State::LEVEL_1) };
-	int unlock_level{ static_cast<int>(State::LEVEL_3) };
+	int unlock_level{ static_cast<int>(State::LEVEL_1) };
 
 	bool camera_move{ false };
 	bool cheat_Z{ false };
@@ -109,7 +109,7 @@ class Game
 
 	Sprite Siren_sprite{ "assets/siren_sprite.png",9,0.05 };
 
-	double Get_count(math::vec2 exit_pos);
+	double Get_count();
 public:
 	void Set_up();
 	void Draw();

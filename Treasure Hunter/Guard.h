@@ -39,7 +39,7 @@ public:
 	void Draw_sight(Camera& camera, Map MAP);
 	void Set_position(int index);              
 	void Change_sight(Map m, int index);
-	void Guard_movement_update(Map& m, int movement);
+	void Guard_movement_update(math::ivec2 exit_pos, Map& m, int movement);
 	void Set_sight();           
 	void Tracing_check(Minsoo minsoo); // when minsoo is in guard sight, return what number of guard it is.가드 시야에 있을때 몇번째 인덱스 가드인지 리턴			
 	bool Is_trace_sommeone(); // check if there is a guard chasing minsoo 따라오는새끼 하나라도있는지                                      
