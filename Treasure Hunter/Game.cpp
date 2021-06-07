@@ -57,8 +57,7 @@ void Game::Draw()
 		}
 		break;
 	}
-	/*doodle::Image credit_menu_1{ "assets/Credit_1.png" };
-	doodle::Image credit_menu_2{ "assets/Credit_2.png" };*/
+
 	case State::CREDIT:
 	{
 		if (is_credit_done == false)
@@ -164,6 +163,22 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 {
 	switch (current_state)
 	{
+	case State::SPLASH:
+	{
+		if (doodleButton == doodle::KeyboardButtons::Enter)
+		{
+			if (is_digipen_splash_done == false)
+			{
+				is_digipen_splash_done = !is_digipen_splash_done;
+				break;
+			}
+			else if (is_digipen_splash_done == true)
+			{
+				current_state = State::START;
+				break;
+			}
+		}
+	}
 	case State::START:
 	{
 		if (doodleButton == doodle::KeyboardButtons::Enter)
