@@ -70,4 +70,5 @@ public:
 	vector<info> map;
 	doodle::Image& Set_wall(info& value);
 	int treasure_num = 4;
+
 };

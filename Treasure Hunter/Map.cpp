@@ -85,6 +85,7 @@ void Map::Set_up(int level)
         i.random_num = rand;
     }
     bomb_target_time = 2;
+
 }
 
 doodle::Image& Map::Set_wall(info& value)
@@ -244,9 +245,6 @@ void Map::Draw(Camera& camera)
         case Type::ROAD:
         {
             push_settings();
-            set_fill_color(0, 0, 255);
-            set_outline_width(1);
-            set_outline_color(255);
             switch (i.random_num)
             {
             case 0: {draw_image(Road1, (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
@@ -356,6 +354,22 @@ void Map::Draw(Camera& camera)
             {
                 Explode.currAnim = 0;
                 draw_image(Escape, (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
+            }
+            pop_settings();
+            break;
+        }
+
+        case Type::BOMB_TO_ROAD:
+        {
+            push_settings();
+            bomb_target_time -= doodle::DeltaTime;
+            draw_image(Explode.image, (i.position.x + camera.Get_position().x) * block_size, (i.position.y + camera.Get_position().y) * block_size, block_size, block_size, Explode.GetDrawPos().x, 0);
+            Explode.Update();
+            if (bomb_target_time < 0)
+            {
+                Explode.currAnim = 0;
+                i.type = Type::ROAD;
+                bomb_target_time = 2;
             }
             pop_settings();
             break;

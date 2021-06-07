@@ -665,7 +665,7 @@ void Game::Tile_check()
 				}
 				else
 				{
-					map.map[i].type = Type::ROAD;
+					map.map[i].type = Type::BOMB_TO_ROAD;
 				}
 			}
 			else

@@ -49,7 +49,8 @@ enum class Type
 	EXIT,
 	CAN_ESCAPE,
 	DOG_CHEW,
-	BOMB
+	BOMB,
+	BOMB_TO_ROAD
 };
 
 enum class Direction
