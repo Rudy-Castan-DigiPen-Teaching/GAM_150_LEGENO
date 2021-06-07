@@ -806,25 +806,25 @@ void Game::Draw_treasure()
 				{
 				case 0:
 				{
-					draw_image(Clear_Treasure_1, 10, 30, Width, Height);
+					draw_image(Clear_Treasure_1, 4, 5, Width, Height*1.2);
 					break;
 				}
 
 				case 1:
 				{
-					draw_image(Clear_Treasure_2, 10, 30, Width, Height);
+					draw_image(Clear_Treasure_2, 8, 30, Width, Height);
 					break;
 				}
 
 				case 2:
 				{
-					draw_image(Clear_Treasure_3, 10, 30, Width, Height);
+					draw_image(Clear_Treasure_3, 0, 25, Width, Height);
 					break;
 				}
 
 				case 3:
 				{
-					draw_image(Clear_Treasure_4, 10, 30, Width, Height);
+					draw_image(Clear_Treasure_4, 5, 25, Width, Height);
 					break;
 				}
 				}
