@@ -139,9 +139,10 @@ void Game::Draw()
 		push_settings();
 		clear_background();
 		set_fill_color(255, 0, 255);
-		draw_image(clear_scene, screen_pos, 0);// function for image movement
+		draw_image(clear_scene, screen_pos, 0, Width , Height*1.2);// function for image movement
+		draw_text(to_string(screen_pos), 30, 100);
 
-		draw_text("Level 1 Clear!", 30, 100);
+		//draw_text("Level 1 Clear!", 30, 100);
 		draw_text("score= " + std::to_string(score), 100, 600);
 		pop_settings();
 		break;
@@ -551,11 +552,8 @@ void Game::Update()
 	}
 	case State::CLEAR:
 	{
-		if (screen_pos > 0)
-		{
-			screen_pos -= 300 * doodle::DeltaTime;
-		}
-		else
+		screen_pos -= 500 * doodle::DeltaTime;
+		if (screen_pos < 0)
 		{
 			screen_pos = 0;
 		}
