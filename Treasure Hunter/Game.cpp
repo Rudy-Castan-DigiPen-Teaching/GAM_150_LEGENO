@@ -57,8 +57,7 @@ void Game::Draw()
 		}
 		break;
 	}
-	/*doodle::Image credit_menu_1{ "assets/Credit_1.png" };
-	doodle::Image credit_menu_2{ "assets/Credit_2.png" };*/
+
 	case State::CREDIT:
 	{
 		if (is_credit_done == false)
@@ -139,9 +138,10 @@ void Game::Draw()
 		push_settings();
 		clear_background();
 		set_fill_color(255, 0, 255);
-		draw_image(clear_scene, screen_pos, 0);// function for image movement
+		draw_image(clear_scene, screen_pos, 0, Width , Height*1.2);// function for image movement
+		draw_text(to_string(screen_pos), 30, 100);
 
-		draw_text("Level 1 Clear!", 30, 100);
+		//draw_text("Level 1 Clear!", 30, 100);
 		draw_text("score= " + std::to_string(score), 100, 600);
 		pop_settings();
 		break;
@@ -163,6 +163,22 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 {
 	switch (current_state)
 	{
+	case State::SPLASH:
+	{
+		if (doodleButton == doodle::KeyboardButtons::Enter)
+		{
+			if (is_digipen_splash_done == false)
+			{
+				is_digipen_splash_done = !is_digipen_splash_done;
+				break;
+			}
+			else if (is_digipen_splash_done == true)
+			{
+				current_state = State::START;
+				break;
+			}
+		}
+	}
 	case State::START:
 	{
 		if (doodleButton == doodle::KeyboardButtons::Enter)
@@ -551,11 +567,8 @@ void Game::Update()
 	}
 	case State::CLEAR:
 	{
-		if (screen_pos > 0)
-		{
-			screen_pos -= 300 * doodle::DeltaTime;
-		}
-		else
+		screen_pos -= 500 * doodle::DeltaTime;
+		if (screen_pos < 0)
 		{
 			screen_pos = 0;
 		}
