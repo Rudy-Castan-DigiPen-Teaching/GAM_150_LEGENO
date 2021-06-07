@@ -51,16 +51,24 @@ void Game::Draw()
 		switch (current_menu)
 		{
 			case static_cast<int>(MenuOption::START) : doodle::draw_image(start_button, 0, 0, Width, Height); break;
-			case static_cast<int>(MenuOption::QUIT) : doodle::draw_image(quit_button, 0, 0, Width, Height); break;
 			case static_cast<int>(MenuOption::CREDIT) : doodle::draw_image(credit_button, 0, 0, Width, Height); break;
+			case static_cast<int>(MenuOption::QUIT) : doodle::draw_image(quit_button, 0, 0, Width, Height); break;
 			case static_cast<int>(MenuOption::OPTION) : doodle::draw_image(option_button, 0, 0, Width, Height); break;
 		}
 		break;
 	}
-
+	/*doodle::Image credit_menu_1{ "assets/Credit_1.png" };
+	doodle::Image credit_menu_2{ "assets/Credit_2.png" };*/
 	case State::CREDIT:
 	{
-		doodle::draw_image(credit_menu, 0, 0, Width, Height);
+		if (is_credit_done == false)
+		{
+			doodle::draw_image(credit_menu_1, 0, 0, Width, Height);
+		}
+		else if (is_credit_done == true)
+		{
+			doodle::draw_image(credit_menu_2, 0, 0, Width, Height);
+		}
 		break;
 	}
 
@@ -93,8 +101,8 @@ void Game::Draw()
 	}
 
 	case State::LEVEL_1:
-	case State::LEVEL_2:   ////draw level1 통일 ㄱㄴ?
-	case State::LEVEL_3:   ////draw level1 통일 ㄱㄴ?
+	case State::LEVEL_2:
+	case State::LEVEL_3:
 	{
 		Draw_level();
 		Draw_radar();
@@ -171,10 +179,10 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 					is_music_playing = false;
 					break;
 				}
-				case static_cast<int>(MenuOption::OPTION) :
+				case static_cast<int>(MenuOption::CREDIT) :
 				{
 					previous_state = current_state;
-					current_state = State::OPTION;
+					current_state = State::CREDIT;
 					break;
 				}
 				case static_cast<int>(MenuOption::QUIT) :
@@ -182,10 +190,10 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 					doodle::close_window();
 					break;
 				}
-				case static_cast<int>(MenuOption::CREDIT) :
+				case static_cast<int>(MenuOption::OPTION) :
 				{
 					previous_state = current_state;
-					current_state = State::CREDIT;
+					current_state = State::OPTION;
 					break;
 				}
 			}
@@ -255,7 +263,20 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 		if (doodleButton == doodle::KeyboardButtons::Escape)
 		{
 			sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+			is_credit_done = false;
 			current_state = previous_state;
+		}
+		else if (doodleButton == doodle::KeyboardButtons::Enter)
+		{
+			if (is_credit_done == true)
+			{
+				sounds.PlaySound(static_cast<int>(SoundType::SelectLimitEffect));
+			}
+			else if (is_credit_done == false)
+			{
+				sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+				is_credit_done = !is_credit_done;
+			}
 		}
 		break;
 	case State::LEVEL_SELECT:  //todo 1레벨 클리어 해야지 2렙갈수있는거

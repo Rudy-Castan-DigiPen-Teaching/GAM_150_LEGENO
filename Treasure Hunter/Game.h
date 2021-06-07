@@ -43,6 +43,7 @@ class Game
 	bool is_chased_state{ false };
 	bool is_digipen_splash_done{ false };
 	bool is_paused{ false };
+	bool is_credit_done{ false };
 
 	State current_state{ State::SPLASH };
 	State previous_state{ State::SPLASH };
@@ -69,10 +70,11 @@ class Game
 	doodle::Image main_menu{ "assets/MainMenu.png" };
 	doodle::Image level_select{ "assets/Level_select.png" };
 	doodle::Image start_button{ "assets/StratButton.png" };
-	doodle::Image quit_button{ "assets/QuitButton.png" };
 	doodle::Image credit_button{ "assets/CreditButton.png" };
+	doodle::Image quit_button{ "assets/QuitButton.png" };
 	doodle::Image GameOver_scene{ "assets/GameOver.png" };
-	doodle::Image credit_menu{ "assets/Credit.png" };
+	doodle::Image credit_menu_1{ "assets/Credit_1.png" };
+	doodle::Image credit_menu_2{ "assets/Credit_2.png" };
 	doodle::Image option_button{ "assets/Option_button.png" };
 	doodle::Image level1_button{ "assets/Level1_button.png" };
 	doodle::Image level2_button{ "assets/Level2_button.png" };

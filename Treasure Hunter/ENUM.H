@@ -25,8 +25,8 @@ enum class State
 enum class MenuOption
 {
 	START,
-	QUIT,
 	CREDIT,
+	QUIT,
 	OPTION,
 };
 
