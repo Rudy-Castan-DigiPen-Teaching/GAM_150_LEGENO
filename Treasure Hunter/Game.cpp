@@ -136,11 +136,29 @@ void Game::Draw()
 		push_settings();
 		clear_background();
 		set_fill_color(255, 0, 255);
-		draw_image(Clear_scene1, 0, 0, Width , Height*1.2);// function for image movement
+			switch(curr_level)
+			{
+				case static_cast<int>(State::LEVEL_1): 
+			{
+				draw_image(Clear_scene1, 0, 0, Width, Height * 1.2);// function for image movement
+				break;
+			}
+				case static_cast<int>(State::LEVEL_2) :
+			{
+				draw_image(Clear_scene2, 0, 0, Width, Height * 1.2);// function for image movement
+				break;
+			}
+				case static_cast<int>(State::LEVEL_3) :
+			{
+				draw_image(Clear_scene3, 0, 0, Width, Height * 1.2);// function for image movement
+				break;
+			}
+			}
 		draw_image(Jump_minsoo.image, Width * 0.52, Height * 0.4, Jump_minsoo.GetFrameSize().x, Jump_minsoo.GetFrameSize().y,Jump_minsoo.GetDrawPos().x, 0);
 		Jump_minsoo.Update();
 		draw_image(Clear_effect.image, Width * 0.5, Height * 0.3, Clear_effect.GetFrameSize().x, Clear_effect.GetFrameSize().y, Clear_effect.GetDrawPos().x, 0);
 		Clear_effect.Update();
+		Draw_treasure();
 		pop_settings();
 		break;
 	}
@@ -753,31 +771,63 @@ void Game::Draw_treasure()
 	{
 		if(Get_treasure[i] == true)
 		{
-			switch(i)
+			if(current_state!=State::CLEAR)
 			{
-			case 0:
+				switch (i)
 				{
-					draw_image(Treasure_1_UI, 10,0, Width,Height);
+				case 0:
+				{
+					draw_image(Treasure_1_UI, 10, 0, Width, Height);
 					break;
 				}
 
-			case 1:
-			{
-				draw_image(Treasure_2_UI, 10, 0, Width, Height);
-				break;
-			}
+				case 1:
+				{
+					draw_image(Treasure_2_UI, 10, 0, Width, Height);
+					break;
+				}
 
-			case 2:
-			{
-				draw_image(Treasure_3_UI, 10, 0, Width, Height);
-				break;
-			}
+				case 2:
+				{
+					draw_image(Treasure_3_UI, 10, 0, Width, Height);
+					break;
+				}
 
-			case 3:
-			{
-				draw_image(Treasure_4_UI, 10, 0, Width, Height);
-				break;
+				case 3:
+				{
+					draw_image(Treasure_4_UI, 10, 0, Width, Height);
+					break;
+				}
+				}
 			}
+			else
+			{
+				switch (i)
+				{
+				case 0:
+				{
+					draw_image(Clear_Treasure_1, 10, 30, Width, Height);
+					break;
+				}
+
+				case 1:
+				{
+					draw_image(Clear_Treasure_2, 10, 30, Width, Height);
+					break;
+				}
+
+				case 2:
+				{
+					draw_image(Clear_Treasure_3, 10, 30, Width, Height);
+					break;
+				}
+
+				case 3:
+				{
+					draw_image(Clear_Treasure_4, 10, 30, Width, Height);
+					break;
+				}
+				}
 			}
 		}
 	}
@@ -1545,6 +1595,7 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 	{
 		Reset();
 	}
+#endif
 	if (doodleButton == doodle::KeyboardButtons::K)
 	{
 		sounds.PlaySound(static_cast<int>(SoundType::Win));
@@ -1553,7 +1604,6 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 		current_state = State::CLEAR;
 		is_music_playing = false;
 	}
-#endif
 }
 
 

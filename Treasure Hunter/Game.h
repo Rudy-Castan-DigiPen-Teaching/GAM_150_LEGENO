@@ -105,6 +105,12 @@ class Game
 	doodle::Image Treasure_3_UI{ "assets/Treasure_3_UI.png" };
 	doodle::Image Treasure_4_UI{ "assets/Treasure_4_UI.png" };
 
+
+	doodle::Image Clear_Treasure_1{ "assets/Clear_Treasure_1.png" };
+	doodle::Image Clear_Treasure_2{ "assets/Clear_Treasure_2.png" };
+	doodle::Image Clear_Treasure_3{ "assets/Clear_Treasure_3.png" };
+	doodle::Image Clear_Treasure_4{ "assets/Clear_Treasure_4.png" };
+	
 	doodle::Image Clear_scene1{ "assets/Level1_clear.png" };
 	doodle::Image Clear_scene2{ "assets/Level2_clear.png" };
 	doodle::Image Clear_scene3{ "assets/Level3_clear.png" };
