@@ -442,8 +442,6 @@ bool Guard::Is_trace_sommeone()
 
 void Guard::Update_position()
 {
-	//if (is_move == true)
-	{
 		for (auto& guard : guards)
 		{
 			if (guard.position.x > guard.target_pos.x)
@@ -480,9 +478,9 @@ void Guard::Update_position()
 				}
 			}
 		}
-	}
-
 }
+
+
 
 void Guard::Check_watching_wall(Map m)
 {

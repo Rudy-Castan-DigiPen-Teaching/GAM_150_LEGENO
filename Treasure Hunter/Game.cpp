@@ -7,10 +7,8 @@ Project: GAM150
 Author:
 -----------------------------------------------------------------*/
 
-
 #include"Game.h"
 #include"Pathfinding.h" //pathfinding logic
-#include<iostream>
 using namespace doodle;
 
 void Game::Set_up()
@@ -138,11 +136,11 @@ void Game::Draw()
 		push_settings();
 		clear_background();
 		set_fill_color(255, 0, 255);
-		draw_image(clear_scene, screen_pos, 0, Width , Height*1.2);// function for image movement
-		draw_text(to_string(screen_pos), 30, 100);
-
-		//draw_text("Level 1 Clear!", 30, 100);
-		draw_text("score= " + std::to_string(score), 100, 600);
+		draw_image(Clear_scene1, 0, 0, Width , Height*1.2);// function for image movement
+		draw_image(Jump_minsoo.image, Width * 0.52, Height * 0.4, Jump_minsoo.GetFrameSize().x, Jump_minsoo.GetFrameSize().y,Jump_minsoo.GetDrawPos().x, 0);
+		Jump_minsoo.Update();
+		draw_image(Clear_effect.image, Width * 0.5, Height * 0.3, Clear_effect.GetFrameSize().x, Clear_effect.GetFrameSize().y, Clear_effect.GetDrawPos().x, 0);
+		Clear_effect.Update();
 		pop_settings();
 		break;
 	}
@@ -236,6 +234,26 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			else
 			{
 				sounds.PlaySound(static_cast<int>(SoundType::SelectLimitEffect));
+			}
+		}
+		else if (doodleButton == doodle::KeyboardButtons::Right )
+		{
+			if (current_menu == static_cast<int>(MenuOption::OPTION) - 1)
+			{
+				sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+				current_menu++;
+			}
+			else if(current_menu == static_cast<int>(MenuOption::OPTION))
+			{
+				sounds.PlaySound(static_cast<int>(SoundType::SelectLimitEffect));
+			}
+		}
+		else if (doodleButton == doodle::KeyboardButtons::Left)
+		{
+			if (current_menu == static_cast<int>(MenuOption::OPTION))
+			{
+				sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+				current_menu--;
 			}
 		}
 	}
@@ -567,11 +585,6 @@ void Game::Update()
 	}
 	case State::CLEAR:
 	{
-		screen_pos -= 500 * doodle::DeltaTime;
-		if (screen_pos < 0)
-		{
-			screen_pos = 0;
-		}
 		break;
 	}
 	case State::GAME_OVER:
@@ -863,7 +876,6 @@ void Game::Reset()
 	is_paused = false;
 	camera_move = false;
 	curr_timer = 0;
-	screen_pos = doodle::Width;
 	start_camera_count = false;
 	is_minsoo_move = false;
 	map.Set_up(curr_level);
@@ -1457,71 +1469,6 @@ void Game::Draw_level()
 	Draw_treasure();
 }
 
-//void Game::Draw_level2()
-//{
-//	doodle::clear_background(0);
-//	map.Draw(camera);
-//	guard.Draw_guard(camera);
-//	guard.Draw_sight(camera, map);
-//	minsoo.Draw_minsu(camera, camera_move);
-//	draw_text(std::to_string(treasure_count), 500, 80);
-//
-//	push_settings();
-//	set_outline_width(5);
-//	set_outline_color(0);
-//	set_fill_color(255);
-//	draw_ellipse(200, 50, 100);
-//	set_outline_color(255, 0, 0);
-//	draw_line(200, 50, 200 + 50 * sin((PI / 50) * (100 - static_cast<double>(timer))), 50 + 50 * cos((PI) * ((static_cast<double>(timer)) / 50 - 1)));
-//
-//	set_font_size(30);
-//
-//	pop_settings();
-//	if (guard.Is_trace_sommeone() == true) // 한명이라도 따라오는애 있으면 
-//	{
-//		push_settings();
-//		if (timer % 2 == 0)  // 1초마다 화면 빨간색 넣기
-//		{
-//			set_fill_color(255, 0, 0, 100);
-//			draw_rectangle(0, 0, Width, Height);
-//		}
-//		doodle::pop_settings();
-//	}
-//}
-//
-//void Game::Draw_level3()
-//{
-//	doodle::clear_background(0);
-//	map.Draw(camera);
-//	guard.Draw_guard(camera);
-//	guard.Draw_sight(camera, map);
-//	minsoo.Draw_minsu(camera, camera_move);
-//	draw_text(std::to_string(treasure_count), 500, 80);
-//
-//	push_settings();
-//	set_outline_width(5);
-//	set_outline_color(0);
-//	set_fill_color(255);
-//	draw_ellipse(200, 50, 100);
-//	set_outline_color(255, 0, 0);
-//	draw_line(200, 50, 200 + 50 * sin((PI / 50) * (100 - static_cast<double>(timer))), 50 + 50 * cos((PI) * ((static_cast<double>(timer)) / 50 - 1)));
-//
-//	set_font_size(30);
-//
-//
-//	//Draw_radar();
-//	pop_settings();
-//	if (guard.Is_trace_sommeone() == true) // 한명이라도 따라오는애 있으면 
-//	{
-//		push_settings();
-//		if (timer % 2 == 0)  // 1초마다 화면 빨간색 넣기
-//		{
-//			set_fill_color(255, 0, 0, 100);
-//			draw_rectangle(0, 0, Width, Height);
-//		}
-//		doodle::pop_settings();
-//	}
-//}
 
 void Game::Input_level(doodle::KeyboardButtons doodleButton)
 {

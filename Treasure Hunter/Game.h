@@ -34,7 +34,6 @@ class Game
 	int treasure_count{ 0 };
 	int score{ 0 };
 	double splash_timer{ 3 };
-	double screen_pos = doodle::Width;
 	math::ivec2 exit_pos{ 0 };
 
 	bool is_exit{ false };
@@ -66,7 +65,6 @@ class Game
 	bool Get_treasure[4] = { false, };
 	doodle::Image digipen_logo{ "assets/DigiPen_BLACK_1024px.png" };
 	doodle::Image game_logo{ "assets/Treasure_Hunter_Logo.jpg" };
-	doodle::Image clear_scene{ "assets/Clear_scene.png" };
 	doodle::Image main_menu{ "assets/MainMenu.png" };
 	doodle::Image level_select{ "assets/Level_select.png" };
 	doodle::Image start_button{ "assets/StratButton.png" };
@@ -107,8 +105,18 @@ class Game
 	doodle::Image Treasure_3_UI{ "assets/Treasure_3_UI.png" };
 	doodle::Image Treasure_4_UI{ "assets/Treasure_4_UI.png" };
 
-	Sprite Siren_sprite{ "assets/siren_sprite.png",9,0.05 };
+	doodle::Image Clear_scene1{ "assets/Level1_clear.png" };
+	doodle::Image Clear_scene2{ "assets/Level2_clear.png" };
+	doodle::Image Clear_scene3{ "assets/Level3_clear.png" };
+	
 
+	Sprite Siren_sprite{ "assets/siren_sprite.png",9,0.05 };
+	
+	Sprite Clear_effect{ "assets/clear_effect.png",8,0.1 };
+	
+	Sprite Jump_minsoo{ "assets/Jump_minsoo.png",7,0.1 };
+
+	
 	double Get_count();
 public:
 	void Set_up();
@@ -129,8 +137,6 @@ public:
 	void Change_sight();
 
 	void Draw_level();
-	//void Draw_level2();
-	//void Draw_level3();
 	void Input_level(doodle::KeyboardButtons doodleButton);
 	void Update_level();
 
