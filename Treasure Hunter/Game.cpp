@@ -131,7 +131,7 @@ void Game::Draw()
 				break;
 			}
 		}
-		break;
+		break; 
 	}
 	case State::CLEAR:
 	{
