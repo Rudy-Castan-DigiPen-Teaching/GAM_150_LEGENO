@@ -15,6 +15,7 @@ public:
     int currAnim = 0;
     math::ivec2 frameSize;
     int pixcel_num = 0;
+    double animtimer = 0;
 private:
     double target_time;
     std::vector<math::ivec2> frameTexel;

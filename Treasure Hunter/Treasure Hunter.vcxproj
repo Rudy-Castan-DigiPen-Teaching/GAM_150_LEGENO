@@ -140,10 +140,6 @@ xcopy /y /d "$(SolutionDir)external\SFML\$(Platform)\bin\sfml-system-2.dll" "$(T
     <ClInclude Include="Map.h" />
     <ClInclude Include="Minsoo.h" />
     <ClInclude Include="Pathfinding.h" />
-    <ClInclude Include="Sketch.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="resource.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="Sprite.h" />

@@ -8,16 +8,16 @@ Sprite::Sprite(const std::filesystem::path& spriteInfoFile, int howmanyimage,dou
 
 void Sprite::Update()
 {
-	static double timer = 0;
-	timer += doodle::DeltaTime;
-	if (timer > target_time)
+	
+	animtimer += doodle::DeltaTime;
+	if (animtimer > target_time)
 	{
 		currAnim++;
 		if (currAnim == pixcel_num)
 		{
 			currAnim = 0;
 		}
-		timer = 0;
+		animtimer = 0;
 	}
 }
 
