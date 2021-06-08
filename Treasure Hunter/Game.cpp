@@ -694,7 +694,7 @@ void Game::Update_level()
 	}
 	if (radar_start == true)
 	{
-		if (Is_sound_playing() == false)
+		if (Get_count()<=4 &&Is_sound_playing() == false)
 		{
 			sounds.PlaySound(static_cast<int>(SoundType::Radar));
 		}
