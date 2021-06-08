@@ -37,7 +37,8 @@ public:
 	doodle::Image Escape{ "assets/Escape.png" };
 	doodle::Image Radar{ "assets/Radar.png" };
 	doodle::Image Next{ "assets/Next.png" };
-
+	doodle::Image Lader{ "assets/Lader.png" };
+	
 	doodle::Image Treasure_1{ "assets/Treasure_1.png" };
 	doodle::Image Treasure_2{ "assets/Treasure_2.png" };
 	doodle::Image Treasure_3{ "assets/Treasure_3.png" };
@@ -70,6 +71,6 @@ public:
 	void Draw(Camera& camera);
 	vector<info> map;
 	doodle::Image& Set_wall(info& value);
-	int treasure_num = 4;
+	int treasure_num = 2;
 
 };

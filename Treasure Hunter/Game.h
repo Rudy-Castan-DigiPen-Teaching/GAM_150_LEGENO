@@ -63,6 +63,7 @@ class Game
 	bool is_played_bite = false;
 
 	bool Get_treasure[4] = { false, };
+	
 	doodle::Image digipen_logo{ "assets/DigiPen_BLACK_1024px.png" };
 	doodle::Image game_logo{ "assets/Treasure_Hunter_Logo.jpg" };
 	doodle::Image main_menu{ "assets/MainMenu.png" };
@@ -74,9 +75,11 @@ class Game
 	doodle::Image credit_menu_1{ "assets/Credit_1.png" };
 	doodle::Image credit_menu_2{ "assets/Credit_2.png" };
 	doodle::Image option_button{ "assets/Option_button.png" };
+	doodle::Image tutorial_button{ "assets/tutorial_button.png" };
 	doodle::Image level1_button{ "assets/Level1_button.png" };
 	doodle::Image level2_button{ "assets/Level2_button.png" };
 	doodle::Image level3_button{ "assets/Level3_button.png" };
+	
 	doodle::Image option_menu{ "assets/Option.png" };
 	doodle::Image sound1{ "assets/Sound1.png" };
 	doodle::Image sound2{ "assets/Sound2.png" };
@@ -116,6 +119,12 @@ class Game
 	doodle::Image Clear_scene2{ "assets/Level2_clear.png" };
 	doodle::Image Clear_scene3{ "assets/Level3_clear.png" }; 
 	
+	doodle::Image Level_select_Treasure_1{ "assets/level_select_Treasure1.png" };
+	doodle::Image Level_select_Treasure_2{ "assets/level_select_Treasure2.png" };
+	doodle::Image Level_select_Treasure_3{ "assets/level_select_Treasure3.png" };
+	doodle::Image Level_select_Treasure_4{ "assets/level_select_Treasure4.png" };
+	doodle::Image Treasure_box{ "assets/treasure_box.png" };
+
 
 	Sprite Siren_sprite{ "assets/siren_sprite.png",9,0.05 };
 	
@@ -138,7 +147,7 @@ public:
 	void Radar_obtain();	//when minsoo gets radar, add Exit, add Ruby, ready to show Ruby 
 	void Draw_radar();
 	void Move_camera(math::vec2 position); // camera shows Ruby for a while
-
+	bool Is_get_all_treasure();
 	void set_direction(math::vec2 position, int index);
 	void Collision_check();
 	void Change_sight();
@@ -149,9 +158,10 @@ public:
 
 	void Tile_check(); //3blockss move --> pung~  Check_bomb() -> Tile_check()
 	void Draw_treasure();
-	bool Is_sound_playing();
 	void Set_Ingame_Music();
 	math::vec2 new_pos{ minsoo.Get_position() };
 	double curr_timer{ 0 };
 	bool start_camera_count{ false };
+	bool level_clear[3] = { false, };
 };
+
