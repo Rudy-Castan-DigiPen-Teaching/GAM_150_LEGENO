@@ -115,7 +115,13 @@ class Game
 	doodle::Image Clear_scene1{ "assets/Level1_clear.png" };
 	doodle::Image Clear_scene2{ "assets/Level2_clear.png" };
 	doodle::Image Clear_scene3{ "assets/Level3_clear.png" };
-	
+
+	doodle::Image Level_select_Treasure_1{ "assets/level_select_Treasure1.png" };
+	doodle::Image Level_select_Treasure_2{ "assets/level_select_Treasure2.png" };
+	doodle::Image Level_select_Treasure_3{ "assets/level_select_Treasure3.png" };
+	doodle::Image Level_select_Treasure_4{ "assets/level_select_Treasure4.png" };
+	doodle::Image Treasure_box{ "assets/treasure_box.png" };
+
 
 	Sprite Siren_sprite{ "assets/siren_sprite.png",9,0.05 };
 	

@@ -94,6 +94,27 @@ void Game::Draw()
 		case (static_cast<int>(State::LEVEL_3)): doodle::draw_image(level3_button, 0, 0, Width, Height);
 			break;
 		}
+		
+		doodle::draw_image(Treasure_box, 0, 0, Width, Height);
+
+		if(Get_treasure[0] == true)
+		{
+			doodle::draw_image(Level_select_Treasure_1, 0, 0, Width, Height);
+		}
+
+		if (Get_treasure[1] == true)
+		{
+			doodle::draw_image(Level_select_Treasure_2, 0, 0, Width, Height);
+		}
+		if (Get_treasure[2] == true)
+		{
+			doodle::draw_image(Level_select_Treasure_3, 0, 0, Width, Height);
+		}
+		if (Get_treasure[3] == true)
+		{
+			doodle::draw_image(Level_select_Treasure_4, 0, 0, Width, Height);
+		}
+			
 		break;
 	}
 
@@ -979,7 +1000,7 @@ void Game::Reset()
 	}
 }
 
-bool Game::Check(doodle::KeyboardButtons doodleButton)
+bool Game::Check(doodle::KeyboardButtons doodleButton) // get keyboard key and check whether the direction minsoo want to go is wall or road
 {
 	math::vec2 position = minsoo.Get_position();
 	switch (doodleButton)
@@ -1021,7 +1042,7 @@ bool Game::Check(doodle::KeyboardButtons doodleButton)
 	return false;
 }
 
-bool Game::Check_guard(int index)  // 가드가 벽을 보고있을때 시야방향 바꾸기
+bool Game::Check_guard(int index)  // change sight if guard direction is toward the wall
 {
 
 	switch (guard.guards[index].direction)
@@ -1209,7 +1230,6 @@ void Game::Set_item(doodle::KeyboardButtons button)
 	}
 }
 
-// 레이더 빨라지는게 어딘지는 모르겠는데 sounds.sounds[static_cast<int>(SoundType::Radar)].setVolume() 이런식으로 조정하면 될듯
 void Game::Radar_obtain()
 {
 	if (did_abtain_radar == true)
