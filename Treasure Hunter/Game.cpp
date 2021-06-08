@@ -87,6 +87,8 @@ void Game::Draw()
 		doodle::draw_image(level_select, 0, 0, Width, Height);
 		switch (curr_level)
 		{
+		case (static_cast<int>(State::TUTORIAL)): doodle::draw_image(level3_button, 0, 0, Width, Height);
+			break;
 		case (static_cast<int>(State::LEVEL_1)): doodle::draw_image(level1_button, 0, 0, Width, Height);
 			break;
 		case (static_cast<int>(State::LEVEL_2)): doodle::draw_image(level2_button, 0, 0, Width, Height);
@@ -97,6 +99,7 @@ void Game::Draw()
 		break;
 	}
 
+	case State::TUTORIAL:
 	case State::LEVEL_1:
 	case State::LEVEL_2:
 	case State::LEVEL_3:
@@ -138,6 +141,11 @@ void Game::Draw()
 		set_fill_color(255, 0, 255);
 		switch (curr_level)
 		{
+			case static_cast<int>(State::TUTORIAL):
+			{
+				draw_image(Clear_tutorial , 0, 0, Width, Height * 1.2);// function for image movement
+				break;
+			}
 			case static_cast<int>(State::LEVEL_1) :
 			{
 				draw_image(Clear_scene1, 0, 0, Width, Height * 1.2);// function for image movement
@@ -195,6 +203,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			}
 		}
 	}
+	break;
 	case State::START:
 	{
 		if (doodleButton == doodle::KeyboardButtons::Enter)
@@ -343,7 +352,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 	{
 		if (doodleButton == doodle::KeyboardButtons::Up)
 		{
-			if (curr_level > static_cast<int>(State::LEVEL_1))
+			if (curr_level > static_cast<int>(State::TUTORIAL))
 			{
 				sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
 				curr_level--;
@@ -376,6 +385,13 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			is_music_playing = false;
 			switch (curr_level)
 			{
+			case (static_cast<int>(State::TUTORIAL)):
+			{
+				sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+				Reset();
+				current_state = State::TUTORIAL;
+				break;
+			}
 			case (static_cast<int>(State::LEVEL_1)):
 			{
 				if (unlock_level >= static_cast<int>(State::LEVEL_1))
@@ -424,6 +440,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 	}
 	break;
 
+	case State::TUTORIAL:
 	case State::LEVEL_1:
 	case State::LEVEL_2:
 	case State::LEVEL_3:
@@ -568,7 +585,6 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 
 void Game::Update()
 {
-
 	switch (current_state)
 	{
 	case State::SPLASH:
@@ -609,6 +625,7 @@ void Game::Update()
 		}
 		break;
 	}
+	case State::TUTORIAL:
 	case State::LEVEL_1:
 	case State::LEVEL_2:
 	case State::LEVEL_3:
@@ -677,20 +694,23 @@ void Game::Update_level()
 	Set_Ingame_Music();
 
 	guard.Guard_movement_update(exit_pos, map, minsoo.movement);
-	if (timer < 20 && timer > 0)
+	if (current_state != State::TUTORIAL && current_state != State::CLEAR)
 	{
-		if (Is_sound_playing() == false)
+		if (timer < 20 && timer > 0)
 		{
-			sounds.PlaySound(static_cast<int>(SoundType::TimerTic));
+			if (Is_sound_playing() == false)
+			{
+				sounds.PlaySound(static_cast<int>(SoundType::TimerTic));
+			}
 		}
-	}
-	else if (timer <= 0)
-	{
-		sounds.StopSound();
-		sounds.PlaySound(static_cast<int>(SoundType::TimesUp));
-		sounds.music.stop();
-		is_music_playing = false;
-		current_state = State::GAME_OVER;
+		else if (timer <= 0)
+		{
+			sounds.StopSound();
+			sounds.PlaySound(static_cast<int>(SoundType::TimesUp));
+			sounds.music.stop();
+			is_music_playing = false;
+			current_state = State::GAME_OVER;
+		}
 	}
 	if (radar_start == true)
 	{
@@ -741,7 +761,6 @@ void Game::Tile_check()
 
 		if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::CAN_ESCAPE)
 		{
-
 			sounds.PlaySound(static_cast<int>(SoundType::Win));
 			sounds.music.stop();
 			current_state = State::CLEAR;
@@ -751,6 +770,19 @@ void Game::Tile_check()
 		{
 			map.map[i].type = Type::ROAD;
 			did_abtain_radar = true;
+		}
+		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::NEXT)
+		{
+			if (Get_treasure[0] && Get_treasure[1] && Get_treasure[2] && Get_treasure[3])//is_get_all_treasure()==true
+			{
+				map.map[i].type = Type::ROAD;
+				minsoo.position += math::vec2{ 0,5 };
+				guard.guards.clear();
+			}
+			else
+			{
+				Reset();
+			}
 		}
 		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::TREASURE_crown)
 		{
@@ -779,6 +811,23 @@ void Game::Tile_check()
 			map.map[i].type = Type::ROAD;
 			Get_treasure[3] = true;
 			treasure_count++;
+		}
+	}
+	if (current_state == State::TUTORIAL)
+	{
+		if (minsoo.position == map.map[614].position || minsoo.position == map.map[657].position || minsoo.position == map.map[700].position)
+		{
+			if (guard.guards.empty())
+			{
+				guard.guards.push_back(guard_info{ math::ivec2(12, 13), Direction::DOWN });
+			}
+		}
+		else if (minsoo.position == map.map[627].position || minsoo.position == map.map[670].position || minsoo.position == map.map[713].position)
+		{
+			if (guard.guards.size() == 1)
+			{
+				guard.guards.push_back(guard_info{ math::ivec2(25, 17), Direction::UP });
+			}
 		}
 	}
 }
@@ -1195,26 +1244,37 @@ void Game::Set_item(doodle::KeyboardButtons button)
 	}
 }
 
-// 레이더 빨라지는게 어딘지는 모르겠는데 sounds.sounds[static_cast<int>(SoundType::Radar)].setVolume() 이런식으로 조정하면 될듯
-void Game::Radar_obtain()
+void Game::Radar_obtain()	//What is this??????? Why int item num=1?
 {
 	if (did_abtain_radar == true)
 	{
-		int item_num = 1;
-		while (item_num > 0)
+		if (current_state == State::TUTORIAL)
 		{
-			math::ivec2 pos(doodle::random(0, 10), doodle::random(0, 10));
-			for (auto& m : map.map)
+			map.map[949].type = Type::EXIT;
+			exit_pos = map.map[949].position;
+			did_abtain_radar = false;
+			radar_start = true;
+			guard.guards.push_back(guard_info{ math::ivec2(39, 21), Direction::LEFT ,"Ruby" }); //minsu start pos
+			camera_move = true;
+		}
+		else
+		{
+			int item_num = 1;
+			while (item_num > 0)
 			{
-				if (m.position == pos && m.type == Type::ROAD)
+				math::ivec2 pos(doodle::random(0, 10), doodle::random(0, 10));
+				for (auto& m : map.map)
 				{
-					m.type = Type::EXIT;
-					exit_pos = m.position;
-					item_num--;
-					did_abtain_radar = false;
-					radar_start = true;
-					guard.guards.push_back(guard_info{ math::ivec2(39, 21), Direction::LEFT ,"Ruby" }); //minsu start pos
-					camera_move = true;
+					if (m.position == pos && m.type == Type::ROAD)
+					{
+						m.type = Type::EXIT;
+						exit_pos = m.position;
+						item_num--;
+						did_abtain_radar = false;
+						radar_start = true;
+						guard.guards.push_back(guard_info{ math::ivec2(39, 21), Direction::LEFT ,"Ruby" }); //minsu start pos
+						camera_move = true;
+					}
 				}
 			}
 		}
@@ -1472,7 +1532,10 @@ void Game::Draw_level()
 	guard.Draw_guard(camera);
 	guard.Draw_sight(camera, map);
 	minsoo.Draw_minsu(camera, camera_move);
-	doodle::draw_image(Sight_limit, (minsoo.Get_position().x + camera.Get_position().x - 1), (minsoo.Get_position().y + camera.Get_position().y - 20), doodle::Width, doodle::Height);
+	if (current_state != State::TUTORIAL)
+	{
+		doodle::draw_image(Sight_limit, (minsoo.Get_position().x + camera.Get_position().x - 1), (minsoo.Get_position().y + camera.Get_position().y - 20), doodle::Width, doodle::Height);
+	}
 	draw_image(UI, 0, 0, doodle::Width, doodle::Height);
 
 	switch (minsoo.chew_item)
@@ -1517,16 +1580,19 @@ void Game::Draw_level()
 		break;
 	}
 
-	push_settings();
-	set_outline_width(5);
-	set_outline_color(0);
-	set_fill_color(255);
+	if (current_state != State::TUTORIAL)
+	{
+		push_settings();
+		set_outline_width(5);
+		set_outline_color(0);
+		set_fill_color(255);
 
-	set_outline_color(255, 0, 0);
-	draw_line(doodle::Width * 0.07, doodle::Height * 0.12, Width * 0.07 + Width * 0.05 * sin((PI / 50) * (100 - static_cast<double>(timer))), doodle::Height * 0.12 + Height * 0.075 * cos((PI) * ((static_cast<double>(timer)) / 50 - 1)));
+		set_outline_color(255, 0, 0);
+		draw_line(doodle::Width * 0.07, doodle::Height * 0.12, Width * 0.07 + Width * 0.05 * sin((PI / 50) * (100 - static_cast<double>(timer))), doodle::Height * 0.12 + Height * 0.075 * cos((PI) * ((static_cast<double>(timer)) / 50 - 1)));
 
-	set_font_size(30);
-	pop_settings();
+		set_font_size(30);
+		pop_settings();
+	}
 
 	if (guard.Is_trace_sommeone() == true) // 한명이라도 따라오는애 있으면 
 	{

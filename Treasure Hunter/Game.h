@@ -47,7 +47,7 @@ class Game
 	State current_state{ State::SPLASH };
 	State previous_state{ State::SPLASH };
 	int current_menu{ static_cast<int>(MenuOption::START) };
-	int curr_level{ static_cast<int>(State::LEVEL_1) };
+	int curr_level{ static_cast<int>(State::TUTORIAL) };
 	int unlock_level{ static_cast<int>(State::LEVEL_1) };
 
 	bool camera_move{ false };
@@ -111,9 +111,10 @@ class Game
 	doodle::Image Clear_Treasure_3{ "assets/Clear_Treasure_3.png" };
 	doodle::Image Clear_Treasure_4{ "assets/Clear_Treasure_4.png" };
 	
+	doodle::Image Clear_tutorial{ "assets/Tutorial_clear.png" };
 	doodle::Image Clear_scene1{ "assets/Level1_clear.png" };
 	doodle::Image Clear_scene2{ "assets/Level2_clear.png" };
-	doodle::Image Clear_scene3{ "assets/Level3_clear.png" };
+	doodle::Image Clear_scene3{ "assets/Level3_clear.png" }; 
 	
 
 	Sprite Siren_sprite{ "assets/siren_sprite.png",9,0.05 };

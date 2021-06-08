@@ -20,6 +20,7 @@ public:
 	math::vec2 Get_position();
 	void Set_up();
 
+	math::vec2 position{ 2,2 };
 	bool is_dead{ false };
 	int movement{ 0 };
 	int chew_item{ 3 };
@@ -33,5 +34,4 @@ public:
 	Sprite Minsoo_right { "assets/Minsoo_right.png",5 ,0.05 };
 	Sprite Minsoo_Down  { "assets/Minsoo_down.png",5 ,0.05 };
 private:
-	math::vec2 position{ 2,2 };
 };

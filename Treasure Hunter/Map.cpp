@@ -38,32 +38,34 @@ void Map::Set_up(int level)
             {
                 switch (treasure_num)
                 {
-                   case 1:
-                   {
-                       map.push_back(info{ math::ivec2{width,height},Type::TREASURE_crown });
-                   	   treasure_num = 4;
-                       break;
-                   }
-                   case 2:
-                   {
-                       map.push_back(info{ math::ivec2{width,height},Type::TREASURE_key });
-                       treasure_num = 1;
-                       break;
-                   }
-                   case 3:
-                   {
-                       map.push_back(info{ math::ivec2{width,height},Type::TREASURE_coin });
-                       treasure_num = 2;
-                       break;
-                   }
-                   case 4:
-                   {
-                       map.push_back(info{ math::ivec2{width,height},Type::TREASURE_dia });
-                       treasure_num = 3;
-                       break;
-                   }
+                case 1:
+                {
+                    map.push_back(info{ math::ivec2{width,height},Type::TREASURE_crown });
+                    treasure_num = 4;
+                    break;
                 }
-				break;
+                case 2:
+                {
+                    map.push_back(info{ math::ivec2{width,height},Type::TREASURE_key });
+                    treasure_num = 1;
+                    break;
+                }
+                case 3:
+                {
+                    map.push_back(info{ math::ivec2{width,height},Type::TREASURE_coin });
+                    treasure_num = 2;
+                    break;
+                }
+                case 4:
+                {
+                    map.push_back(info{ math::ivec2{width,height},Type::TREASURE_dia });
+                    treasure_num = 3;
+                    break;
+                }
+                }
+                break;
+            case '4':map.push_back(info{ math::ivec2{width,height},Type::NEXT });
+                break;
             }
             }
             if (width < map_width - 1)
@@ -78,7 +80,6 @@ void Map::Set_up(int level)
         }
     }
     readFile.close();
-
     for (auto& i : map)
     {
         int rand = doodle::random(0, 15);
@@ -277,11 +278,19 @@ void Map::Draw(Camera& camera)
         }
         case Type::RADAR:
         {
-        	 	 push_settings();
-				 draw_image(Road1, (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
-				 draw_image(Radar, (i.position.x + camera.Get_position().x) * block_size, (i.position.y + camera.Get_position().y) * block_size, block_size, block_size);
-				 pop_settings();
-				 break;
+            push_settings();
+            draw_image(Road1, (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
+            draw_image(Radar, (i.position.x + camera.Get_position().x) * block_size, (i.position.y + camera.Get_position().y) * block_size, block_size, block_size);
+            pop_settings();
+            break;
+        }
+        case Type::NEXT:
+        {
+            push_settings();
+            draw_image(Road1, (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
+            draw_image(Next, (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
+            pop_settings();
+            break;
         }
         case Type::TREASURE_crown:
         {

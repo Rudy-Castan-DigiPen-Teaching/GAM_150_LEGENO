@@ -36,6 +36,7 @@ public:
 	doodle::Image Breakable_wall{ "assets/Breakable_wall.png" };
 	doodle::Image Escape{ "assets/Escape.png" };
 	doodle::Image Radar{ "assets/Radar.png" };
+	doodle::Image Next{ "assets/Next.png" };
 
 	doodle::Image Treasure_1{ "assets/Treasure_1.png" };
 	doodle::Image Treasure_2{ "assets/Treasure_2.png" };
