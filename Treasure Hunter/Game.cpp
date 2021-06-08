@@ -712,7 +712,7 @@ void Game::Update_level()
 	guard.Guard_movement_update(exit_pos, map, minsoo.movement);
 	if (timer < 20 && timer > 0)
 	{
-		if (Is_sound_playing() == false)
+		if (sounds.IsSoundPlaying() == false)
 		{
 			sounds.PlaySound(static_cast<int>(SoundType::TimerTic));
 		}
@@ -727,7 +727,7 @@ void Game::Update_level()
 	}
 	if (radar_start == true)
 	{
-		if (Get_count()<=4 &&Is_sound_playing() == false)
+		if (Get_count()<=4 && sounds.IsSoundPlaying() == false)
 		{
 			sounds.PlaySound(static_cast<int>(SoundType::Radar));
 		}
@@ -736,7 +736,7 @@ void Game::Update_level()
 	{
 		if (i.is_okay == false)
 		{
-			if (Is_sound_playing() == false)
+			if (sounds.IsSoundPlaying() == false)
 			{
 				sounds.PlaySound(static_cast<int>(SoundType::ChewingGum));
 			}
@@ -772,7 +772,7 @@ void Game::Tile_check()
 			}
 			else
 			{
-				if (Is_sound_playing() == false)
+				if (sounds.IsSoundPlaying() == false)
 				{
 					sounds.PlaySound(static_cast<int>(SoundType::BombFuse));
 				}
@@ -784,6 +784,7 @@ void Game::Tile_check()
 			sounds.PlaySound(static_cast<int>(SoundType::Win));
 			sounds.music.stop();
 			level_clear[static_cast<int>(current_state) - static_cast<int>(State::LEVEL_1)] = true;
+			sounds.StopSound();
 			current_state = State::CLEAR;
 		}
 
@@ -1712,17 +1713,7 @@ void Game::Change_sight()
 	}
 }
 
-bool Game::Is_sound_playing()
-{
-	for (auto& s : sounds.sounds)
-	{
-		if (s.getStatus() == sf::SoundSource::Playing)
-		{
-			return true;
-		}
-	}
-	return false;
-}
+
 
 bool Game::Is_get_all_treasure()
 {
