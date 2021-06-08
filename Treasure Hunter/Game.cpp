@@ -369,7 +369,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 		break;
 	case State::LEVEL_SELECT:  //todo 1레벨 클리어 해야지 2렙갈수있는거
 	{
-		Reset();
+		
 		if (doodleButton == doodle::KeyboardButtons::Up)
 		{
 			if (curr_level > static_cast<int>(State::TUTORIAL))
@@ -417,7 +417,9 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 				if (unlock_level >= static_cast<int>(State::LEVEL_1))
 				{
 					sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+					Reset();
 					current_state = State::LEVEL_1;
+				
 				}
 				else
 				{
@@ -430,7 +432,9 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 				if (unlock_level >= static_cast<int>(State::LEVEL_2))
 				{
 					sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+					
 					current_state = State::LEVEL_2;
+					Reset();
 				}
 				else
 				{
@@ -446,7 +450,9 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 					if (Is_get_all_treasure() == true)
 					{
 						sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+						Reset();
 						current_state = State::LEVEL_3;
+						
 					}
 					else
 					{
