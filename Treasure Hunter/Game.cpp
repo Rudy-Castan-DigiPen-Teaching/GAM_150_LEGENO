@@ -409,9 +409,16 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			{
 				if (unlock_level >= static_cast<int>(State::LEVEL_3))
 				{
-					sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
-					Reset();
-					current_state = State::LEVEL_3;
+					if (Is_get_all_treasure() == true)
+					{
+						sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+						Reset();
+						current_state = State::LEVEL_3;
+					}
+					else
+					{
+						sounds.PlaySound(static_cast<int>(SoundType::SelectLimitEffect));
+					}
 				}
 				else
 				{
@@ -547,7 +554,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 	case State::CLEAR:
 	{
 		sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
-		current_state = State::START;
+		current_state = State::LEVEL_SELECT;
 		if (unlock_level < static_cast<int>(State::LEVEL_3))
 		{
 			unlock_level++;
@@ -951,10 +958,17 @@ void Game::Reset()
 	minsoo.Set_up();
 	guard.Set_up(curr_level);
 
-	for (int i = 0; i < 4; i++)
+	if(current_state == State::LEVEL_1)
 	{
-		Get_treasure[i] = false;
+		Get_treasure[0] = false;
+		Get_treasure[1] = false;
 	}
+	if (current_state == State::LEVEL_2)
+	{
+		Get_treasure[2] = false;
+		Get_treasure[3] = false;
+	}
+	
 	minsoo.direction = Direction::DOWN;
 	for (int i = 0; i < map.map.size(); i++)
 	{
@@ -1614,7 +1628,6 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 	{
 		Reset();
 	}
-#endif
 	if (doodleButton == doodle::KeyboardButtons::K)
 	{
 		sounds.PlaySound(static_cast<int>(SoundType::Win));
@@ -1623,6 +1636,7 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 		current_state = State::CLEAR;
 		is_music_playing = false;
 	}
+#endif
 }
 
 
@@ -1657,4 +1671,16 @@ bool Game::Is_sound_playing()
 		}
 	}
 	return false;
+}
+
+bool Game::Is_get_all_treasure()
+{
+	for (int i = 0; i < 4; i++)
+	{
+		if (Get_treasure[i] == false)
+		{
+			return false;
+		}
+	}
+	return true;
 }

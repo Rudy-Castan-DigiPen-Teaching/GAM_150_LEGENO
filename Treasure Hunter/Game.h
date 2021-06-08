@@ -63,6 +63,7 @@ class Game
 	bool is_played_bite = false;
 
 	bool Get_treasure[4] = { false, };
+	
 	doodle::Image digipen_logo{ "assets/DigiPen_BLACK_1024px.png" };
 	doodle::Image game_logo{ "assets/Treasure_Hunter_Logo.jpg" };
 	doodle::Image main_menu{ "assets/MainMenu.png" };
@@ -137,7 +138,7 @@ public:
 	void Radar_obtain();	//when minsoo gets radar, add Exit, add Ruby, ready to show Ruby 
 	void Draw_radar();
 	void Move_camera(math::vec2 position); // camera shows Ruby for a while
-
+	bool Is_get_all_treasure();
 	void set_direction(math::vec2 position, int index);
 	void Collision_check();
 	void Change_sight();
@@ -154,3 +155,4 @@ public:
 	double curr_timer{ 0 };
 	bool start_camera_count{ false };
 };
+

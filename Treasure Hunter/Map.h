@@ -69,6 +69,6 @@ public:
 	void Draw(Camera& camera);
 	vector<info> map;
 	doodle::Image& Set_wall(info& value);
-	int treasure_num = 4;
+	int treasure_num = 2;
 
 };

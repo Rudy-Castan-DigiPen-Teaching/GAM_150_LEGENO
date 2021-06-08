@@ -19,7 +19,7 @@ void Map::Set_up(int level)
     readFile.open("assets/Map" + to_string(level - (static_cast<int>(State::LEVEL_1) - 1)) + ".txt");
     int width = 0;
     int height = 0;
-
+    treasure_num = 2;
     if (readFile.is_open())
     {
         while (!readFile.eof())
@@ -36,32 +36,48 @@ void Map::Set_up(int level)
                 break;
             case '3':
             {
-                switch (treasure_num)
+                switch (level)
                 {
-                   case 1:
-                   {
-                       map.push_back(info{ math::ivec2{width,height},Type::TREASURE_crown });
-                   	   treasure_num = 4;
-                       break;
-                   }
-                   case 2:
-                   {
-                       map.push_back(info{ math::ivec2{width,height},Type::TREASURE_key });
-                       treasure_num = 1;
-                       break;
-                   }
-                   case 3:
-                   {
-                       map.push_back(info{ math::ivec2{width,height},Type::TREASURE_coin });
-                       treasure_num = 2;
-                       break;
-                   }
-                   case 4:
-                   {
-                       map.push_back(info{ math::ivec2{width,height},Type::TREASURE_dia });
-                       treasure_num = 3;
-                       break;
-                   }
+                    case static_cast<int>(State::LEVEL_1):
+                    {
+                        switch (treasure_num)
+                        {
+                            case 1:
+                            {
+                                map.push_back(info{ math::ivec2{width,height},Type::TREASURE_crown });
+                                treasure_num = 0;
+                                break;
+                            }
+                            case 2:
+                            {
+                                map.push_back(info{ math::ivec2{width,height},Type::TREASURE_key });
+                                treasure_num = 1;
+                                break;
+                            }
+                        }
+                        break;
+                    }
+
+                  case static_cast<int>(State::LEVEL_2) :
+                    {
+                        switch (treasure_num)
+                        {
+                        case 1:
+                        {
+                            map.push_back(info{ math::ivec2{width,height},Type::TREASURE_coin });
+                            treasure_num = 0;
+                            break;
+                        }
+                        case 2:
+                        {
+                            map.push_back(info{ math::ivec2{width,height},Type::TREASURE_dia });
+                            treasure_num = 1;
+                            break;
+                        }
+                        }
+                        break;
+                    }
+                	
                 }
 				break;
             }
