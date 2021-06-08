@@ -49,9 +49,9 @@ void Game::Draw()
 		switch (current_menu)
 		{
 			case static_cast<int>(MenuOption::START) : doodle::draw_image(start_button, 0, 0, Width, Height); break;
-				case static_cast<int>(MenuOption::CREDIT) : doodle::draw_image(credit_button, 0, 0, Width, Height); break;
-					case static_cast<int>(MenuOption::QUIT) : doodle::draw_image(quit_button, 0, 0, Width, Height); break;
-						case static_cast<int>(MenuOption::OPTION) : doodle::draw_image(option_button, 0, 0, Width, Height); break;
+			case static_cast<int>(MenuOption::CREDIT) : doodle::draw_image(credit_button, 0, 0, Width, Height); break;
+			case static_cast<int>(MenuOption::QUIT) : doodle::draw_image(quit_button, 0, 0, Width, Height); break;
+			case static_cast<int>(MenuOption::OPTION) : doodle::draw_image(option_button, 0, 0, Width, Height); break;
 		}
 		break;
 	}
@@ -87,6 +87,8 @@ void Game::Draw()
 		doodle::draw_image(level_select, 0, 0, Width, Height);
 		switch (curr_level)
 		{
+		case (static_cast<int>(State::TUTORIAL)): doodle::draw_image(tutorial_button, 0, 0, Width, Height);
+			break;
 		case (static_cast<int>(State::LEVEL_1)): doodle::draw_image(level1_button, 0, 0, Width, Height);
 			break;
 		case (static_cast<int>(State::LEVEL_2)): doodle::draw_image(level2_button, 0, 0, Width, Height);
@@ -97,20 +99,20 @@ void Game::Draw()
 		
 		doodle::draw_image(Treasure_box, 0, 0, Width, Height);
 
-		if(Get_treasure[0] == true)
+		if(Get_treasure[0] == true && level_clear[0] == true)
 		{
 			doodle::draw_image(Level_select_Treasure_1, 0, 0, Width, Height);
 		}
 
-		if (Get_treasure[1] == true)
+		if (Get_treasure[1] == true && level_clear[0] == true)
 		{
 			doodle::draw_image(Level_select_Treasure_2, 0, 0, Width, Height);
 		}
-		if (Get_treasure[2] == true)
+		if (Get_treasure[2] == true && level_clear[1] == true)
 		{
 			doodle::draw_image(Level_select_Treasure_3, 0, 0, Width, Height);
 		}
-		if (Get_treasure[3] == true)
+		if (Get_treasure[3] == true && level_clear[1] == true)
 		{
 			doodle::draw_image(Level_select_Treasure_4, 0, 0, Width, Height);
 		}
@@ -226,7 +228,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 				case static_cast<int>(MenuOption::START) :
 				{
 					previous_state = current_state;
-					current_state = State::LEVEL_SELECT;
+					current_state = State::LEVEL_SELECT;				
 					doodle::clear_background(0);
 					sounds.music.stop();
 					is_music_playing = false;
@@ -362,9 +364,10 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 		break;
 	case State::LEVEL_SELECT:  //todo 1레벨 클리어 해야지 2렙갈수있는거
 	{
+		Reset();
 		if (doodleButton == doodle::KeyboardButtons::Up)
 		{
-			if (curr_level > static_cast<int>(State::LEVEL_1))
+			if (curr_level > static_cast<int>(State::TUTORIAL))
 			{
 				sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
 				curr_level--;
@@ -397,12 +400,16 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			is_music_playing = false;
 			switch (curr_level)
 			{
+
+			//case (static_cast<int>(State::TUTORIAL)):
+			//	{
+			//		//todo by sunwoo
+			//	}
 			case (static_cast<int>(State::LEVEL_1)):
 			{
 				if (unlock_level >= static_cast<int>(State::LEVEL_1))
 				{
 					sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
-					Reset();
 					current_state = State::LEVEL_1;
 				}
 				else
@@ -416,7 +423,6 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 				if (unlock_level >= static_cast<int>(State::LEVEL_2))
 				{
 					sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
-					Reset();
 					current_state = State::LEVEL_2;
 				}
 				else
@@ -433,7 +439,6 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 					if (Is_get_all_treasure() == true)
 					{
 						sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
-						Reset();
 						current_state = State::LEVEL_3;
 					}
 					else
@@ -751,7 +756,14 @@ void Game::Tile_check()
 				sounds.PlaySound(static_cast<int>(SoundType::Explosion));
 				if (is_exit == true)
 				{
-					map.map[i].type = Type::CAN_ESCAPE;
+					if (current_state != State::LEVEL_3)
+					{
+						map.map[i].type = Type::CAN_ESCAPE;
+					}
+					else
+					{
+						map.map[i].type = Type::Lader;
+					}
 				}
 				else
 				{
@@ -769,12 +781,20 @@ void Game::Tile_check()
 
 		if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::CAN_ESCAPE)
 		{
-
 			sounds.PlaySound(static_cast<int>(SoundType::Win));
 			sounds.music.stop();
+			level_clear[static_cast<int>(current_state) - static_cast<int>(State::LEVEL_1)] = true;
 			current_state = State::CLEAR;
 		}
 
+		if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::Lader)
+		{
+			sounds.PlaySound(static_cast<int>(SoundType::Win));
+			sounds.music.stop();
+			level_clear[static_cast<int>(current_state) - static_cast<int>(State::LEVEL_1)] = true;
+			current_state = State::CLEAR;
+		}
+		
 		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::RADAR)
 		{
 			map.map[i].type = Type::ROAD;
@@ -979,16 +999,20 @@ void Game::Reset()
 	minsoo.Set_up();
 	guard.Set_up(curr_level);
 
-	if(current_state == State::LEVEL_1)
+
+	if (level_clear[0] == false)
 	{
-		Get_treasure[0] = false;
-		Get_treasure[1] = false;
+			Get_treasure[0] = false;
+			Get_treasure[1] = false;
 	}
-	if (current_state == State::LEVEL_2)
+	
+	
+	if (level_clear[1] == false)
 	{
-		Get_treasure[2] = false;
-		Get_treasure[3] = false;
+			Get_treasure[2] = false;
+			Get_treasure[3] = false;
 	}
+	
 	
 	minsoo.direction = Direction::DOWN;
 	for (int i = 0; i < map.map.size(); i++)
@@ -1648,15 +1672,22 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 	{
 		Reset();
 	}
+#endif
 	if (doodleButton == doodle::KeyboardButtons::K)
 	{
 		sounds.PlaySound(static_cast<int>(SoundType::Win));
 		sounds.StopSound();
 		sounds.music.stop();
 		current_state = State::CLEAR;
+		level_clear[0] = true;
+		level_clear[1] = true;
+
+		Get_treasure[0] = true;
+		Get_treasure[1] = true;
+		Get_treasure[2] = true;
+		Get_treasure[3] = true;
 		is_music_playing = false;
 	}
-#endif
 }
 
 

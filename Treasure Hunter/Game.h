@@ -47,7 +47,7 @@ class Game
 	State current_state{ State::SPLASH };
 	State previous_state{ State::SPLASH };
 	int current_menu{ static_cast<int>(MenuOption::START) };
-	int curr_level{ static_cast<int>(State::LEVEL_1) };
+	int curr_level{ static_cast<int>(State::TUTORIAL) };
 	int unlock_level{ static_cast<int>(State::LEVEL_1) };
 
 	bool camera_move{ false };
@@ -75,9 +75,11 @@ class Game
 	doodle::Image credit_menu_1{ "assets/Credit_1.png" };
 	doodle::Image credit_menu_2{ "assets/Credit_2.png" };
 	doodle::Image option_button{ "assets/Option_button.png" };
+	doodle::Image tutorial_button{ "assets/tutorial_button.png" };
 	doodle::Image level1_button{ "assets/Level1_button.png" };
 	doodle::Image level2_button{ "assets/Level2_button.png" };
 	doodle::Image level3_button{ "assets/Level3_button.png" };
+	
 	doodle::Image option_menu{ "assets/Option.png" };
 	doodle::Image sound1{ "assets/Sound1.png" };
 	doodle::Image sound2{ "assets/Sound2.png" };
@@ -160,5 +162,6 @@ public:
 	math::vec2 new_pos{ minsoo.Get_position() };
 	double curr_timer{ 0 };
 	bool start_camera_count{ false };
+	bool level_clear[3] = { false, };
 };
 

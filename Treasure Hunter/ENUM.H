@@ -14,6 +14,7 @@ enum class State
 	CREDIT,
 	OPTION,
 	LEVEL_SELECT,
+	TUTORIAL,
 	LEVEL_1,
 	LEVEL_2,
 	LEVEL_3,
@@ -50,7 +51,8 @@ enum class Type
 	CAN_ESCAPE,
 	DOG_CHEW,
 	BOMB,
-	BOMB_TO_ROAD
+	BOMB_TO_ROAD,
+	Lader
 };
 
 enum class Direction

@@ -375,6 +375,22 @@ void Map::Draw(Camera& camera)
             break;
         }
 
+        case Type::Lader:
+        {
+            bomb_target_time -= doodle::DeltaTime;
+            draw_image(Explode.image, (i.position.x + camera.Get_position().x)* block_size, (i.position.y + camera.Get_position().y)* block_size, block_size, block_size, Explode.GetDrawPos().x, 0);
+            Explode.Update();
+            if (bomb_target_time < 0)
+            {
+                Explode.currAnim = 0;
+                draw_image(Road2, (i.position.x + camera.Get_position().x)* block_size - 25, (i.position.y + camera.Get_position().y)* block_size - 25, block_size * 2.5, block_size * 2.5);
+                draw_image(Lader, (i.position.x + camera.Get_position().x)* block_size, (i.position.y + camera.Get_position().y)* block_size , block_size , block_size );
+            }
+
+           // draw_image(Explode.image, (i.position.x + camera.Get_position().x) * block_size, (i.position.y + camera.Get_position().y) * block_size, block_size, block_size, Explode.GetDrawPos().x, 0);
+            break;
+        }
+        	
         case Type::BOMB_TO_ROAD:
         {
             push_settings();
