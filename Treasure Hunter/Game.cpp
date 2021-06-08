@@ -49,9 +49,9 @@ void Game::Draw()
 		switch (current_menu)
 		{
 			case static_cast<int>(MenuOption::START) : doodle::draw_image(start_button, 0, 0, Width, Height); break;
-			case static_cast<int>(MenuOption::CREDIT) : doodle::draw_image(credit_button, 0, 0, Width, Height); break;
-			case static_cast<int>(MenuOption::QUIT) : doodle::draw_image(quit_button, 0, 0, Width, Height); break;
-			case static_cast<int>(MenuOption::OPTION) : doodle::draw_image(option_button, 0, 0, Width, Height); break;
+				case static_cast<int>(MenuOption::CREDIT) : doodle::draw_image(credit_button, 0, 0, Width, Height); break;
+					case static_cast<int>(MenuOption::QUIT) : doodle::draw_image(quit_button, 0, 0, Width, Height); break;
+						case static_cast<int>(MenuOption::OPTION) : doodle::draw_image(option_button, 0, 0, Width, Height); break;
 		}
 		break;
 	}
@@ -111,50 +111,50 @@ void Game::Draw()
 		doodle::draw_image(Pause_screen, 0, 0, Width, Height);
 		switch (static_cast<int>(current_volume))
 		{
-		 case 25: doodle::draw_image(pause_sound1, 0, 0, Width, Height); break;
-		 case 50: doodle::draw_image(pause_sound2, 0, 0, Width, Height); break;
-		 case 75: doodle::draw_image(pause_sound3, 0, 0, Width, Height); break;
-		 case 100: doodle::draw_image(pause_sound4, 0, 0, Width, Height); break;
+		case 25: doodle::draw_image(pause_sound1, 0, 0, Width, Height); break;
+		case 50: doodle::draw_image(pause_sound2, 0, 0, Width, Height); break;
+		case 75: doodle::draw_image(pause_sound3, 0, 0, Width, Height); break;
+		case 100: doodle::draw_image(pause_sound4, 0, 0, Width, Height); break;
 		}
 		switch (current_menu)
-		{		
-			case static_cast<int>(PauseOption::RESTART) : 
+		{
+			case static_cast<int>(PauseOption::RESTART) :
 			{
 				doodle::draw_image(Pause_Restart, 0, 0, Width, Height);
 				break;
 			}
-			case static_cast<int>(PauseOption::MAIN_MENU) : 
-			{ 
+			case static_cast<int>(PauseOption::MAIN_MENU) :
+			{
 				doodle::draw_image(Pause_Quit, 0, 0, Width, Height);
 				break;
 			}
 		}
-		break; 
+		break;
 	}
 	case State::CLEAR:
 	{
 		push_settings();
 		clear_background();
 		set_fill_color(255, 0, 255);
-			switch(curr_level)
-			{
-				case static_cast<int>(State::LEVEL_1): 
+		switch (curr_level)
+		{
+			case static_cast<int>(State::LEVEL_1) :
 			{
 				draw_image(Clear_scene1, 0, 0, Width, Height * 1.2);// function for image movement
 				break;
 			}
-				case static_cast<int>(State::LEVEL_2) :
+			case static_cast<int>(State::LEVEL_2) :
 			{
 				draw_image(Clear_scene2, 0, 0, Width, Height * 1.2);// function for image movement
 				break;
 			}
-				case static_cast<int>(State::LEVEL_3) :
+			case static_cast<int>(State::LEVEL_3) :
 			{
 				draw_image(Clear_scene3, 0, 0, Width, Height * 1.2);// function for image movement
 				break;
 			}
-			}
-		draw_image(Jump_minsoo.image, Width * 0.52, Height * 0.4, Jump_minsoo.GetFrameSize().x, Jump_minsoo.GetFrameSize().y,Jump_minsoo.GetDrawPos().x, 0);
+		}
+		draw_image(Jump_minsoo.image, Width * 0.52, Height * 0.4, Jump_minsoo.GetFrameSize().x, Jump_minsoo.GetFrameSize().y, Jump_minsoo.GetDrawPos().x, 0);
 		Jump_minsoo.Update();
 		draw_image(Clear_effect.image, Width * 0.5, Height * 0.3, Clear_effect.GetFrameSize().x, Clear_effect.GetFrameSize().y, Clear_effect.GetDrawPos().x, 0);
 		Clear_effect.Update();
@@ -254,14 +254,14 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 				sounds.PlaySound(static_cast<int>(SoundType::SelectLimitEffect));
 			}
 		}
-		else if (doodleButton == doodle::KeyboardButtons::Right )
+		else if (doodleButton == doodle::KeyboardButtons::Right)
 		{
 			if (current_menu == static_cast<int>(MenuOption::OPTION) - 1)
 			{
 				sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
 				current_menu++;
 			}
-			else if(current_menu == static_cast<int>(MenuOption::OPTION))
+			else if (current_menu == static_cast<int>(MenuOption::OPTION))
 			{
 				sounds.PlaySound(static_cast<int>(SoundType::SelectLimitEffect));
 			}
@@ -284,6 +284,10 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			{
 				sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
 				current_volume += 25;
+				for (sf::Sound& s : sounds.sounds)
+				{
+					s.setVolume(current_volume);
+				}
 				sounds.music.setVolume(current_volume);
 			}
 			else
@@ -297,6 +301,10 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			{
 				sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
 				current_volume -= 25;
+				for (sf::Sound& s : sounds.sounds)
+				{
+					s.setVolume(current_volume);
+				}
 				sounds.music.setVolume(current_volume);
 			}
 			else
@@ -430,6 +438,8 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			is_paused = false;
 			current_state = previous_state;
 			doodle::ElapsedTime = pause_timer;
+			sounds.music.play();
+			is_music_playing = true;
 		}
 		if (doodleButton == doodle::KeyboardButtons::Enter)
 		{
@@ -500,6 +510,10 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 				{
 					sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
 					current_volume += 25;
+					for (sf::Sound& s : sounds.sounds)
+					{
+						s.setVolume(current_volume);
+					}
 					sounds.music.setVolume(current_volume);
 				}
 				else
@@ -516,6 +530,10 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 				{
 					sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
 					current_volume -= 25;
+					for (sf::Sound& s : sounds.sounds)
+					{
+						s.setVolume(current_volume);
+					}
 					sounds.music.setVolume(current_volume);
 				}
 				else
@@ -767,11 +785,11 @@ void Game::Tile_check()
 
 void Game::Draw_treasure()
 {
-	for(int i=0; i<4; i++)
+	for (int i = 0; i < 4; i++)
 	{
-		if(Get_treasure[i] == true)
+		if (Get_treasure[i] == true)
 		{
-			if(current_state!=State::CLEAR)
+			if (current_state != State::CLEAR)
 			{
 				switch (i)
 				{
@@ -806,25 +824,25 @@ void Game::Draw_treasure()
 				{
 				case 0:
 				{
-					draw_image(Clear_Treasure_1, 10, 30, Width, Height);
+					draw_image(Clear_Treasure_1, 4, 5, Width, Height * 1.2);
 					break;
 				}
 
 				case 1:
 				{
-					draw_image(Clear_Treasure_2, 10, 30, Width, Height);
+					draw_image(Clear_Treasure_2, 8, 30, Width, Height);
 					break;
 				}
 
 				case 2:
 				{
-					draw_image(Clear_Treasure_3, 10, 30, Width, Height);
+					draw_image(Clear_Treasure_3, 0, 25, Width, Height);
 					break;
 				}
 
 				case 3:
 				{
-					draw_image(Clear_Treasure_4, 10, 30, Width, Height);
+					draw_image(Clear_Treasure_4, 5, 25, Width, Height);
 					break;
 						
 				}
@@ -933,7 +951,7 @@ void Game::Reset()
 	minsoo.Set_up();
 	guard.Set_up(curr_level);
 
-	for(int i=0; i<4; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		Get_treasure[i] = false;
 	}
@@ -1454,26 +1472,26 @@ void Game::Draw_level()
 	guard.Draw_guard(camera);
 	guard.Draw_sight(camera, map);
 	minsoo.Draw_minsu(camera, camera_move);
-	doodle::draw_image(Sight_limit, (minsoo.Get_position().x + camera.Get_position().x-1), (minsoo.Get_position().y + camera.Get_position().y-20),doodle::Width,doodle::Height);
+	doodle::draw_image(Sight_limit, (minsoo.Get_position().x + camera.Get_position().x - 1), (minsoo.Get_position().y + camera.Get_position().y - 20), doodle::Width, doodle::Height);
 	draw_image(UI, 0, 0, doodle::Width, doodle::Height);
 
 	switch (minsoo.chew_item)
 	{
-	case 1: 
-	{	
+	case 1:
+	{
 		draw_image(Chew_num1, 0, 0, doodle::Width, doodle::Height);
-		break; 
+		break;
 	}
 	case 2:
 	{
 		draw_image(Chew_num2, 0, 0, doodle::Width, doodle::Height);
 		break;
 	}
-	case 3:	
+	case 3:
 	{
 		draw_image(Chew_num3, 0, 0, doodle::Width, doodle::Height);
 		break;
-	} 
+	}
 	default:
 		break;
 	}
@@ -1503,16 +1521,16 @@ void Game::Draw_level()
 	set_outline_width(5);
 	set_outline_color(0);
 	set_fill_color(255);
-	
+
 	set_outline_color(255, 0, 0);
-	draw_line(doodle::Width* 0.07, doodle::Height * 0.12, Width *0.07 + Width*0.05 * sin((PI / 50) * (100 - static_cast<double>(timer))), doodle::Height * 0.12 + Height*0.075 * cos((PI) * ((static_cast<double>(timer)) / 50 - 1)));
+	draw_line(doodle::Width * 0.07, doodle::Height * 0.12, Width * 0.07 + Width * 0.05 * sin((PI / 50) * (100 - static_cast<double>(timer))), doodle::Height * 0.12 + Height * 0.075 * cos((PI) * ((static_cast<double>(timer)) / 50 - 1)));
 
 	set_font_size(30);
 	pop_settings();
 
 	if (guard.Is_trace_sommeone() == true) // 한명이라도 따라오는애 있으면 
 	{
-		draw_image(Siren_sprite.image, Width/2,0, Siren_sprite.GetFrameSize().x, Siren_sprite.GetFrameSize().y, Siren_sprite.GetDrawPos().x, 0);
+		draw_image(Siren_sprite.image, Width / 2, 0, Siren_sprite.GetFrameSize().x, Siren_sprite.GetFrameSize().y, Siren_sprite.GetDrawPos().x, 0);
 		Siren_sprite.Update();
 	}
 
@@ -1524,9 +1542,9 @@ void Game::Draw_level()
 void Game::Input_level(doodle::KeyboardButtons doodleButton)
 {
 	if (doodleButton == doodle::KeyboardButtons::Escape)
-	{	
+	{
 		sounds.StopSound();
-		sounds.music.stop();
+		sounds.music.pause();
 		is_music_playing = false;
 		previous_state = current_state;
 		current_state = State::PAUSE;
