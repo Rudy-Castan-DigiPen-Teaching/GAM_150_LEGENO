@@ -42,27 +42,27 @@ void Map::Set_up(int level)
             {
                 switch (level)
                 {
-                    case static_cast<int>(State::LEVEL_1):
+                    case static_cast<int>(State::LEVEL_1) :
                     {
                         switch (treasure_num)
                         {
-                            case 1:
-                            {
-                                map.push_back(info{ math::ivec2{width,height},Type::TREASURE_crown });
-                                treasure_num = 0;
-                                break;
-                            }
-                            case 2:
-                            {
-                                map.push_back(info{ math::ivec2{width,height},Type::TREASURE_key });
-                                treasure_num = 1;
-                                break;
-                            }
+                        case 1:
+                        {
+                            map.push_back(info{ math::ivec2{width,height},Type::TREASURE_crown });
+                            treasure_num = 0;
+                            break;
+                        }
+                        case 2:
+                        {
+                            map.push_back(info{ math::ivec2{width,height},Type::TREASURE_key });
+                            treasure_num = 1;
+                            break;
+                        }
                         }
                         break;
                     }
 
-                  case static_cast<int>(State::LEVEL_2) :
+                    case static_cast<int>(State::LEVEL_2) :
                     {
                         switch (treasure_num)
                         {
@@ -81,11 +81,19 @@ void Map::Set_up(int level)
                         }
                         break;
                     }
+<<<<<<< HEAD
                 	
                 }
 				break;
 			}
+
+            case '4':
+            {
+                map.push_back(info{ math::ivec2{width,height},Type::NEXT });
+                break;
             }
+            } 
+
             if (width < map_width - 1)
             {
                 width++;
@@ -95,7 +103,7 @@ void Map::Set_up(int level)
                 width = 0;
                 height++;
             }
-        	
+
         }
     }
     readFile.close();
@@ -297,11 +305,19 @@ void Map::Draw(Camera& camera)
         }
         case Type::RADAR:
         {
-        	 	 push_settings();
-				 draw_image(Road1, (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
-				 draw_image(Radar, (i.position.x + camera.Get_position().x) * block_size, (i.position.y + camera.Get_position().y) * block_size, block_size, block_size);
-				 pop_settings();
-				 break;
+            push_settings();
+            draw_image(Road1, (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
+            draw_image(Radar, (i.position.x + camera.Get_position().x) * block_size, (i.position.y + camera.Get_position().y) * block_size, block_size, block_size);
+            pop_settings();
+            break;
+        }
+        case Type::NEXT:
+        {
+            push_settings();
+            draw_image(Road1, (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
+            draw_image(Next, (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
+            pop_settings();
+            break;
         }
         case Type::TREASURE_crown:
         {

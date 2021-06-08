@@ -52,7 +52,8 @@ enum class Type
 	DOG_CHEW,
 	BOMB,
 	BOMB_TO_ROAD,
-	Lader
+	Lader,
+	NEXT
 };
 
 enum class Direction
