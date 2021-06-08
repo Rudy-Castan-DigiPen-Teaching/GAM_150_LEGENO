@@ -826,13 +826,14 @@ void Game::Draw_treasure()
 				{
 					draw_image(Clear_Treasure_4, 10, 30, Width, Height);
 					break;
+						
 				}
 				}
 			}
 		}
 	}
 }
-//740 40
+
 void Game::Set_Ingame_Music()
 {
 	if (minsoo.is_dead == false)
