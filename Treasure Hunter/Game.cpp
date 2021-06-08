@@ -724,7 +724,7 @@ void Game::Update_level()
 	{
 		if (timer < 20 && timer > 0)
 		{
-			if (Is_sound_playing() == false)
+			if (sounds.IsSoundPlaying() == false)
 			{
 				sounds.PlaySound(static_cast<int>(SoundType::TimerTic));
 			}

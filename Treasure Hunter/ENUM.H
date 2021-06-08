@@ -52,6 +52,7 @@ enum class Type
 	DOG_CHEW,
 	BOMB,
 	BOMB_TO_ROAD,
+	Lader,
 	NEXT
 };
 

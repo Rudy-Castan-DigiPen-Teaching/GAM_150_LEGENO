@@ -22,10 +22,14 @@ void Map::Set_up(int level)
     treasure_num = 2;
     if (readFile.is_open())
     {
-        while (!readFile.eof())
+        while (!readFile.eof() == true)
         {
             char a;
             readFile >> a;
+            if (readFile.eof())
+            {
+                break;
+            }
             switch (a)
             {
             case '0': map.push_back(info{ math::ivec2{width,height},Type::ROAD });
@@ -38,27 +42,27 @@ void Map::Set_up(int level)
             {
                 switch (level)
                 {
-                    case static_cast<int>(State::LEVEL_1):
+                    case static_cast<int>(State::LEVEL_1) :
                     {
                         switch (treasure_num)
                         {
-                            case 1:
-                            {
-                                map.push_back(info{ math::ivec2{width,height},Type::TREASURE_crown });
-                                treasure_num = 0;
-                                break;
-                            }
-                            case 2:
-                            {
-                                map.push_back(info{ math::ivec2{width,height},Type::TREASURE_key });
-                                treasure_num = 1;
-                                break;
-                            }
+                        case 1:
+                        {
+                            map.push_back(info{ math::ivec2{width,height},Type::TREASURE_crown });
+                            treasure_num = 0;
+                            break;
+                        }
+                        case 2:
+                        {
+                            map.push_back(info{ math::ivec2{width,height},Type::TREASURE_key });
+                            treasure_num = 1;
+                            break;
+                        }
                         }
                         break;
                     }
 
-                  case static_cast<int>(State::LEVEL_2) :
+                    case static_cast<int>(State::LEVEL_2) :
                     {
                         switch (treasure_num)
                         {
@@ -77,20 +81,15 @@ void Map::Set_up(int level)
                         }
                         break;
                     }
-                	
-                }
-                case 4:
-                {
-                    map.push_back(info{ math::ivec2{width,height},Type::TREASURE_dia });
-                    treasure_num = 3;
-                    break;
-                }
-                }
-                break;
-            case '4':map.push_back(info{ math::ivec2{width,height},Type::NEXT });
+                }break;
+            }
+            case '4':
+            {
+                map.push_back(info{ math::ivec2{width,height},Type::NEXT });
                 break;
             }
-            }
+            } 
+
             if (width < map_width - 1)
             {
                 width++;
@@ -100,16 +99,17 @@ void Map::Set_up(int level)
                 width = 0;
                 height++;
             }
+
         }
     }
     readFile.close();
+
     for (auto& i : map)
     {
         int rand = doodle::random(0, 15);
         i.random_num = rand;
     }
     bomb_target_time = 2;
-
 }
 
 doodle::Image& Map::Set_wall(info& value)
