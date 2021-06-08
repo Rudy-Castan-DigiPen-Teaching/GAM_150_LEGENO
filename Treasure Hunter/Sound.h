@@ -19,6 +19,7 @@ public:
     void LoadSound(const std::string& file_path);
     void PlaySound(const int soundType);
     void StopSound(void);
+    bool IsSoundPlaying(void);
 
     std::vector<sf::SoundBuffer> soundBuffers{};
     std::vector<sf::Sound>       sounds{};

@@ -155,7 +155,6 @@ public:
 
 	void Tile_check(); //3blockss move --> pung~  Check_bomb() -> Tile_check()
 	void Draw_treasure();
-	bool Is_sound_playing();
 	void Set_Ingame_Music();
 	math::vec2 new_pos{ minsoo.Get_position() };
 	double curr_timer{ 0 };

@@ -74,3 +74,15 @@ void Sound::StopSound()
         }
     }
 }
+
+bool Sound::IsSoundPlaying()
+{
+    for (auto& s : sounds)
+    {
+        if (s.getStatus() == sf::SoundSource::Playing)
+        {
+            return true;
+        }
+    }
+    return false;
+}
