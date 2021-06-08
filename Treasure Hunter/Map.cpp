@@ -22,10 +22,14 @@ void Map::Set_up(int level)
     treasure_num = 2;
     if (readFile.is_open())
     {
-        while (!readFile.eof())
+        while (!readFile.eof() == true)
         {
             char a;
             readFile >> a;
+            if (readFile.eof())
+            {
+                break;
+            }
             switch (a)
             {
             case '0': map.push_back(info{ math::ivec2{width,height},Type::ROAD });
@@ -80,7 +84,7 @@ void Map::Set_up(int level)
                 	
                 }
 				break;
-            }
+			}
             }
             if (width < map_width - 1)
             {
@@ -91,6 +95,7 @@ void Map::Set_up(int level)
                 width = 0;
                 height++;
             }
+        	
         }
     }
     readFile.close();
@@ -101,7 +106,6 @@ void Map::Set_up(int level)
         i.random_num = rand;
     }
     bomb_target_time = 2;
-
 }
 
 doodle::Image& Map::Set_wall(info& value)

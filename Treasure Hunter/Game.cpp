@@ -15,8 +15,7 @@ void Game::Set_up()
 {
 	sounds.SetUpSound();
 	current_state = State::SPLASH;
-	map.Set_up(curr_level);
-	guard.Set_up(curr_level);
+
 }
 
 void Game::Draw()
@@ -364,7 +363,6 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 		break;
 	case State::LEVEL_SELECT:  //todo 1레벨 클리어 해야지 2렙갈수있는거
 	{
-		Reset();
 		if (doodleButton == doodle::KeyboardButtons::Up)
 		{
 			if (curr_level > static_cast<int>(State::TUTORIAL))
@@ -411,6 +409,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 				{
 					sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
 					current_state = State::LEVEL_1;
+					Reset();
 				}
 				else
 				{
@@ -424,6 +423,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 				{
 					sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
 					current_state = State::LEVEL_2;
+					Reset();
 				}
 				else
 				{
@@ -440,6 +440,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 					{
 						sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
 						current_state = State::LEVEL_3;
+						Reset();
 					}
 					else
 					{
