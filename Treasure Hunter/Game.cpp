@@ -284,6 +284,10 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			{
 				sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
 				current_volume += 25;
+				for (sf::Sound& s : sounds.sounds)
+				{
+					s.setVolume(current_volume);
+				}
 				sounds.music.setVolume(current_volume);
 			}
 			else
@@ -297,6 +301,10 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			{
 				sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
 				current_volume -= 25;
+				for (sf::Sound& s : sounds.sounds)
+				{
+					s.setVolume(current_volume);
+				}
 				sounds.music.setVolume(current_volume);
 			}
 			else
@@ -502,6 +510,10 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 				{
 					sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
 					current_volume += 25;
+					for (sf::Sound& s : sounds.sounds)
+					{
+						s.setVolume(current_volume);
+					}
 					sounds.music.setVolume(current_volume);
 				}
 				else
@@ -518,6 +530,10 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 				{
 					sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
 					current_volume -= 25;
+					for (sf::Sound& s : sounds.sounds)
+					{
+						s.setVolume(current_volume);
+					}
 					sounds.music.setVolume(current_volume);
 				}
 				else
