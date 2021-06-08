@@ -15,8 +15,6 @@ void Game::Set_up()
 {
 	sounds.SetUpSound();
 	current_state = State::SPLASH;
-	map.Set_up(curr_level);
-	guard.Set_up(curr_level);
 }
 
 void Game::Draw()
@@ -817,7 +815,7 @@ void Game::Tile_check()
 		}
 		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::NEXT)
 		{
-			if (Get_treasure[0] && Get_treasure[1] && Get_treasure[2] && Get_treasure[3])//is_get_all_treasure()==true
+			if (Is_get_all_treasure() == true)
 			{
 				map.map[i].type = Type::ROAD;
 				minsoo.position += math::vec2{ 0,5 };
