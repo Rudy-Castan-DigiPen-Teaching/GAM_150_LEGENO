@@ -597,6 +597,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 	{
 		if (doodleButton == doodle::KeyboardButtons::Enter || doodleButton == doodle::KeyboardButtons::Escape)
 		{
+			sounds.Stop_sound();
 			sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 			current_state = State::LEVEL_SELECT;
 			if (unlock_level < static_cast<int>(State::LEVEL_3))
