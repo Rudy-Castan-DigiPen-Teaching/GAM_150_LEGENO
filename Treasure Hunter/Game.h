@@ -52,7 +52,7 @@ class Game
 
 	bool camera_move{ false };
 	bool cheat_Z{ false };
-	float current_volume{ 100 };
+	float current_volume{ 50 };
 
 	bool is_minsoo_move = false;
 

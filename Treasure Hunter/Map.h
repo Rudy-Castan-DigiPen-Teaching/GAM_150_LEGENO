@@ -74,3 +74,6 @@ public:
 	int treasure_num = 4;
 
 };
+
+
+

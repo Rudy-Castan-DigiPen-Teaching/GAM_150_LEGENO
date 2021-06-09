@@ -435,6 +435,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 				sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 				Reset();
 				current_state = State::TUTORIAL;
+				minsoo.position = {3,2};
 				break;
 			}
 			case (static_cast<int>(State::LEVEL_1)):
@@ -520,27 +521,46 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 
 			switch (current_menu)
 			{
+				case static_cast<int>(PauseOption::SOUND):
+				{
+					sounds.music.play();
+					is_music_playing = true;
+					sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
+					current_state = previous_state;
+					doodle::ElapsedTime = pause_timer;
+					is_paused = false;
+					break;
+				}
 				case static_cast<int>(PauseOption::RESTART) :
 				{
 					switch (curr_level)
 					{
+						case static_cast<int>(State::TUTORIAL) :
+						{
+							current_state = State::TUTORIAL;
+							Reset();
+							minsoo.position = { 3,2 };
+							break;
+						}
 						case static_cast<int>(State::LEVEL_1) :
 						{
 							current_state = State::LEVEL_1;
+							Reset();
 							break;
 						}
 						case static_cast<int>(State::LEVEL_2) :
 						{
 							current_state = State::LEVEL_2;
+							Reset();
 							break;
 						}
 						case static_cast<int>(State::LEVEL_3) :
 						{
 							current_state = State::LEVEL_3;
+							Reset();
 							break;
 						}
 					}
-					Reset();
 					break;
 				}
 				case static_cast<int>(PauseOption::MAIN_MENU) :
@@ -778,7 +798,6 @@ void Game::Update_level()
 	if (radar_start == true)
 	{
 		if (Get_count() <= 4 && sounds.Is_sound_playing(static_cast<int>(SoundType::Radar)) == false)
-		//if (sounds.IsSoundPlaying(static_cast<int>(SoundType::Radar)) == false)
 		{
 			sounds.Play_sound(static_cast<int>(SoundType::Radar));
 		}
@@ -861,6 +880,7 @@ void Game::Tile_check()
 			else
 			{
 				Reset();
+				minsoo.position = {3,2};
 			}
 		}
 		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::TREASURE_crown)
@@ -894,18 +914,18 @@ void Game::Tile_check()
 	}
 	if (current_state == State::TUTORIAL)
 	{
-		if (minsoo.position == map.map[614].position || minsoo.position == map.map[657].position || minsoo.position == map.map[700].position)
+		if (minsoo.position == map.map[485].position || minsoo.position == map.map[528].position || minsoo.position == map.map[571].position)
 		{
 			if (guard.guards.empty())
 			{
-				guard.guards.push_back(guard_info{ math::ivec2(12, 13), Direction::DOWN });
+				guard.guards.push_back(guard_info{ math::ivec2(12, 10), Direction::DOWN });
 			}
 		}
-		else if (minsoo.position == map.map[627].position || minsoo.position == map.map[670].position || minsoo.position == map.map[713].position)
+		else if (minsoo.position == map.map[494].position || minsoo.position == map.map[537].position || minsoo.position == map.map[580].position)
 		{
 			if (guard.guards.size() == 1)
 			{
-				guard.guards.push_back(guard_info{ math::ivec2(25, 17), Direction::UP });
+				guard.guards.push_back(guard_info{ math::ivec2(21, 14), Direction::UP });
 			}
 		}
 	}
@@ -1341,11 +1361,11 @@ void Game::Radar_obtain()	//What is this??????? Why int item num=1?
 	{
 		if (current_state == State::TUTORIAL)
 		{
-			map.map[949].type = Type::EXIT;
-			exit_pos = map.map[949].position;
+			map.map[826].type = Type::EXIT;
+			exit_pos = map.map[826].position;
 			did_abtain_radar = false;
 			radar_start = true;
-			guard.guards.push_back(guard_info{ math::ivec2(39, 21), Direction::LEFT ,"Ruby" }); //minsu start pos
+			guard.guards.push_back(guard_info{ math::ivec2(30, 19), Direction::LEFT ,"Ruby" }); //minsu start pos
 			camera_move = true;
 		}
 		else
