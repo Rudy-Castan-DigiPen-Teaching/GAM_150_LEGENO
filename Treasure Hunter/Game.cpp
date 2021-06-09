@@ -835,6 +835,7 @@ void Game::Tile_check()
 			sounds.Stop_sound();
 			sounds.music.stop();
 			level_clear[static_cast<int>(current_state) - static_cast<int>(State::TUTORIAL)] = true;
+			Reset();
 			is_music_playing = false;
 			sounds.Play_sound(static_cast<int>(SoundType::Win));
 			current_state = State::CLEAR;
@@ -902,7 +903,7 @@ void Game::Tile_check()
 			}
 		}
 		else if (minsoo.position == map.map[627].position || minsoo.position == map.map[670].position || minsoo.position == map.map[713].position)
-		{
+		{	
 			if (guard.guards.size() == 1)
 			{
 				guard.guards.push_back(guard_info{ math::ivec2(25, 17), Direction::UP });
