@@ -33,6 +33,6 @@ public:
 	Sprite Minsoo_Up	{ "assets/Minsoo_up.png",5 ,0.05 };
 	Sprite Minsoo_right { "assets/Minsoo_right.png",5 ,0.05 };
 	Sprite Minsoo_Down  { "assets/Minsoo_down.png",5 ,0.05 };
-	Sprite Minsoo_UPUP{ "assets/Minsoo_upup.png",3 ,0.5 };
+
 private:
 };

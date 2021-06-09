@@ -130,7 +130,6 @@ void Game::Draw()
 	}
 	case State::PAUSE:
 	{
-
 		doodle::draw_image(Pause_screen, 0, 0, Width, Height);
 		switch (static_cast<int>(current_volume))
 		{
@@ -190,11 +189,36 @@ void Game::Draw()
 		pop_settings();
 		break;
 	}
+	case State::ENDING:
+	{
+		static double Ending_timer = Minsoo_UPUP.target_time * 6;
+		Ending_timer -= DeltaTime;
+		push_settings();
+		clear_background();
+		doodle::draw_image(Minsoo_UPUP.image, Width/4.0,Height/4.0 , Minsoo_UPUP.frameSize.x, Minsoo_UPUP.frameSize.y, Minsoo_UPUP.GetDrawPos().x, 0);
+		pop_settings();
+
+		Minsoo_UPUP.Update();
+		if (Ending_timer < 0)
+		{
+			sounds.Stop_sound();
+			sounds.music.stop();
+			level_clear[static_cast<int>(current_state) - static_cast<int>(State::TUTORIAL)] = true;
+			is_music_playing = false;
+			sounds.Play_sound(static_cast<int>(SoundType::Win));
+			current_state = State::CLEAR;
+			Ending_timer = Minsoo_UPUP.target_time * 6;
+		}		
+
+		break;
+			
+	}
+
+		
 	case State::GAME_OVER:
 	{
 		push_settings();
 		clear_background();
-		set_fill_color(255, 255, 0);
 		draw_image(GameOver_scene, 0, 0, Width, Height);// function for image movement
 		pop_settings();
 		break;
@@ -449,12 +473,12 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 				//if (unlock_level >= static_cast<int>(State::LEVEL_3))
 				{
 					//if (Is_get_all_treasure() == true)
-					{
+					//{
 						sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 						Reset();
 						current_state = State::LEVEL_3;
 
-					}
+				//	}
 					//else
 					//{
 					//	sounds.Play_sound(static_cast<int>(SoundType::SelectLimitEffect));
@@ -713,9 +737,9 @@ void Game::Update_level()
 			{
 				math::ivec2 curr_position = math::ivec2{ static_cast<int>(guard.guards[i].position.x) ,static_cast<int>(guard.guards[i].position.y) };
 
-				if (path_finding<27, 81>(map, minsoo.target_pos, curr_position).empty() != true)
+				if (path_finding<25, 43>(map, minsoo.target_pos, curr_position).empty() != true)
 				{
-					curr_position = path_finding<27, 81>(map, minsoo.target_pos, curr_position).back().pos;
+					curr_position = path_finding<25, 43>(map, minsoo.target_pos, curr_position).back().pos;
 				}
 				curr_position = math::ivec2{ static_cast<int>(guard.guards[i].position.x) ,static_cast<int>(guard.guards[i].position.y) } - curr_position;  // 페스파인딩으로 다음 갈 곳에 대한 시야 변경
 				set_direction(curr_position, i);
@@ -819,9 +843,8 @@ void Game::Tile_check()
 		if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::Lader)
 		{
 			map.lader_anim = true;
-			static double win_timer = minsoo.Minsoo_UPUP.target_time * 6;
+/*			static double win_timer = minsoo.Minsoo_UPUP.target_time * 6;
 			win_timer -= doodle::DeltaTime;
-			minsoo.direction = Direction::UPUP;
 			minsoo.Minsoo_UPUP.Update();
 			if (win_timer < 0)
 			{
@@ -831,8 +854,8 @@ void Game::Tile_check()
 				is_music_playing = false;
 				sounds.Play_sound(static_cast<int>(SoundType::Win));
 				current_state = State::CLEAR;
-			}			
-			
+			}		*/	
+			current_state = State::ENDING;
 		}
 
 		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::RADAR)
@@ -1743,9 +1766,9 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 					{
 						math::ivec2 curr_position = math::ivec2{ static_cast<int>(guard.guards[i].position.x) ,static_cast<int>(guard.guards[i].position.y) };
 
-						if (path_finding<27, 81>(map, minsoo.target_pos, curr_position).empty() != true)
+						if (path_finding<25, 43>(map, minsoo.target_pos, curr_position).empty() != true)
 						{
-							curr_position = path_finding<27, 81>(map, minsoo.target_pos, curr_position).back().pos;
+							curr_position = path_finding<25, 43>(map, minsoo.target_pos, curr_position).back().pos;
 						}
 
 						curr_position = math::ivec2{ static_cast<int>(guard.guards[i].position.x) ,static_cast<int>(guard.guards[i].position.y) } - curr_position;  // 페스파인딩으로 다음 갈 곳에 대한 시야 변경

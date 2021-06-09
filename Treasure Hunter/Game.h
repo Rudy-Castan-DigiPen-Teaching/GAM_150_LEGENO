@@ -132,6 +132,7 @@ class Game
 	
 	Sprite Jump_minsoo{ "assets/Jump_minsoo.png",7,0.1 };
 
+	Sprite Minsoo_UPUP{ "assets/Minsoo_upup.png",3 ,0.5 };
 	
 	double Get_count();
 public:

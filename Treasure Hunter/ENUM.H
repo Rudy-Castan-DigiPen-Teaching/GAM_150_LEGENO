@@ -20,6 +20,7 @@ enum class State
 	LEVEL_3,
 	PAUSE,
 	CLEAR,
+	ENDING,
 	GAME_OVER
 };
 
@@ -61,8 +62,7 @@ enum class Direction
 	UP,
 	DOWN,
 	RIGHT,
-	LEFT,
-	UPUP
+	LEFT
 };
 
 enum class SoundType
