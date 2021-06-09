@@ -158,7 +158,7 @@ public:
 
 	void Tile_check(); //3blockss move --> pung~  Check_bomb() -> Tile_check()
 	void Draw_treasure();
-	void Set_Ingame_Music();
+	void Set_ingame_music();
 	math::vec2 new_pos{ minsoo.Get_position() };
 	double curr_timer{ 0 };
 	bool start_camera_count{ false };

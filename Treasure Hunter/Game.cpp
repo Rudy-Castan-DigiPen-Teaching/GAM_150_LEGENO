@@ -13,9 +13,8 @@ using namespace doodle;
 
 void Game::Set_up()
 {
-	sounds.SetUpSound();
+	sounds.Set_up_sound();
 	current_state = State::SPLASH;
-
 }
 
 void Game::Draw()
@@ -48,9 +47,9 @@ void Game::Draw()
 		switch (current_menu)
 		{
 			case static_cast<int>(MenuOption::START) : doodle::draw_image(start_button, 0, 0, Width, Height); break;
-			case static_cast<int>(MenuOption::CREDIT) : doodle::draw_image(credit_button, 0, 0, Width, Height); break;
-			case static_cast<int>(MenuOption::QUIT) : doodle::draw_image(quit_button, 0, 0, Width, Height); break;
-			case static_cast<int>(MenuOption::OPTION) : doodle::draw_image(option_button, 0, 0, Width, Height); break;
+				case static_cast<int>(MenuOption::CREDIT) : doodle::draw_image(credit_button, 0, 0, Width, Height); break;
+					case static_cast<int>(MenuOption::QUIT) : doodle::draw_image(quit_button, 0, 0, Width, Height); break;
+						case static_cast<int>(MenuOption::OPTION) : doodle::draw_image(option_button, 0, 0, Width, Height); break;
 		}
 		break;
 	}
@@ -95,8 +94,9 @@ void Game::Draw()
 		case (static_cast<int>(State::LEVEL_3)): doodle::draw_image(level3_button, 0, 0, Width, Height);
 			break;
 		}
-		
+
 		doodle::draw_image(Treasure_box, 0, 0, Width, Height);
+
 
 		if(Get_treasure[0] == true && level_clear[1] == true)
 		{
@@ -115,7 +115,7 @@ void Game::Draw()
 		{
 			doodle::draw_image(Level_select_Treasure_4, 0, 0, Width, Height);
 		}
-			
+
 		break;
 	}
 
@@ -161,9 +161,9 @@ void Game::Draw()
 		set_fill_color(255, 0, 255);
 		switch (curr_level)
 		{
-			case static_cast<int>(State::TUTORIAL):
+			case static_cast<int>(State::TUTORIAL) :
 			{
-				draw_image(Clear_tutorial , 0, 0, Width, Height * 1.2);// function for image movement
+				draw_image(Clear_tutorial, 0, 0, Width, Height * 1.2);// function for image movement
 				break;
 			}
 			case static_cast<int>(State::LEVEL_1) :
@@ -228,13 +228,13 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 	{
 		if (doodleButton == doodle::KeyboardButtons::Enter)
 		{
-			sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+			sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 			switch (current_menu)
 			{
 				case static_cast<int>(MenuOption::START) :
 				{
 					previous_state = current_state;
-					current_state = State::LEVEL_SELECT;				
+					current_state = State::LEVEL_SELECT;
 					doodle::clear_background(0);
 					sounds.music.stop();
 					is_music_playing = false;
@@ -263,43 +263,43 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 		{
 			if (current_menu > static_cast<int>(MenuOption::START))
 			{
-				sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+				sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 				current_menu--;
 			}
 			else
 			{
-				sounds.PlaySound(static_cast<int>(SoundType::SelectLimitEffect));
+				sounds.Play_sound(static_cast<int>(SoundType::SelectLimitEffect));
 			}
 		}
 		else if (doodleButton == doodle::KeyboardButtons::Down)
 		{
 			if (current_menu < static_cast<int>(MenuOption::OPTION))
 			{
-				sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+				sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 				current_menu++;
 			}
 			else
 			{
-				sounds.PlaySound(static_cast<int>(SoundType::SelectLimitEffect));
+				sounds.Play_sound(static_cast<int>(SoundType::SelectLimitEffect));
 			}
 		}
 		else if (doodleButton == doodle::KeyboardButtons::Right)
 		{
 			if (current_menu == static_cast<int>(MenuOption::OPTION) - 1)
 			{
-				sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+				sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 				current_menu++;
 			}
 			else if (current_menu == static_cast<int>(MenuOption::OPTION))
 			{
-				sounds.PlaySound(static_cast<int>(SoundType::SelectLimitEffect));
+				sounds.Play_sound(static_cast<int>(SoundType::SelectLimitEffect));
 			}
 		}
 		else if (doodleButton == doodle::KeyboardButtons::Left)
 		{
 			if (current_menu == static_cast<int>(MenuOption::OPTION))
 			{
-				sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+				sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 				current_menu--;
 			}
 		}
@@ -311,7 +311,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 		{
 			if (current_volume < 100)
 			{
-				sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+				sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 				current_volume += 25;
 				for (sf::Sound& s : sounds.sounds)
 				{
@@ -321,14 +321,14 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			}
 			else
 			{
-				sounds.PlaySound(static_cast<int>(SoundType::SelectLimitEffect));
+				sounds.Play_sound(static_cast<int>(SoundType::SelectLimitEffect));
 			}
 		}
 		if (doodleButton == doodle::KeyboardButtons::Left)
 		{
 			if (current_volume > 0)
 			{
-				sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+				sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 				current_volume -= 25;
 				for (sf::Sound& s : sounds.sounds)
 				{
@@ -338,12 +338,12 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			}
 			else
 			{
-				sounds.PlaySound(static_cast<int>(SoundType::SelectLimitEffect));
+				sounds.Play_sound(static_cast<int>(SoundType::SelectLimitEffect));
 			}
 		}
 		if (doodleButton == doodle::KeyboardButtons::Enter)
 		{
-			sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+			sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 			current_state = previous_state;
 		}
 	}
@@ -351,7 +351,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 	case State::CREDIT:
 		if (doodleButton == doodle::KeyboardButtons::Escape)
 		{
-			sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+			sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 			is_credit_done = false;
 			current_state = previous_state;
 		}
@@ -359,45 +359,45 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 		{
 			if (is_credit_done == true)
 			{
-				sounds.PlaySound(static_cast<int>(SoundType::SelectLimitEffect));
+				sounds.Play_sound(static_cast<int>(SoundType::SelectLimitEffect));
 			}
 			else if (is_credit_done == false)
 			{
-				sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+				sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 				is_credit_done = !is_credit_done;
 			}
 		}
 		break;
 	case State::LEVEL_SELECT:  //todo 1레벨 클리어 해야지 2렙갈수있는거
 	{
-		
+
 		if (doodleButton == doodle::KeyboardButtons::Up)
 		{
 			if (curr_level > static_cast<int>(State::TUTORIAL))
 			{
-				sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+				sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 				curr_level--;
 			}
 			else
 			{
-				sounds.PlaySound(static_cast<int>(SoundType::SelectLimitEffect));
+				sounds.Play_sound(static_cast<int>(SoundType::SelectLimitEffect));
 			}
 		}
 		else if (doodleButton == doodle::KeyboardButtons::Down)
 		{
 			if (curr_level < static_cast<int>(State::LEVEL_3))
 			{
-				sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+				sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 				curr_level++;
 			}
 			else
 			{
-				sounds.PlaySound(static_cast<int>(SoundType::SelectLimitEffect));
+				sounds.Play_sound(static_cast<int>(SoundType::SelectLimitEffect));
 			}
 		}
 		else if (doodleButton == doodle::KeyboardButtons::Escape)
 		{
-			sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+			sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 			current_state = previous_state;
 		}
 		else if (doodleButton == doodle::KeyboardButtons::Enter)
@@ -408,7 +408,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			{
 			case (static_cast<int>(State::TUTORIAL)):
 			{
-				sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+				sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 				Reset();
 				current_state = State::TUTORIAL;
 				break;
@@ -417,14 +417,14 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			{
 				if (unlock_level >= static_cast<int>(State::LEVEL_1))
 				{
-					sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+					sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 					Reset();
 					current_state = State::LEVEL_1;
-				
+
 				}
 				else
 				{
-					sounds.PlaySound(static_cast<int>(SoundType::SelectLimitEffect));
+					sounds.Play_sound(static_cast<int>(SoundType::SelectLimitEffect));
 				}
 				break;
 			}
@@ -432,14 +432,14 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			{
 				if (unlock_level >= static_cast<int>(State::LEVEL_2))
 				{
-					sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
-					
+					sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
+
 					current_state = State::LEVEL_2;
 					Reset();
 				}
 				else
 				{
-					sounds.PlaySound(static_cast<int>(SoundType::SelectLimitEffect));
+					sounds.Play_sound(static_cast<int>(SoundType::SelectLimitEffect));
 				}
 				break;
 			}
@@ -450,19 +450,19 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 				{
 					if (Is_get_all_treasure() == true)
 					{
-						sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+						sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 						Reset();
 						current_state = State::LEVEL_3;
-						
+
 					}
 					else
 					{
-						sounds.PlaySound(static_cast<int>(SoundType::SelectLimitEffect));
+						sounds.Play_sound(static_cast<int>(SoundType::SelectLimitEffect));
 					}
 				}
 				else
 				{
-					sounds.PlaySound(static_cast<int>(SoundType::SelectLimitEffect));
+					sounds.Play_sound(static_cast<int>(SoundType::SelectLimitEffect));
 				}
 				break;
 			}
@@ -483,15 +483,16 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 	{
 		if (doodleButton == doodle::KeyboardButtons::Escape)
 		{
-			is_paused = false;
-			current_state = previous_state;
-			doodle::ElapsedTime = pause_timer;
 			sounds.music.play();
 			is_music_playing = true;
+			sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
+			current_state = previous_state;
+			doodle::ElapsedTime = pause_timer;
+			is_paused = false;
 		}
 		if (doodleButton == doodle::KeyboardButtons::Enter)
 		{
-			sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+			sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 
 			switch (current_menu)
 			{
@@ -530,24 +531,24 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 		{
 			if (current_menu > static_cast<int>(PauseOption::SOUND))
 			{
-				sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+				sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 				current_menu--;
 			}
 			else
 			{
-				sounds.PlaySound(static_cast<int>(SoundType::SelectLimitEffect));
+				sounds.Play_sound(static_cast<int>(SoundType::SelectLimitEffect));
 			}
 		}
 		else if (doodleButton == doodle::KeyboardButtons::Down)
 		{
 			if (current_menu < static_cast<int>(PauseOption::MAIN_MENU))
 			{
-				sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+				sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 				current_menu++;
 			}
 			else
 			{
-				sounds.PlaySound(static_cast<int>(SoundType::SelectLimitEffect));
+				sounds.Play_sound(static_cast<int>(SoundType::SelectLimitEffect));
 			}
 		}
 		else if (doodleButton == doodle::KeyboardButtons::Right)
@@ -556,7 +557,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			{
 				if (current_volume < 100)
 				{
-					sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+					sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 					current_volume += 25;
 					for (sf::Sound& s : sounds.sounds)
 					{
@@ -566,7 +567,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 				}
 				else
 				{
-					sounds.PlaySound(static_cast<int>(SoundType::SelectLimitEffect));
+					sounds.Play_sound(static_cast<int>(SoundType::SelectLimitEffect));
 				}
 			}
 		}
@@ -576,7 +577,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			{
 				if (current_volume > 0)
 				{
-					sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
+					sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 					current_volume -= 25;
 					for (sf::Sound& s : sounds.sounds)
 					{
@@ -586,7 +587,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 				}
 				else
 				{
-					sounds.PlaySound(static_cast<int>(SoundType::SelectLimitEffect));
+					sounds.Play_sound(static_cast<int>(SoundType::SelectLimitEffect));
 				}
 			}
 		}
@@ -594,20 +595,26 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 	}
 	case State::CLEAR:
 	{
-		sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
-		current_state = State::LEVEL_SELECT;
-		if (unlock_level < static_cast<int>(State::LEVEL_3))
+		if (doodleButton == doodle::KeyboardButtons::Enter || doodleButton == doodle::KeyboardButtons::Escape)
 		{
-			unlock_level++;
+			sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
+			current_state = State::LEVEL_SELECT;
+			if (unlock_level < static_cast<int>(State::LEVEL_3))
+			{
+				unlock_level++;
+			}
 		}
 		break;
 	}
 	case State::GAME_OVER:
 	{
-		sounds.PlaySound(static_cast<int>(SoundType::SelectEffect));
-		is_played_bite = false;
-		curr_level = static_cast<int>(State::LEVEL_1);
-		current_state = State::START;
+		if (doodleButton == doodle::KeyboardButtons::Enter || doodleButton == doodle::KeyboardButtons::Escape)
+		{
+			sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
+			is_played_bite = false;
+			curr_level = static_cast<int>(State::LEVEL_1);
+			current_state = State::START;
+		}
 		break;
 	}
 	}
@@ -640,7 +647,7 @@ void Game::Update()
 	{
 		if (is_music_playing == false)
 		{
-			sounds.SetMusic("assets/MainMenuBGM.ogg", true);
+			sounds.Set_music("assets/MainMenuBGM.ogg", true);
 			sounds.music.play();
 			is_music_playing = true;
 		}
@@ -650,7 +657,7 @@ void Game::Update()
 	{
 		if (is_music_playing == false)
 		{
-			sounds.SetMusic("assets/LevelSelectMenuBGM.ogg", true);
+			sounds.Set_music("assets/LevelSelectMenuBGM.ogg", true);
 			sounds.music.play();
 			is_music_playing = true;
 		}
@@ -675,7 +682,7 @@ void Game::Update()
 	{
 		if (is_played_bite == false)
 		{
-			sounds.PlaySound(static_cast<int>(SoundType::Bite));
+			sounds.Play_sound(static_cast<int>(SoundType::Bite));
 			is_played_bite = true;
 		}
 		break;
@@ -722,42 +729,42 @@ void Game::Update_level()
 
 	guard.Tracing_check(minsoo); //check position if it is in guard sight
 
-	Set_Ingame_Music();
+	Set_ingame_music();
 
 	guard.Guard_movement_update(exit_pos, map, minsoo.movement);
 	if (current_state != State::TUTORIAL && current_state != State::CLEAR)
 	{
 		if (timer < 20 && timer > 0)
 		{
-			if (sounds.IsSoundPlaying() == false)
+			if (sounds.Is_sound_playing(static_cast<int>(SoundType::TimerTic)) == false)
 			{
-				sounds.PlaySound(static_cast<int>(SoundType::TimerTic));
+				sounds.Play_sound(static_cast<int>(SoundType::TimerTic));
 			}
 		}
 		else if (timer <= 0)
-		if (sounds.IsSoundPlaying() == false)
 		{
-			sounds.StopSound();
-			sounds.PlaySound(static_cast<int>(SoundType::TimesUp));
+			sounds.Stop_sound();
 			sounds.music.stop();
 			is_music_playing = false;
+			sounds.Play_sound(static_cast<int>(SoundType::TimesUp));
 			current_state = State::GAME_OVER;
 		}
 	}
 	if (radar_start == true)
 	{
-		if (Get_count()<=4 && sounds.IsSoundPlaying() == false)
+		if (Get_count() <= 4 && sounds.Is_sound_playing(static_cast<int>(SoundType::Radar)) == false)
+		//if (sounds.IsSoundPlaying(static_cast<int>(SoundType::Radar)) == false)
 		{
-			sounds.PlaySound(static_cast<int>(SoundType::Radar));
+			sounds.Play_sound(static_cast<int>(SoundType::Radar));
 		}
 	}
 	for (auto i : guard.guards)
 	{
 		if (i.is_okay == false)
 		{
-			if (sounds.IsSoundPlaying() == false)
+			if (sounds.Is_sound_playing(static_cast<int>(SoundType::ChewingGum)) == false)
 			{
-				sounds.PlaySound(static_cast<int>(SoundType::ChewingGum));
+				sounds.Play_sound(static_cast<int>(SoundType::ChewingGum));
 			}
 		}
 
@@ -772,7 +779,7 @@ void Game::Tile_check()
 		{
 			if (minsoo.explode_count == 0)
 			{
-				sounds.PlaySound(static_cast<int>(SoundType::Explosion));
+				sounds.Play_sound(static_cast<int>(SoundType::Explosion));
 				if (is_exit == true)
 				{
 					if (current_state != State::LEVEL_3)
@@ -791,30 +798,38 @@ void Game::Tile_check()
 			}
 			else
 			{
-				if (sounds.IsSoundPlaying() == false)
+				if (sounds.Is_sound_playing(static_cast<int>(SoundType::BombFuse)) == false)
 				{
-					sounds.PlaySound(static_cast<int>(SoundType::BombFuse));
+					sounds.Play_sound(static_cast<int>(SoundType::BombFuse));
 				}
 			}
 		}
 
 		if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::CAN_ESCAPE)
 		{
-			sounds.PlaySound(static_cast<int>(SoundType::Win));
+			sounds.Stop_sound();
 			sounds.music.stop();
+<<<<<<< HEAD
 			level_clear[static_cast<int>(current_state) - static_cast<int>(State::TUTORIAL)] = true;
 			sounds.StopSound();
+=======
+			is_music_playing = false;
+			sounds.Play_sound(static_cast<int>(SoundType::Win));
+			level_clear[static_cast<int>(current_state) - static_cast<int>(State::LEVEL_1)] = true;
+>>>>>>> d67791058380a91bdd02aeabf057bc7ceb7f2b4b
 			current_state = State::CLEAR;
 		}
 
 		if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::Lader)
 		{
-			sounds.PlaySound(static_cast<int>(SoundType::Win));
+			sounds.Stop_sound();
 			sounds.music.stop();
+			is_music_playing = false;
+			sounds.Play_sound(static_cast<int>(SoundType::Win));
 			level_clear[static_cast<int>(current_state) - static_cast<int>(State::LEVEL_1)] = true;
 			current_state = State::CLEAR;
 		}
-		
+
 		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::RADAR)
 		{
 			map.map[i].type = Type::ROAD;
@@ -822,7 +837,7 @@ void Game::Tile_check()
 		}
 		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::NEXT)
 		{
-			if (Get_treasure[0] && Get_treasure[1] && Get_treasure[2] && Get_treasure[3])//is_get_all_treasure()==true
+			if (Is_get_all_treasure() == true)
 			{
 				map.map[i].type = Type::ROAD;
 				minsoo.position += math::vec2{ 0,5 };
@@ -835,28 +850,28 @@ void Game::Tile_check()
 		}
 		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::TREASURE_crown)
 		{
-			sounds.PlaySound(static_cast<int>(SoundType::GetTreasure));
+			sounds.Play_sound(static_cast<int>(SoundType::GetTreasure));
 			map.map[i].type = Type::ROAD;
 			Get_treasure[0] = true;
 			treasure_count++;
 		}
 		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::TREASURE_key)
 		{
-			sounds.PlaySound(static_cast<int>(SoundType::GetTreasure));
+			sounds.Play_sound(static_cast<int>(SoundType::GetTreasure));
 			map.map[i].type = Type::ROAD;
 			Get_treasure[1] = true;
 			treasure_count++;
 		}
 		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::TREASURE_coin)
 		{
-			sounds.PlaySound(static_cast<int>(SoundType::GetTreasure));
+			sounds.Play_sound(static_cast<int>(SoundType::GetTreasure));
 			map.map[i].type = Type::ROAD;
 			Get_treasure[2] = true;
 			treasure_count++;
 		}
 		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::TREASURE_dia)
 		{
-			sounds.PlaySound(static_cast<int>(SoundType::GetTreasure));
+			sounds.Play_sound(static_cast<int>(SoundType::GetTreasure));
 			map.map[i].type = Type::ROAD;
 			Get_treasure[3] = true;
 			treasure_count++;
@@ -942,7 +957,7 @@ void Game::Draw_treasure()
 				{
 					draw_image(Clear_Treasure_4, 5, 25, Width, Height);
 					break;
-						
+
 				}
 				}
 			}
@@ -950,7 +965,7 @@ void Game::Draw_treasure()
 	}
 }
 
-void Game::Set_Ingame_Music()
+void Game::Set_ingame_music()
 {
 	if (minsoo.is_dead == false)
 	{
@@ -958,7 +973,7 @@ void Game::Set_Ingame_Music()
 		{
 			is_music_playing = true;
 			is_chased_state = true;
-			sounds.SetMusic("assets/Siren.ogg", true);
+			sounds.Set_music("assets/Siren.ogg", true);
 			sounds.music.play();
 		}
 		if (guard.Is_trace_sommeone() == false && is_chased_state == true)
@@ -976,7 +991,7 @@ void Game::Set_Ingame_Music()
 		if (guard.Is_trace_sommeone() == false && is_music_playing == false)
 		{
 			is_music_playing = true;
-			sounds.SetMusic("assets/BasicBGM.ogg", true);
+			sounds.Set_music("assets/BasicBGM.ogg", true);
 			sounds.music.play();
 		}
 	}
@@ -1052,18 +1067,24 @@ void Game::Reset()
 
 	if (level_clear[1] == false)
 	{
-			Get_treasure[0] = false;
-			Get_treasure[1] = false;
+		Get_treasure[0] = false;
+		Get_treasure[1] = false;
 	}
+<<<<<<< HEAD
 	
 	
 	if (level_clear[2] == false)
+=======
+
+
+	if (level_clear[1] == false)
+>>>>>>> d67791058380a91bdd02aeabf057bc7ceb7f2b4b
 	{
-			Get_treasure[2] = false;
-			Get_treasure[3] = false;
+		Get_treasure[2] = false;
+		Get_treasure[3] = false;
 	}
-	
-	
+
+
 	minsoo.direction = Direction::DOWN;
 	for (int i = 0; i < map.map.size(); i++)
 	{
@@ -1104,7 +1125,7 @@ bool Game::Check(doodle::KeyboardButtons doodleButton) // get keyboard key and c
 	{
 		if (map.map[i].position == position && map.map[i].type == Type::WALL)
 		{
-			sounds.PlaySound(static_cast<int>(SoundType::CrashWall));
+			sounds.Play_sound(static_cast<int>(SoundType::CrashWall));
 			return true;
 		}
 	}
@@ -1176,9 +1197,10 @@ void Game::Collision_check()
 		double difference = abs(pos.x) + abs(pos.y);
 		if (difference <= 0.5)
 		{
-			sounds.PlaySound(static_cast<int>(SoundType::Meow));
+			sounds.Stop_sound();
 			sounds.music.stop();
 			is_music_playing = false;
+			sounds.Play_sound(static_cast<int>(SoundType::Meow));
 			minsoo.is_dead = true;
 			current_state = State::GAME_OVER;
 		}
@@ -1270,7 +1292,7 @@ void Game::Set_item(doodle::KeyboardButtons button)
 			{
 				if (map.map[i].position == minsoo.Get_position())
 				{
-					sounds.PlaySound(static_cast<int>(SoundType::PutItem));
+					sounds.Play_sound(static_cast<int>(SoundType::PutItem));
 					map.map[i].type = Type::DOG_CHEW;
 					minsoo.chew_item--;
 				}
@@ -1286,7 +1308,7 @@ void Game::Set_item(doodle::KeyboardButtons button)
 			{
 				if (map.map[i].position == minsoo.Get_position())
 				{
-					sounds.PlaySound(static_cast<int>(SoundType::PutItem));
+					sounds.Play_sound(static_cast<int>(SoundType::PutItem));
 					if (map.map[i].position == exit_pos)
 					{
 						is_exit = true;
@@ -1332,7 +1354,24 @@ void Game::Radar_obtain()	//What is this??????? Why int item num=1?
 						item_num--;
 						did_abtain_radar = false;
 						radar_start = true;
-						guard.guards.push_back(guard_info{ math::ivec2(39, 21), Direction::LEFT ,"Ruby" }); //minsu start pos
+						switch (curr_level)
+						{
+							case static_cast<int>(State::LEVEL_1) :
+							{
+								guard.guards.push_back(guard_info{ math::ivec2(30, 14), Direction::LEFT ,"Ruby" }); //ruby start pos
+								break;
+							}
+							case static_cast<int>(State::LEVEL_2) :
+							{
+								guard.guards.push_back(guard_info{ math::ivec2(30, 12), Direction::LEFT ,"Ruby" }); //ruby start pos
+								break;
+							}
+							case static_cast<int>(State::LEVEL_3) :
+							{
+								guard.guards.push_back(guard_info{ math::ivec2(39, 21), Direction::LEFT ,"Ruby" }); //ruby start pos
+								break;
+							}
+						}
 						camera_move = true;
 					}
 				}
@@ -1669,15 +1708,15 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 {
 	if (doodleButton == doodle::KeyboardButtons::Escape)
 	{
-		sounds.StopSound();
+		sounds.Stop_sound();
 		sounds.music.pause();
 		is_music_playing = false;
+		sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 		previous_state = current_state;
 		current_state = State::PAUSE;
 		current_menu = static_cast<int>(PauseOption::SOUND);
 		pause_timer = doodle::ElapsedTime;
 		is_paused = true;
-
 	}
 
 #ifdef DEBUG
@@ -1694,7 +1733,7 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 		{
 			if (is_minsoo_move == false)
 			{
-				sounds.PlaySound(static_cast<int>(SoundType::FootStep));
+				sounds.Play_sound(static_cast<int>(SoundType::FootStep));
 				minsoo.Set_position(doodleButton);
 
 				is_minsoo_move = true;
@@ -1743,9 +1782,10 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 #endif
 	if (doodleButton == doodle::KeyboardButtons::K)
 	{
-		sounds.PlaySound(static_cast<int>(SoundType::Win));
-		sounds.StopSound();
+		sounds.Stop_sound();
 		sounds.music.stop();
+		is_music_playing = false;
+		sounds.Play_sound(static_cast<int>(SoundType::Win));
 		current_state = State::CLEAR;
 		level_clear[0] = true;
 		level_clear[1] = true;
@@ -1754,7 +1794,6 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 		Get_treasure[1] = true;
 		Get_treasure[2] = true;
 		Get_treasure[3] = true;
-		is_music_playing = false;
 	}
 }
 

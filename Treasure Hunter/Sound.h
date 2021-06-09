@@ -14,12 +14,13 @@ Author:
 struct Sound
 {
 public:
-    void SetUpSound();
-    void SetMusic(const std::string& file_path, bool isLoop);
-    void LoadSound(const std::string& file_path);
-    void PlaySound(const int soundType);
-    void StopSound(void);
-    bool IsSoundPlaying(void);
+    void Set_up_sound();
+    void Set_music(const std::string& file_path, bool isLoop);
+    void Load_sound(const std::string& file_path);
+    void Set_sound(void);
+    void Play_sound(const int soundType);
+    bool Is_sound_playing(const int soundType);
+    void Stop_sound();
 
     std::vector<sf::SoundBuffer> soundBuffers{};
     std::vector<sf::Sound>       sounds{};

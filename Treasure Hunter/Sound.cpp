@@ -7,29 +7,31 @@ Project: GAM150
 Author:
 -----------------------------------------------------------------*/
 #include "Sound.h"
+#include "ENUM.H"
 
 [[noreturn]] void error(const std::string& s) { throw std::runtime_error(s); }
 
-void Sound::SetUpSound()
+void Sound::Set_up_sound()
 {
-    LoadSound("assets/Bite.ogg");
-    LoadSound("assets/BombFuse.ogg");
-    LoadSound("assets/ChewingGum.ogg");
-    LoadSound("assets/CrashWall.ogg");
-    LoadSound("assets/Explosion.ogg");
-    LoadSound("assets/FootStep.ogg");
-    LoadSound("assets/GetTreasure.ogg");
-    LoadSound("assets/Meow.ogg");
-    LoadSound("assets/PutItem.ogg");
-    LoadSound("assets/Radar.ogg");
-    LoadSound("assets/SelectEffect.ogg");
-    LoadSound("assets/SelectLimitEffect.ogg");
-    LoadSound("assets/TimerTic.ogg");
-    LoadSound("assets/TimesUp.ogg");
-    LoadSound("assets/Win.ogg");
+    Load_sound("assets/Bite.ogg");
+    Load_sound("assets/BombFuse.ogg");
+    Load_sound("assets/ChewingGum.ogg");
+    Load_sound("assets/CrashWall.ogg");
+    Load_sound("assets/Explosion.ogg");
+    Load_sound("assets/FootStep.ogg");
+    Load_sound("assets/GetTreasure.ogg");
+    Load_sound("assets/Meow.ogg");
+    Load_sound("assets/PutItem.ogg");
+    Load_sound("assets/Radar.ogg");
+    Load_sound("assets/SelectEffect.ogg");
+    Load_sound("assets/SelectLimitEffect.ogg");
+    Load_sound("assets/TimerTic.ogg");
+    Load_sound("assets/TimesUp.ogg");
+    Load_sound("assets/Win.ogg");
+    Set_sound();
 }
 
-void Sound::SetMusic(const std::string& file_path, bool isLoop)
+void Sound::Set_music(const std::string& file_path, bool isLoop)
 {
     if (!music.openFromFile(file_path) == true)
     {
@@ -38,7 +40,7 @@ void Sound::SetMusic(const std::string& file_path, bool isLoop)
     music.setLoop(isLoop);
 }
 
-void Sound::LoadSound(const std::string& file_path)
+void Sound::Load_sound(const std::string& file_path)
 {
     soundBuffers.emplace_back();
     sf::SoundBuffer& buffer = soundBuffers.back();
@@ -48,22 +50,26 @@ void Sound::LoadSound(const std::string& file_path)
     }
 }
 
-void Sound::PlaySound(int soundType)
+void Sound::Set_sound()
 {
-    for (auto& sound : sounds)
+    for (int i = 0; i < static_cast<int>(SoundType::COUNT); i++)
     {
-        if (sound.getStatus() != sf::SoundSource::Playing)
-        {
-            sound.setBuffer(soundBuffers[soundType]);
-            sound.play();
-            return;
-        }
+        sounds.emplace_back(soundBuffers[i]);
     }
-    sounds.emplace_back(soundBuffers[soundType]);
-    sounds.back().play();
 }
 
-void Sound::StopSound()
+void Sound::Play_sound(int soundType)
+{
+     sounds[soundType].setBuffer(soundBuffers[soundType]);
+     sounds[soundType].play();
+}
+
+bool Sound::Is_sound_playing(const int soundType)
+{
+    return sounds[soundType].getStatus() == sf::SoundSource::Playing;
+}
+
+void Sound::Stop_sound()
 {
     for (auto& sound : sounds)
     {
@@ -73,16 +79,4 @@ void Sound::StopSound()
             return;
         }
     }
-}
-
-bool Sound::IsSoundPlaying()
-{
-    for (auto& s : sounds)
-    {
-        if (s.getStatus() == sf::SoundSource::Playing)
-        {
-            return true;
-        }
-    }
-    return false;
 }
