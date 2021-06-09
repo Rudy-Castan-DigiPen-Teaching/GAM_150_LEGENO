@@ -809,14 +809,9 @@ void Game::Tile_check()
 		{
 			sounds.Stop_sound();
 			sounds.music.stop();
-<<<<<<< HEAD
 			level_clear[static_cast<int>(current_state) - static_cast<int>(State::TUTORIAL)] = true;
-			sounds.StopSound();
-=======
 			is_music_playing = false;
 			sounds.Play_sound(static_cast<int>(SoundType::Win));
-			level_clear[static_cast<int>(current_state) - static_cast<int>(State::LEVEL_1)] = true;
->>>>>>> d67791058380a91bdd02aeabf057bc7ceb7f2b4b
 			current_state = State::CLEAR;
 		}
 
@@ -1070,15 +1065,9 @@ void Game::Reset()
 		Get_treasure[0] = false;
 		Get_treasure[1] = false;
 	}
-<<<<<<< HEAD
 	
 	
 	if (level_clear[2] == false)
-=======
-
-
-	if (level_clear[1] == false)
->>>>>>> d67791058380a91bdd02aeabf057bc7ceb7f2b4b
 	{
 		Get_treasure[2] = false;
 		Get_treasure[3] = false;
