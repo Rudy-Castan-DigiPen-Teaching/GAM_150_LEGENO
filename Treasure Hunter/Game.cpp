@@ -365,7 +365,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 				sounds.Play_sound(static_cast<int>(SoundType::SelectLimitEffect));
 			}
 		}
-		if (doodleButton == doodle::KeyboardButtons::Enter)
+		if (doodleButton == doodle::KeyboardButtons::Enter || doodleButton == doodle::KeyboardButtons::Escape)
 		{
 			sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 			current_state = previous_state;
@@ -383,7 +383,8 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 		{
 			if (is_credit_done == true)
 			{
-				sounds.Play_sound(static_cast<int>(SoundType::SelectLimitEffect));
+				is_credit_done = !is_credit_done;
+				current_state = previous_state;
 			}
 			else if (is_credit_done == false)
 			{
@@ -392,7 +393,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			}
 		}
 		break;
-	case State::LEVEL_SELECT:  //todo 1레벨 클리어 해야지 2렙갈수있는거
+	case State::LEVEL_SELECT:
 	{
 
 		if (doodleButton == doodle::KeyboardButtons::Up)
@@ -738,7 +739,6 @@ void Game::Update()
 void Game::Update_level()
 {
 	timer = total_time - static_cast<int>(doodle::ElapsedTime);
-	score = timer * (treasure_count + 1) * 10;
 	if (camera_move == false)
 	{
 		camera.Update(minsoo.Get_position());
@@ -764,7 +764,7 @@ void Game::Update_level()
 				curr_position = math::ivec2{ static_cast<int>(guard.guards[i].position.x) ,static_cast<int>(guard.guards[i].position.y) } - curr_position;  // 페스파인딩으로 다음 갈 곳에 대한 시야 변경
 				set_direction(curr_position, i);
 			}
-		}
+		}                                            
 		guard.Set_sight();
 	}
 	if (camera_move == true)
@@ -777,7 +777,7 @@ void Game::Update_level()
 	Set_ingame_music();
 
 	guard.Guard_movement_update(exit_pos, map, minsoo.movement);
-	if (current_state != State::TUTORIAL && current_state != State::CLEAR)
+	if (current_state != State::TUTORIAL && current_state != State::CLEAR && current_state != State::GAME_OVER)
 	{
 		if (timer < 20 && timer > 0)
 		{
@@ -854,6 +854,7 @@ void Game::Tile_check()
 			sounds.Stop_sound();
 			sounds.music.stop();
 			level_clear[static_cast<int>(current_state) - static_cast<int>(State::TUTORIAL)] = true;
+			Reset();
 			is_music_playing = false;
 			sounds.Play_sound(static_cast<int>(SoundType::Win));
 			current_state = State::CLEAR;
@@ -888,28 +889,24 @@ void Game::Tile_check()
 			sounds.Play_sound(static_cast<int>(SoundType::GetTreasure));
 			map.map[i].type = Type::ROAD;
 			Get_treasure[0] = true;
-			treasure_count++;
 		}
 		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::TREASURE_key)
 		{
 			sounds.Play_sound(static_cast<int>(SoundType::GetTreasure));
 			map.map[i].type = Type::ROAD;
 			Get_treasure[1] = true;
-			treasure_count++;
 		}
 		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::TREASURE_coin)
 		{
 			sounds.Play_sound(static_cast<int>(SoundType::GetTreasure));
 			map.map[i].type = Type::ROAD;
 			Get_treasure[2] = true;
-			treasure_count++;
 		}
 		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::TREASURE_dia)
 		{
 			sounds.Play_sound(static_cast<int>(SoundType::GetTreasure));
 			map.map[i].type = Type::ROAD;
 			Get_treasure[3] = true;
-			treasure_count++;
 		}
 	}
 	if (current_state == State::TUTORIAL)
@@ -1025,9 +1022,12 @@ void Game::Set_ingame_music()
 
 		if (guard.Is_trace_sommeone() == false && is_music_playing == false)
 		{
-			is_music_playing = true;
-			sounds.Set_music("assets/BasicBGM.ogg", true);
-			sounds.music.play();
+			if (current_state >= State::TUTORIAL && current_state <= State::LEVEL_3)
+			{
+				is_music_playing = true;
+				sounds.Set_music("assets/BasicBGM.ogg", true);
+				sounds.music.play();
+			}
 		}
 	}
 }
@@ -1080,7 +1080,6 @@ void Game::Reset()
 {
 	timer = total_time;
 	doodle::ElapsedTime = 0;
-	treasure_count = 0;  //안쓰면 지우기
 	offset = 0;
 	speed = 10;
 	is_exit = false;
@@ -1743,7 +1742,6 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 		sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 		previous_state = current_state;
 		current_state = State::PAUSE;
-		current_menu = static_cast<int>(PauseOption::SOUND);
 		pause_timer = doodle::ElapsedTime;
 		is_paused = true;
 	}

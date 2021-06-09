@@ -31,8 +31,6 @@ class Game
 	bool make_radar_big{ false };
 	double offset{ 0 };
 	double speed{ 10 };
-	int treasure_count{ 0 };
-	int score{ 0 };
 	double splash_timer{ 3 };
 	math::ivec2 exit_pos{ 0 };
 
