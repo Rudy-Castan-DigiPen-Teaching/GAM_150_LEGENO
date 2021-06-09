@@ -12,7 +12,7 @@ void Guard::Set_up(int level)
 {
 	guards.clear();
 	how_many_guards_tracing = 0;
-	if (level == static_cast<int>(State::LEVEL_1))
+	if (level == static_cast<int>(State::FLOOR_1))
 	{
 		guards.push_back(guard_info{ math::ivec2(31, 2), Direction::LEFT });
 		guards.push_back(guard_info{ math::ivec2(27, 7), Direction::UP });
@@ -20,7 +20,7 @@ void Guard::Set_up(int level)
 		guards.push_back(guard_info{ math::ivec2(10, 13), Direction::DOWN });
 		guards.push_back(guard_info{ math::ivec2(8, 8), Direction::RIGHT });
 	}
-	else if (level == static_cast<int>(State::LEVEL_2))
+	else if (level == static_cast<int>(State::FLOOR_2))
 	{
 		guards.push_back(guard_info{ math::ivec2(8, 2) , Direction::DOWN });
 		guards.push_back(guard_info{ math::ivec2(11, 10), Direction::UP});
@@ -29,7 +29,7 @@ void Guard::Set_up(int level)
 		guards.push_back(guard_info{ math::ivec2(20, 6), Direction::DOWN });
 
 	}
-	else if (level == static_cast<int>(State::LEVEL_3))
+	else if (level == static_cast<int>(State::FLOOR_3))
 	{
 		guards.push_back(guard_info{ math::ivec2(13, 2) , Direction::LEFT });
 		guards.push_back(guard_info{ math::ivec2(35, 2), Direction::DOWN });

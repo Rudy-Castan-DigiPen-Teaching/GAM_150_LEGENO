@@ -16,7 +16,7 @@ void Map::Set_up(int level)
     map.clear();
     std::ifstream readFile;
 
-    readFile.open("assets/Map" + to_string(level - (static_cast<int>(State::LEVEL_1) - 1)) + ".txt");
+    readFile.open("assets/Map" + to_string(level - (static_cast<int>(State::FLOOR_1) - 1)) + ".txt");
     int width = 0;
     int height = 0;
     treasure_num = 4;
@@ -84,7 +84,7 @@ void Map::Set_up(int level)
                         }
                         break;
                     }
-                    case static_cast<int>(State::LEVEL_1) :
+                    case static_cast<int>(State::FLOOR_1) :
                     {
                         switch (treasure_num)
                         {
@@ -104,7 +104,7 @@ void Map::Set_up(int level)
                         break;
                     }
 
-                    case static_cast<int>(State::LEVEL_2) :
+                    case static_cast<int>(State::FLOOR_2) :
                     {
                         switch (treasure_num)
                         {

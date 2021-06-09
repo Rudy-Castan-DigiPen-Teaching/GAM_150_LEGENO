@@ -87,11 +87,11 @@ void Game::Draw()
 		{
 		case (static_cast<int>(State::TUTORIAL)): doodle::draw_image(tutorial_button, 0, 0, Width, Height);
 			break;
-		case (static_cast<int>(State::LEVEL_1)): doodle::draw_image(level1_button, 0, 0, Width, Height);
+		case (static_cast<int>(State::FLOOR_1)): doodle::draw_image(level1_button, 0, 0, Width, Height);
 			break;
-		case (static_cast<int>(State::LEVEL_2)): doodle::draw_image(level2_button, 0, 0, Width, Height);
+		case (static_cast<int>(State::FLOOR_2)): doodle::draw_image(level2_button, 0, 0, Width, Height);
 			break;
-		case (static_cast<int>(State::LEVEL_3)): doodle::draw_image(level3_button, 0, 0, Width, Height);
+		case (static_cast<int>(State::FLOOR_3)): doodle::draw_image(level3_button, 0, 0, Width, Height);
 			break;
 		}
 
@@ -120,9 +120,9 @@ void Game::Draw()
 	}
 
 	case State::TUTORIAL:
-	case State::LEVEL_1:
-	case State::LEVEL_2:
-	case State::LEVEL_3:
+	case State::FLOOR_1:
+	case State::FLOOR_2:
+	case State::FLOOR_3:
 	{
 		Draw_level();
 		Draw_radar();
@@ -165,17 +165,17 @@ void Game::Draw()
 				draw_image(Clear_tutorial, 0, 0, Width, Height * 1.2);// function for image movement
 				break;
 			}
-			case static_cast<int>(State::LEVEL_1) :
+			case static_cast<int>(State::FLOOR_1) :
 			{
 				draw_image(Clear_scene1, 0, 0, Width, Height * 1.2);// function for image movement
 				break;
 			}
-			case static_cast<int>(State::LEVEL_2) :
+			case static_cast<int>(State::FLOOR_2) :
 			{
 				draw_image(Clear_scene2, 0, 0, Width, Height * 1.2);// function for image movement
 				break;
 			}
-			case static_cast<int>(State::LEVEL_3) :
+			case static_cast<int>(State::FLOOR_3) :
 			{
 				draw_image(Clear_scene3, 0, 0, Width, Height * 1.2);// function for image movement
 				break;
@@ -410,7 +410,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 		}
 		else if (doodleButton == doodle::KeyboardButtons::Down)
 		{
-			if (curr_level < static_cast<int>(State::LEVEL_3))
+			if (curr_level < static_cast<int>(State::FLOOR_3))
 			{
 				sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 				curr_level++;
@@ -439,13 +439,13 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 				minsoo.position = {3,2};
 				break;
 			}
-			case (static_cast<int>(State::LEVEL_1)):
+			case (static_cast<int>(State::FLOOR_1)):
 			{
-				if (unlock_level >= static_cast<int>(State::LEVEL_1))
+				if (unlock_level >= static_cast<int>(State::FLOOR_1))
 				{
 					sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 					Reset();
-					current_state = State::LEVEL_1;
+					current_state = State::FLOOR_1;
 
 				}
 				else
@@ -454,13 +454,13 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 				}
 				break;
 			}
-			case (static_cast<int>(State::LEVEL_2)):
+			case (static_cast<int>(State::FLOOR_2)):
 			{
-				if (unlock_level >= static_cast<int>(State::LEVEL_2))
+				if (unlock_level >= static_cast<int>(State::FLOOR_2))
 				{
 					sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 
-					current_state = State::LEVEL_2;
+					current_state = State::FLOOR_2;
 					Reset();
 				}
 				else
@@ -470,7 +470,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 				break;
 			}
 
-			case (static_cast<int>(State::LEVEL_3)):
+			case (static_cast<int>(State::FLOOR_3)):
 			{
 				//if (unlock_level >= static_cast<int>(State::LEVEL_3))
 				{
@@ -478,7 +478,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 					//{
 						sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 						Reset();
-						current_state = State::LEVEL_3;
+						current_state = State::FLOOR_3;
 
 				//	}
 					//else
@@ -498,9 +498,9 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 	break;
 
 	case State::TUTORIAL:
-	case State::LEVEL_1:
-	case State::LEVEL_2:
-	case State::LEVEL_3:
+	case State::FLOOR_1:
+	case State::FLOOR_2:
+	case State::FLOOR_3:
 	{
 		Input_level(doodleButton);
 		break;
@@ -543,21 +543,21 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 							minsoo.position = { 3,2 };
 							break;
 						}
-						case static_cast<int>(State::LEVEL_1) :
+						case static_cast<int>(State::FLOOR_1) :
 						{
-							current_state = State::LEVEL_1;
+							current_state = State::FLOOR_1;
 							Reset();
 							break;
 						}
-						case static_cast<int>(State::LEVEL_2) :
+						case static_cast<int>(State::FLOOR_2) :
 						{
-							current_state = State::LEVEL_2;
+							current_state = State::FLOOR_2;
 							Reset();
 							break;
 						}
-						case static_cast<int>(State::LEVEL_3) :
+						case static_cast<int>(State::FLOOR_3) :
 						{
-							current_state = State::LEVEL_3;
+							current_state = State::FLOOR_3;
 							Reset();
 							break;
 						}
@@ -645,7 +645,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			sounds.Stop_sound();
 			sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 			current_state = State::LEVEL_SELECT;
-			if (unlock_level < static_cast<int>(State::LEVEL_3))
+			if (unlock_level < static_cast<int>(State::FLOOR_3))
 			{
 				unlock_level++;
 			}
@@ -658,7 +658,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 		{
 			sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 			is_played_bite = false;
-			curr_level = static_cast<int>(State::LEVEL_1);
+			curr_level = static_cast<int>(State::FLOOR_1);
 			current_state = State::START;
 		}
 		break;
@@ -710,9 +710,9 @@ void Game::Update()
 		break;
 	}
 	case State::TUTORIAL:
-	case State::LEVEL_1:
-	case State::LEVEL_2:
-	case State::LEVEL_3:
+	case State::FLOOR_1:
+	case State::FLOOR_2:
+	case State::FLOOR_3:
 	{
 		if (is_paused == false)
 		{
@@ -826,7 +826,7 @@ void Game::Tile_check()
 				sounds.Play_sound(static_cast<int>(SoundType::Explosion));
 				if (is_exit == true)
 				{
-					if (current_state != State::LEVEL_3)
+					if (current_state != State::FLOOR_3)
 					{
 						map.map[i].type = Type::CAN_ESCAPE;
 					}
@@ -1022,7 +1022,7 @@ void Game::Set_ingame_music()
 
 		if (guard.Is_trace_sommeone() == false && is_music_playing == false)
 		{
-			if (current_state >= State::TUTORIAL && current_state <= State::LEVEL_3)
+			if (current_state >= State::TUTORIAL && current_state <= State::FLOOR_3)
 			{
 				is_music_playing = true;
 				sounds.Set_music("assets/BasicBGM.ogg", true);
@@ -1370,9 +1370,38 @@ void Game::Radar_obtain()	//What is this??????? Why int item num=1?
 		else
 		{
 			int item_num = 1;
+			math::ivec2 pos(0, 0);
+			for (auto& m : map.map)
+			{
+				if (m.type == Type::RADAR)
+				{
+					pos = m.position;
+				}
+			}
 			while (item_num > 0)
 			{
-				math::ivec2 pos(doodle::random(0, 10), doodle::random(0, 10));
+				switch (curr_level)
+				{
+					case static_cast<int>(State::FLOOR_1) :
+						case static_cast<int>(State::FLOOR_2) :
+					{
+						pos = (doodle::random(pos.x - 10, pos.x + 10), doodle::random(pos.y - 5, pos.y + 5));
+						break;
+					}
+					case static_cast<int>(State::FLOOR_3) :
+					{
+						pos = (doodle::random(0, 10), 0);
+						if (pos.x < 5)
+						{
+							pos = (2, 22);
+						}
+						else
+						{
+							pos = (40, 2);
+						}
+						break;
+					}
+				}
 				for (auto& m : map.map)
 				{
 					if (m.position == pos && m.type == Type::ROAD)
@@ -1384,17 +1413,17 @@ void Game::Radar_obtain()	//What is this??????? Why int item num=1?
 						radar_start = true;
 						switch (curr_level)
 						{
-							case static_cast<int>(State::LEVEL_1) :
+							case static_cast<int>(State::FLOOR_1) :
 							{
 								guard.guards.push_back(guard_info{ math::ivec2(30, 14), Direction::LEFT ,"Ruby" }); //ruby start pos
 								break;
 							}
-							case static_cast<int>(State::LEVEL_2) :
+							case static_cast<int>(State::FLOOR_2) :
 							{
 								guard.guards.push_back(guard_info{ math::ivec2(30, 12), Direction::LEFT ,"Ruby" }); //ruby start pos
 								break;
 							}
-							case static_cast<int>(State::LEVEL_3) :
+							case static_cast<int>(State::FLOOR_3) :
 							{
 								guard.guards.push_back(guard_info{ math::ivec2(39, 21), Direction::LEFT ,"Ruby" }); //ruby start pos
 								break;

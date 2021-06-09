@@ -46,7 +46,7 @@ class Game
 	State previous_state{ State::SPLASH };
 	int current_menu{ static_cast<int>(MenuOption::START) };
 	int curr_level{ static_cast<int>(State::TUTORIAL) };
-	int unlock_level{ static_cast<int>(State::LEVEL_1) };
+	int unlock_level{ static_cast<int>(State::FLOOR_1) };
 
 	bool camera_move{ false };
 	bool cheat_Z{ false };
