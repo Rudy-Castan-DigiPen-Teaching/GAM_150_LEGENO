@@ -25,9 +25,10 @@ void Minsoo::Draw_minsu(Camera camera,[[maybe_unused]]bool camera_move)
 	case Direction::LEFT:
 		doodle::draw_image(Minsoo_left.image, (position.x + camera.Get_position().x) * block_size, (position.y + camera.Get_position().y) * block_size, block_size, block_size, Minsoo_left.GetDrawPos().x,0);
 		break;
+	case Direction::UPUP:
+		doodle::draw_image(Minsoo_UPUP.image, (position.x + camera.Get_position().x) * block_size, (position.y + camera.Get_position().y) * block_size, block_size, block_size, Minsoo_UPUP.GetDrawPos().x, 0);
+		break;
 	}
-
-	doodle::draw_text(to_string(movement),0,80);
 }
 void Minsoo::Set_up()
 {

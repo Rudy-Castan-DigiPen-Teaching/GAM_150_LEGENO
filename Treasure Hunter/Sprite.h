@@ -16,8 +16,8 @@ public:
     math::ivec2 frameSize;
     int pixcel_num = 0;
     double animtimer = 0;
-private:
     double target_time;
+private:
     std::vector<math::ivec2> frameTexel;
     std::vector<math::ivec2> hotSpotList;
 };

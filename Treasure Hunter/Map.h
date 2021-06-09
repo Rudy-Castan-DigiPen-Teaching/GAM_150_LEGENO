@@ -66,6 +66,7 @@ public:
 	int map_width{ 43 };
 	int map_height{ 25 };
 	double bomb_target_time = 2;
+	bool lader_anim = false;
 public:
 	void Set_up(int level);
 	void Draw(Camera& camera);

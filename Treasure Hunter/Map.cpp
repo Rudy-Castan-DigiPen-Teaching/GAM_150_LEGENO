@@ -154,6 +154,7 @@ void Map::Set_up(int level)
         i.random_num = rand;
     }
     bomb_target_time = 2;
+    lader_anim = false;
 }
 
 doodle::Image& Map::Set_wall(info& value)
@@ -444,10 +445,12 @@ void Map::Draw(Camera& camera)
             {
                 Explode.currAnim = 0;
                 draw_image(Road2, (i.position.x + camera.Get_position().x)* block_size - 25, (i.position.y + camera.Get_position().y)* block_size - 25, block_size * 2.5, block_size * 2.5);
-                draw_image(Lader, (i.position.x + camera.Get_position().x)* block_size, (i.position.y + camera.Get_position().y)* block_size , block_size , block_size );
-            }
-
-           // draw_image(Explode.image, (i.position.x + camera.Get_position().x) * block_size, (i.position.y + camera.Get_position().y) * block_size, block_size, block_size, Explode.GetDrawPos().x, 0);
+                if (lader_anim == false)
+                {
+                    draw_image(Lader, (i.position.x + camera.Get_position().x) * block_size, (i.position.y + camera.Get_position().y) * block_size, block_size, block_size);
+                }
+             }
+        		
             break;
         }
         	

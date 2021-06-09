@@ -61,7 +61,8 @@ enum class Direction
 	UP,
 	DOWN,
 	RIGHT,
-	LEFT
+	LEFT,
+	UPUP
 };
 
 enum class SoundType

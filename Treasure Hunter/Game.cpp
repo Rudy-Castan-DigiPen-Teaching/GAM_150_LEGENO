@@ -446,24 +446,24 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 
 			case (static_cast<int>(State::LEVEL_3)):
 			{
-				if (unlock_level >= static_cast<int>(State::LEVEL_3))
+				//if (unlock_level >= static_cast<int>(State::LEVEL_3))
 				{
-					if (Is_get_all_treasure() == true)
+					//if (Is_get_all_treasure() == true)
 					{
 						sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 						Reset();
 						current_state = State::LEVEL_3;
 
 					}
-					else
-					{
-						sounds.Play_sound(static_cast<int>(SoundType::SelectLimitEffect));
-					}
+					//else
+					//{
+					//	sounds.Play_sound(static_cast<int>(SoundType::SelectLimitEffect));
+					//}
 				}
-				else
-				{
-					sounds.Play_sound(static_cast<int>(SoundType::SelectLimitEffect));
-				}
+				//else
+				//{
+				//	sounds.Play_sound(static_cast<int>(SoundType::SelectLimitEffect));
+				//}
 				break;
 			}
 			}
@@ -817,12 +817,21 @@ void Game::Tile_check()
 
 		if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::Lader)
 		{
-			sounds.Stop_sound();
-			sounds.music.stop();
-			is_music_playing = false;
-			sounds.Play_sound(static_cast<int>(SoundType::Win));
-			level_clear[static_cast<int>(current_state) - static_cast<int>(State::LEVEL_1)] = true;
-			current_state = State::CLEAR;
+			map.lader_anim = true;
+			static double win_timer = minsoo.Minsoo_UPUP.target_time * 6;
+			win_timer -= doodle::DeltaTime;
+			minsoo.direction = Direction::UPUP;
+			minsoo.Minsoo_UPUP.Update();
+			if (win_timer < 0)
+			{
+				sounds.Stop_sound();
+				sounds.music.stop();
+				level_clear[static_cast<int>(current_state) - static_cast<int>(State::TUTORIAL)] = true;
+				is_music_playing = false;
+				sounds.Play_sound(static_cast<int>(SoundType::Win));
+				current_state = State::CLEAR;
+			}			
+			
 		}
 
 		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::RADAR)
