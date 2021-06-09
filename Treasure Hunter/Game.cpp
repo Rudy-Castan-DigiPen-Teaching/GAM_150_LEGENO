@@ -98,20 +98,20 @@ void Game::Draw()
 		
 		doodle::draw_image(Treasure_box, 0, 0, Width, Height);
 
-		if(Get_treasure[0] == true && level_clear[0] == true)
+		if(Get_treasure[0] == true && level_clear[1] == true)
 		{
 			doodle::draw_image(Level_select_Treasure_1, 0, 0, Width, Height);
 		}
 
-		if (Get_treasure[1] == true && level_clear[0] == true)
+		if (Get_treasure[1] == true && level_clear[1] == true)
 		{
 			doodle::draw_image(Level_select_Treasure_2, 0, 0, Width, Height);
 		}
-		if (Get_treasure[2] == true && level_clear[1] == true)
+		if (Get_treasure[2] == true && level_clear[2] == true)
 		{
 			doodle::draw_image(Level_select_Treasure_3, 0, 0, Width, Height);
 		}
-		if (Get_treasure[3] == true && level_clear[1] == true)
+		if (Get_treasure[3] == true && level_clear[2] == true)
 		{
 			doodle::draw_image(Level_select_Treasure_4, 0, 0, Width, Height);
 		}
@@ -802,7 +802,7 @@ void Game::Tile_check()
 		{
 			sounds.PlaySound(static_cast<int>(SoundType::Win));
 			sounds.music.stop();
-			level_clear[static_cast<int>(current_state) - static_cast<int>(State::LEVEL_1)] = true;
+			level_clear[static_cast<int>(current_state) - static_cast<int>(State::TUTORIAL)] = true;
 			sounds.StopSound();
 			current_state = State::CLEAR;
 		}
@@ -1030,7 +1030,7 @@ void Game::Reset()
 {
 	timer = total_time;
 	doodle::ElapsedTime = 0;
-	treasure_count = 0;
+	treasure_count = 0;  //안쓰면 지우기
 	offset = 0;
 	speed = 10;
 	is_exit = false;
@@ -1050,14 +1050,14 @@ void Game::Reset()
 	guard.Set_up(curr_level);
 
 
-	if (level_clear[0] == false)
+	if (level_clear[1] == false)
 	{
 			Get_treasure[0] = false;
 			Get_treasure[1] = false;
 	}
 	
 	
-	if (level_clear[1] == false)
+	if (level_clear[2] == false)
 	{
 			Get_treasure[2] = false;
 			Get_treasure[3] = false;

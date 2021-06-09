@@ -88,16 +88,16 @@ void Map::Set_up(int level)
                     {
                         switch (treasure_num)
                         {
-                        case 1:
+                        case 3:
                         {
                             map.push_back(info{ math::ivec2{width,height},Type::TREASURE_crown });
-                            treasure_num = 0;
+                            treasure_num = 2;
                             break;
                         }
-                        case 2:
+                        case 4:
                         {
                             map.push_back(info{ math::ivec2{width,height},Type::TREASURE_key });
-                            treasure_num = 1;
+                            treasure_num = 3;
                             break;
                         }
                         }
@@ -108,16 +108,16 @@ void Map::Set_up(int level)
                     {
                         switch (treasure_num)
                         {
-                        case 1:
+                        case 3:
                         {
                             map.push_back(info{ math::ivec2{width,height},Type::TREASURE_coin });
-                            treasure_num = 0;
+                            treasure_num = 2;
                             break;
                         }
-                        case 2:
+                        case 4:
                         {
                             map.push_back(info{ math::ivec2{width,height},Type::TREASURE_dia });
-                            treasure_num = 1;
+                            treasure_num = 3;
                             break;
                         }
                         }
