@@ -76,7 +76,6 @@ void Sound::Stop_sound()
         if (sound.getStatus() == sf::SoundSource::Playing)
         {
             sound.stop();
-            return;
         }
     }
 }
