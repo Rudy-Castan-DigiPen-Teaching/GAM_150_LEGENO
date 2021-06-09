@@ -718,7 +718,6 @@ void Game::Update()
 void Game::Update_level()
 {
 	timer = total_time - static_cast<int>(doodle::ElapsedTime);
-	score = timer * (treasure_count + 1) * 10;
 	if (camera_move == false)
 	{
 		camera.Update(minsoo.Get_position());
@@ -869,28 +868,24 @@ void Game::Tile_check()
 			sounds.Play_sound(static_cast<int>(SoundType::GetTreasure));
 			map.map[i].type = Type::ROAD;
 			Get_treasure[0] = true;
-			treasure_count++;
 		}
 		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::TREASURE_key)
 		{
 			sounds.Play_sound(static_cast<int>(SoundType::GetTreasure));
 			map.map[i].type = Type::ROAD;
 			Get_treasure[1] = true;
-			treasure_count++;
 		}
 		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::TREASURE_coin)
 		{
 			sounds.Play_sound(static_cast<int>(SoundType::GetTreasure));
 			map.map[i].type = Type::ROAD;
 			Get_treasure[2] = true;
-			treasure_count++;
 		}
 		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::TREASURE_dia)
 		{
 			sounds.Play_sound(static_cast<int>(SoundType::GetTreasure));
 			map.map[i].type = Type::ROAD;
 			Get_treasure[3] = true;
-			treasure_count++;
 		}
 	}
 	if (current_state == State::TUTORIAL)
@@ -1061,7 +1056,6 @@ void Game::Reset()
 {
 	timer = total_time;
 	doodle::ElapsedTime = 0;
-	treasure_count = 0;  //안쓰면 지우기
 	offset = 0;
 	speed = 10;
 	is_exit = false;
