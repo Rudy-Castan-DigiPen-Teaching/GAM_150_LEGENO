@@ -1788,7 +1788,6 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 	{
 		Reset();
 	}
-#endif
 	if (doodleButton == doodle::KeyboardButtons::K)
 	{
 		sounds.Stop_sound();
@@ -1804,6 +1803,7 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 		Get_treasure[2] = true;
 		Get_treasure[3] = true;
 	}
+#endif
 }
 
 

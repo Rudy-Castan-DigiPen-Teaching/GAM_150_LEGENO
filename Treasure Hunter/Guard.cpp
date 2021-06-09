@@ -122,88 +122,91 @@ void Guard::Draw_sight(Camera& camera, Map MAP)
 	{
 		for (int i = 0; i < sight_size; i++)
 		{
-			for (auto& m : MAP.map)
+			if(guard.is_okay == true)
 			{
-				if (static_cast<int>(guard.sight_position[i].position.x) == m.position.x && static_cast<int>(guard.sight_position[i].position.y) == m.position.y && guard.sight_position[i].is_valid == true)
+				for (auto& m : MAP.map)
 				{
-					if (m.type != Type::WALL)
+					if (static_cast<int>(guard.sight_position[i].position.x) == m.position.x && static_cast<int>(guard.sight_position[i].position.y) == m.position.y && guard.sight_position[i].is_valid == true)
 					{
-						switch (guard.direction)
+						if (m.type != Type::WALL)
 						{
-						case Direction::UP:
-						{
-							switch (i)
+							switch (guard.direction)
 							{
-							case 0:
-								doodle::draw_image(Sight1_up_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
-								break;
-							case 1:
-								doodle::draw_image(Sight2_up_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
-								break;
-							case 2:
-								doodle::draw_image(Sight3_up_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
-								break;
-							}
-						}
-						break;
-						case Direction::DOWN:
-						{
-							switch (i)
+							case Direction::UP:
 							{
-							case 0:
-								doodle::draw_image(Sight1_down_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
-								break;
-							case 1:
-								doodle::draw_image(Sight2_down_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
-								break;
-							case 2:
-								doodle::draw_image(Sight3_down_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
-								break;
+								switch (i)
+								{
+								case 0:
+									doodle::draw_image(Sight1_up_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
+									break;
+								case 1:
+									doodle::draw_image(Sight2_up_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
+									break;
+								case 2:
+									doodle::draw_image(Sight3_up_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
+									break;
+								}
 							}
-						}
-						break;
+							break;
+							case Direction::DOWN:
+							{
+								switch (i)
+								{
+								case 0:
+									doodle::draw_image(Sight1_down_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
+									break;
+								case 1:
+									doodle::draw_image(Sight2_down_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
+									break;
+								case 2:
+									doodle::draw_image(Sight3_down_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
+									break;
+								}
+							}
+							break;
 
-						case Direction::RIGHT:
-						{
-							switch (i)
+							case Direction::RIGHT:
 							{
-							case 0:
-								doodle::draw_image(Sight1_right_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
-								break;
-							case 1:
-								doodle::draw_image(Sight2_right_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
-								break;
-							case 2:
-								doodle::draw_image(Sight3_right_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
-								break;
+								switch (i)
+								{
+								case 0:
+									doodle::draw_image(Sight1_right_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
+									break;
+								case 1:
+									doodle::draw_image(Sight2_right_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
+									break;
+								case 2:
+									doodle::draw_image(Sight3_right_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
+									break;
+								}
+							}
+							break;
+
+							case Direction::LEFT:
+							{
+								switch (i)
+								{
+								case 0:
+									doodle::draw_image(Sight1_left_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
+									break;
+								case 1:
+									doodle::draw_image(Sight2_left_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
+									break;
+								case 2:
+									doodle::draw_image(Sight3_left_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
+									break;
+								}
+							}
+							break;
 							}
 						}
-						break;
 
-						case Direction::LEFT:
+						if (m.type == Type::WALL)
 						{
-							switch (i)
+							while (i < sight_size)
 							{
-							case 0:
-								doodle::draw_image(Sight1_left_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
-								break;
-							case 1:
-								doodle::draw_image(Sight2_left_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
-								break;
-							case 2:
-								doodle::draw_image(Sight3_left_image, (guard.sight_position[i].position.x + camera.Get_position().x) * block_size, (guard.sight_position[i].position.y + camera.Get_position().y) * block_size, block_size, block_size);
-								break;
+								guard.sight_position[i++].is_valid = false;
 							}
-						}
-						break;
-						}
-					}
-
-					if (m.type == Type::WALL)
-					{
-						while (i < sight_size)
-						{
-							guard.sight_position[i++].is_valid = false;
 						}
 					}
 				}
