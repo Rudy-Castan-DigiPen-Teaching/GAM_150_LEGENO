@@ -58,6 +58,7 @@ private:
 	doodle::Image GuardRight_image{ "assets/GuardRight.png" };
 	doodle::Image GuardLeft_image{ "assets/GuardLeft.png" };
 	doodle::Image Guard_CHEW_image{ "assets/Chew_dog.png" }; //²­¸Ô´Â°³
+	doodle::Image Ruby_CHEW_image{ "assets/Chew_ruby.png" }; //²­¸Ô´Â°³
 	doodle::Image Guard_tracing_image{ "assets/Tracing_dog.png" };
 	doodle::Image Ruby_image{ "assets/Ruby.png" };
 

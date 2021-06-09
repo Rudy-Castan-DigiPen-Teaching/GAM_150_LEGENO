@@ -102,7 +102,14 @@ void Guard::Draw_guard(Camera& camera)
 		}
 		else if (p.is_okay == false)
 		{
-			doodle::draw_image(Guard_CHEW_image, (p.position.x + camera.Get_position().x) * block_size, (p.position.y + camera.Get_position().y) * block_size, block_size + 10.0, block_size + 10.0);
+			if (p.guard_type == "guard")
+			{
+				doodle::draw_image(Guard_CHEW_image, (p.position.x + camera.Get_position().x) * block_size, (p.position.y + camera.Get_position().y) * block_size, block_size + 10.0, block_size + 10.0);
+			}
+			else if (p.guard_type == "Ruby")
+			{
+				doodle::draw_image(Ruby_CHEW_image, (p.position.x + camera.Get_position().x) * block_size, (p.position.y + camera.Get_position().y) * block_size, block_size + 10.0, block_size + 10.0);
+			}
 		}
 
 	}

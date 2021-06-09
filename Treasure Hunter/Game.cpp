@@ -842,19 +842,6 @@ void Game::Tile_check()
 
 		if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::Lader)
 		{
-			map.lader_anim = true;
-/*			static double win_timer = minsoo.Minsoo_UPUP.target_time * 6;
-			win_timer -= doodle::DeltaTime;
-			minsoo.Minsoo_UPUP.Update();
-			if (win_timer < 0)
-			{
-				sounds.Stop_sound();
-				sounds.music.stop();
-				level_clear[static_cast<int>(current_state) - static_cast<int>(State::TUTORIAL)] = true;
-				is_music_playing = false;
-				sounds.Play_sound(static_cast<int>(SoundType::Win));
-				current_state = State::CLEAR;
-			}		*/	
 			current_state = State::ENDING;
 		}
 
