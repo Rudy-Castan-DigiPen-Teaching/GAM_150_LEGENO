@@ -191,23 +191,25 @@ void Game::Draw()
 	}
 	case State::ENDING:
 	{
-		static double Ending_timer = Minsoo_UPUP.target_time * 6;
 		Ending_timer -= DeltaTime;
 		push_settings();
 		clear_background();
+
+		Ending_scene.Update();
+		sounds.Stop_sound();
+		sounds.music.stop();		
 		doodle::draw_image(Minsoo_UPUP.image, Width/4.0,Height/4.0 , Minsoo_UPUP.frameSize.x, Minsoo_UPUP.frameSize.y, Minsoo_UPUP.GetDrawPos().x, 0);
 		pop_settings();
 
 		Minsoo_UPUP.Update();
+
+			
 		if (Ending_timer < 0)
 		{
-			sounds.Stop_sound();
-			sounds.music.stop();
-			level_clear[static_cast<int>(current_state) - static_cast<int>(State::TUTORIAL)] = true;
+			Ending_credit_ypos -= DeltaTime*100;
+			doodle::draw_image(Ending_scene.image, 0, 0, Width, Height, Ending_scene.GetDrawPos().x, 0,Ending_scene.frameSize.x, Ending_scene.frameSize.y);
+			doodle::draw_image(Ending_credit, 0, Ending_credit_ypos,Width,Height);
 			is_music_playing = false;
-			sounds.Play_sound(static_cast<int>(SoundType::Win));
-			current_state = State::CLEAR;
-			Ending_timer = Minsoo_UPUP.target_time * 6;
 		}		
 
 		break;
@@ -393,6 +395,12 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			}
 		}
 		break;
+	case State::ENDING:
+	{
+		current_state = State::START;
+		
+		break;
+	}
 	case State::LEVEL_SELECT:
 	{
 
@@ -863,6 +871,7 @@ void Game::Tile_check()
 		if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::Lader)
 		{
 			current_state = State::ENDING;
+			Ending_credit_ypos = Height;
 		}
 
 		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::RADAR)
@@ -1097,8 +1106,8 @@ void Game::Reset()
 	map.Set_up(curr_level);
 	minsoo.Set_up();
 	guard.Set_up(curr_level);
-
-
+	Ending_timer = Minsoo_UPUP.target_time * 6;//dkqQKqkqh apfhd
+	Ending_credit_ypos = doodle::Height;
 	if (level_clear[1] == false)
 	{
 		Get_treasure[0] = false;
@@ -1851,6 +1860,10 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 		Get_treasure[3] = true;
 	}
 #endif
+	if (doodleButton == doodle::KeyboardButtons::L)
+	{
+		current_state = State::ENDING;
+	}
 }
 
 

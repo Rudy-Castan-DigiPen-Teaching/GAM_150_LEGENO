@@ -122,6 +122,7 @@ class Game
 	doodle::Image Level_select_Treasure_3{ "assets/level_select_Treasure3.png" };
 	doodle::Image Level_select_Treasure_4{ "assets/level_select_Treasure4.png" };
 	doodle::Image Treasure_box{ "assets/treasure_box.png" };
+	doodle::Image Ending_credit{ "assets/Ending_credit.png" };
 
 
 	Sprite Siren_sprite{ "assets/siren_sprite.png",9,0.05 };
@@ -131,6 +132,8 @@ class Game
 	Sprite Jump_minsoo{ "assets/Jump_minsoo.png",7,0.1 };
 
 	Sprite Minsoo_UPUP{ "assets/Minsoo_upup.png",3 ,0.5 };
+
+	Sprite Ending_scene{ "assets/Ending_scene.png",17 ,0.25 };
 	
 	double Get_count();
 public:
@@ -160,6 +163,8 @@ public:
 	void Set_ingame_music();
 	math::vec2 new_pos{ minsoo.Get_position() };
 	double curr_timer{ 0 };
+	double Ending_timer = Minsoo_UPUP.target_time * 6;
+	double Ending_credit_ypos;
 	bool start_camera_count{ false };
 	bool level_clear[3] = { false, };
 };
