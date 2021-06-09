@@ -208,7 +208,7 @@ void Game::Draw()
 		{
 			Ending_credit_ypos -= DeltaTime*100;
 			doodle::draw_image(Ending_scene.image, 0, 0, Width, Height, Ending_scene.GetDrawPos().x, 0,Ending_scene.frameSize.x, Ending_scene.frameSize.y);
-			doodle::draw_image(Ending_credit, 0, Ending_credit_ypos,Width,Height);
+			doodle::draw_image(Ending_credit, Width/2, Ending_credit_ypos,Width/2,Height);
 			is_music_playing = false;
 		}		
 
@@ -1106,7 +1106,7 @@ void Game::Reset()
 	map.Set_up(curr_level);
 	minsoo.Set_up();
 	guard.Set_up(curr_level);
-	Ending_timer = Minsoo_UPUP.target_time * 6;//dkqQKqkqh apfhd
+	Ending_timer = Minsoo_UPUP.target_time * 6;
 	Ending_credit_ypos = doodle::Height;
 	if (level_clear[1] == false)
 	{
