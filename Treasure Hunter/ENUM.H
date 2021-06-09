@@ -81,6 +81,7 @@ enum class SoundType
 	TimerTic,
 	TimesUp,
 	Win,
+	COUNT
 };
 
 /* BGM
