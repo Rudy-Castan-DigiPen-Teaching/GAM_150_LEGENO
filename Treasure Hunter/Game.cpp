@@ -207,14 +207,10 @@ void Game::Draw()
 		Ending_timer -= DeltaTime;
 		push_settings();
 		clear_background();
-
-		Ending_scene.Update();
-		sounds.Stop_sound();
-		sounds.music.stop();		
+		
 		doodle::draw_image(Minsoo_UPUP.image, Width/4.0,Height/4.0 , Minsoo_UPUP.frameSize.x, Minsoo_UPUP.frameSize.y, Minsoo_UPUP.GetDrawPos().x, 0);
 		pop_settings();
 
-		Minsoo_UPUP.Update();
 
 			
 		if (Ending_timer < 0)
@@ -230,7 +226,6 @@ void Game::Draw()
 			hojin_ypos = cos(hojin_xpos);
 			doodle::draw_image(Hojin, hojin_xpos, -hojin_ypos*1000, Width/4 , Height/4);
 		}
-			is_music_playing = false;
 	}		
 
 		break;
@@ -420,7 +415,14 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 	{
 		if (Ending_timer < 0)
 		{
+			sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
+			sounds.music.stop();
+			is_music_playing = false;
 			current_state = State::START;
+		}
+		else
+		{
+			sounds.Play_sound(static_cast<int>(SoundType::SelectLimitEffect));
 		}
 		break;
 	}
@@ -765,6 +767,28 @@ void Game::Update()
 		}
 		break;
 	}
+	case State::ENDING:
+	{
+		if (Ending_timer < 0)
+		{
+			if (is_music_playing == false)
+			{
+				sounds.Stop_sound();
+				sounds.Set_music("assets/EndingBGM.ogg", true);
+				sounds.music.play();
+				is_music_playing = true;
+			}
+			Ending_scene.Update();
+		}
+		else
+		{	
+			if (sounds.Is_sound_playing(static_cast<int>(SoundType::Ladder)) == false)
+			{
+				sounds.Play_sound(static_cast<int>(SoundType::Ladder));
+			}
+			Minsoo_UPUP.Update();
+		}
+	}
 	}
 }
 
@@ -908,6 +932,7 @@ void Game::Tile_check()
 		}
 		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::NEXT)
 		{
+			sounds.Play_sound(static_cast<int>(SoundType::Pass));
 			map.map[i].type = Type::ROAD;
 			minsoo.position += math::vec2{ 0,5 };
 			guard.guards.clear();
@@ -1110,6 +1135,7 @@ void Game::Reset()
 	doodle::ElapsedTime = 0;
 	offset = 0;
 	speed = 10;
+	is_bomb_set = false;
 	is_exit = false;
 	radar_start = false;
 	make_radar_big = false;
@@ -1886,6 +1912,9 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 	if (doodleButton == doodle::KeyboardButtons::L)
 	{
 		current_state = State::ENDING;
+		sounds.Stop_sound();
+		sounds.music.stop();
+		is_music_playing = false;
 	}
 }
 
