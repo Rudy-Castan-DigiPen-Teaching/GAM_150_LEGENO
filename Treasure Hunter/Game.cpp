@@ -1937,6 +1937,11 @@ int Game::Treasure_count()
 }
 void Game::Draw_information()
 {
+	push_settings();
+	set_outline_width(3);
+	set_outline_color(0);
+	set_font_fade_out_interval(0.45, 0.55);
+	set_font_backdrop_fade_out_interval(0.6, 1.0);
 	if ((minsoo.position.x >= 3 && minsoo.position.x <= 7) && (minsoo.position.y >= 2 && minsoo.position.y <= 6))
 	{
 		if (Is_get_all_treasure() == true)
@@ -1945,90 +1950,48 @@ void Game::Draw_information()
 		}
 		else
 		{
-			push_settings();
-			set_outline_width(3);
-			set_outline_color(0);
-			set_font_fade_out_interval(0.45, 0.55);
-			set_font_backdrop_fade_out_interval(0.6, 1.0);
 			set_fill_color(255);
 			set_font_size(30);
 			draw_text("Move With Keyboard Arrows.\nCollect " + to_string(4 - Treasure_count()) + " More Treasures!", Width * 0.2, Height * 0.15);
-			pop_settings();
 		}
 	}
 	else if (minsoo.position.y >= 9 && minsoo.position.y <= 15)
 	{
 		if (minsoo.position.x >= 7 && minsoo.position.x <= 10)
 		{
-			push_settings();
-			set_outline_width(3);
-			set_outline_color(0);
-			set_font_fade_out_interval(0.45, 0.55);
-			set_font_backdrop_fade_out_interval(0.6, 1.0);
 			set_fill_color(255);
 			set_font_size(30);
 			draw_text("Guards Will Chase If\nMinsoo Is In Sight.", Width * 0.2, Height * 0.15);
-			pop_settings();
 		}
 		else if (minsoo.position.x >= 12 && minsoo.position.x <= 14)
 		{
-			push_settings();
-			set_outline_width(3);
-			set_outline_color(0);
-			set_font_fade_out_interval(0.45, 0.55);
-			set_font_backdrop_fade_out_interval(0.6, 1.0);
 			set_fill_color(255, 0, 0);
-			set_font_size(30);
-			draw_text("Run!", Width * 0.45, Height * 0.3);
-			pop_settings();
+			set_font_size(80);
+			draw_text("Run!", Width * 0.4, Height * 0.3);
 		}
 		else if (minsoo.position.x > 14 && minsoo.position.x < 18 && minsoo.chew_item >= 3)
 		{
-			push_settings();
-			set_outline_width(3);
-			set_outline_color(0);
-			set_font_fade_out_interval(0.45, 0.55);
-			set_font_backdrop_fade_out_interval(0.6, 1.0);
 			set_fill_color(255, 255, 0);
 			set_font_size(30);
 			draw_text("Use The Dog Chew!\nPress: 1", Width * 0.3, Height * 0.3);
-			pop_settings();
 		}
 		else if (minsoo.position.x >= 18 && minsoo.position.x < 21)
 		{
-			push_settings();
-			set_outline_width(3);
-			set_outline_color(0);
-			set_font_fade_out_interval(0.45, 0.55);
-			set_font_backdrop_fade_out_interval(0.6, 1.0);
 			set_fill_color(255);
 			set_font_size(30);
 			draw_text("After 3 Steps, The Guards Will\nStart Roaming Around.", Width * 0.2, Height * 0.15);
-			pop_settings();
 		}
 		else if (minsoo.position.x >= 22 && minsoo.position.x <= 24)
 		{
-			push_settings();
-			set_outline_width(3);
-			set_outline_color(0);
-			set_font_fade_out_interval(0.45, 0.55);
-			set_font_backdrop_fade_out_interval(0.6, 1.0);
 			set_fill_color(255, 0, 0);
-			set_font_size(30);
-			draw_text("Run!", Width * 0.45, Height * 0.3);
-			pop_settings();
+			set_font_size(80);
+			draw_text("Run!", Width * 0.4, Height * 0.3);
 		}
 		else if (minsoo.position.x > 24 && minsoo.position.x <= 27 && minsoo.chew_item >= 2)
 		{
-			push_settings();
-			set_outline_width(3);
-			set_outline_color(0);
-			set_font_fade_out_interval(0.45, 0.55);
-			set_font_backdrop_fade_out_interval(0.6, 1.0);
 			set_fill_color(255, 255, 0);
 			set_font_size(30);
 			draw_text("Now You Know What To Do.\nPress: 1", Width * 0.3, Height * 0.3);
-			pop_settings();
 		}
 		else if (minsoo.position.x > 27 && minsoo.position.x <= 31)
 		{
@@ -2037,15 +2000,9 @@ void Game::Draw_information()
 			case 3:
 			case 2:
 			{
-				push_settings();
-				set_outline_width(3);
-				set_outline_color(0);
-				set_font_fade_out_interval(0.45, 0.55);
-				set_font_backdrop_fade_out_interval(0.6, 1.0);
 				set_fill_color(255);
 				set_font_size(30);
 				draw_text("Use " + to_string(minsoo.chew_item - 1) + " More Dog Chew!\nPress: 1", Width * 0.2, Height * 0.15);
-				pop_settings();
 				break;
 			}
 			default: map.map[590].type = Type::NEXT; break;
@@ -2056,77 +2013,41 @@ void Game::Draw_information()
 	{
 		if (is_bomb_set == true && minsoo.explode_count != 0)
 		{
-			push_settings();
-			set_outline_width(3);
-			set_outline_color(0);
-			set_font_fade_out_interval(0.45, 0.55);
-			set_font_backdrop_fade_out_interval(0.6, 1.0);
 			set_fill_color(255);
 			set_font_size(30);
-			draw_text(to_string(minsoo.explode_count) + " More Moves\nUntil The Bomb Exploads!", Width * 0.2, Height * 0.15);
-			pop_settings();
+			draw_text(to_string(minsoo.explode_count) + " More Moves\nUntil Bomb Exploads!", Width * 0.2, Height * 0.15);
 		}
 		else if (minsoo.explode_count == 0)
 		{
-			push_settings();
-			set_outline_width(3);
-			set_outline_color(0);
-			set_font_fade_out_interval(0.45, 0.55);
-			set_font_backdrop_fade_out_interval(0.6, 1.0);
 			set_fill_color(255, 255, 0);
 			set_font_size(30);
 			draw_text("Go Down The Stairs!", Width * 0.2, Height * 0.15);
-			pop_settings();
 		}
 		else if (minsoo.position.x > 26 && minsoo.position.x <= 31)
 		{
-			push_settings();
-			set_outline_width(3);
-			set_outline_color(0);
-			set_font_fade_out_interval(0.45, 0.55);
-			set_font_backdrop_fade_out_interval(0.6, 1.0);
 			set_fill_color(255);
 			set_font_size(30);
-			draw_text("If The Radar Item Is Obtained,\nRuby Will Chase.", Width * 0.2, Height * 0.15);
-			pop_settings();
+			draw_text("If Radar Item Is Obtained,\nRuby Will Chase.", Width * 0.2, Height * 0.15);
 		}
 		else if (minsoo.position.x >= 21 && minsoo.position.x <= 25 && minsoo.chew_item >= 1)
 		{
-			push_settings();
-			set_outline_width(3);
-			set_outline_color(0);
-			set_font_fade_out_interval(0.45, 0.55);
-			set_font_backdrop_fade_out_interval(0.6, 1.0);
 			set_fill_color(255, 255, 0);
 			set_font_size(30);
 			draw_text("Use The Last Dog Chew!\nPress: 1", Width * 0.2, Height * 0.15);
-			pop_settings();
 		}
 		else if (minsoo.position.x > 13 && minsoo.position.x <= 20)
 		{
-			push_settings();
-			set_outline_width(3);
-			set_outline_color(0);
-			set_font_fade_out_interval(0.45, 0.55);
-			set_font_backdrop_fade_out_interval(0.6, 1.0);
 			set_fill_color(255);
 			set_font_size(30);
-			draw_text("The Radar Will Expand And Shrink\nFaster As The Hidden Exit Gets Near.", Width * 0.2, Height * 0.15);
-			pop_settings();
+			draw_text("Radar Will Expand And Shrink\nFaster As The Hidden Exit Gets Near.", Width * 0.2, Height * 0.15);
 		}
 		else if (minsoo.position.x >= 8 && minsoo.position.x <= 13)
 		{
 			if ((minsoo.position.x > 8 && minsoo.position.x < 10) && minsoo.position.y > 18 && minsoo.position.y < 20)
 			{
-				push_settings();
-				set_outline_width(3);
-				set_outline_color(0);
-				set_font_fade_out_interval(0.45, 0.55);
-				set_font_backdrop_fade_out_interval(0.6, 1.0);
 				set_fill_color(255, 255, 0);
 				set_font_size(30);
-				draw_text("Use The Bomb To Reveal The Exit!\nPress: 2\n", Width * 0.2, Height * 0.15);
-				pop_settings();
+				draw_text("Use Bomb To Reveal The Exit!\nPress: 2\n", Width * 0.2, Height * 0.15);
 				if (minsoo.bomb_item == 0)
 				{
 					is_bomb_set = true;
@@ -2134,42 +2055,11 @@ void Game::Draw_information()
 			}
 			else
 			{
-				push_settings();
-				set_outline_width(3);
-				set_outline_color(0);
-				set_font_fade_out_interval(0.45, 0.55);
-				set_font_backdrop_fade_out_interval(0.6, 1.0);
 				set_fill_color(255);
 				set_font_size(30);
-				draw_text("The Radar Will Make Sound\nIf The Exit Is Near Enough.", Width * 0.2, Height * 0.15);
-				pop_settings();
+				draw_text("Radar Will Make Sound\nIf The Exit Is Near Enough.", Width * 0.2, Height * 0.15);
 			}
 		}
 	}
+	pop_settings();
 }
-//(3, 2)
-//1111111111111111111111111111111111111111111
-//1111111111111111111111111111111111111111111
-//1110000311111111111111111111111111111111111
-//1110000011111111111111111111111111111111111
-//1113000011111111111111111111111111111111111
-//1110000311111111111111111111111111111111111
-//1113000411111111111111111111111111111111111
-//1111111111111111111111111111111111111111111
-//1111111111111111111111111111111111111111111
-//1111111111100111111111111111111111111111111
-//1111111111100111111111111111111111111111111
-//1111111000000001110000000000000011111111111
-//1111111000000001110000001110000011111111111
-//1111111000000000000000001110000411111111111
-//1111111111111111111100111111111111111111111
-//1111111111111111111100111111111111111111111
-//1111111111111111111111111111111111111111111
-//1111111111111111111111111111111111111111111
-//1111111100000110000001100020000011111111111
-//1111111100000110011001100110000011111111111
-//1111111100000000011000000110000011111111111
-//1111111111111111111111111111111111111111111
-//1111111111111111111111111111111111111111111
-//1111111111111111111111111111111111111111111
-//1111111111111111111111111111111111111111111
