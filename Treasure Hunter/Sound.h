@@ -22,8 +22,8 @@ public:
     bool Is_sound_playing(const int soundType);
     void Stop_sound();
 
-    std::vector<sf::SoundBuffer> soundBuffers{};
-    std::vector<sf::Sound>       sounds{};
-    sf::Music                    music;
+    std::vector<sf::SoundBuffer> SoundBuffers{};
+    std::vector<sf::Sound>       Sounds{};
+    sf::Music                    Music;
 };
 

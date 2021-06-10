@@ -28,24 +28,24 @@ void Sound::Set_up_sound()
     Load_sound("assets/TimerTic.ogg");
     Load_sound("assets/TimesUp.ogg");
     Load_sound("assets/Win.ogg");
-    Load_sound("assets/Ladder.wav");
-    Load_sound("assets/Pass.wav");
+    Load_sound("assets/Ladder.ogg");
+    Load_sound("assets/Pass.ogg");
     Set_sound();
 }
 
 void Sound::Set_music(const std::string& file_path, bool isLoop)
 {
-    if (!music.openFromFile(file_path) == true)
+    if (!Music.openFromFile(file_path) == true)
     {
         throw std::runtime_error("Failed to load the music file: " + file_path);
     }
-    music.setLoop(isLoop);
+    Music.setLoop(isLoop);
 }
 
 void Sound::Load_sound(const std::string& file_path)
 {
-    soundBuffers.emplace_back();
-    sf::SoundBuffer& buffer = soundBuffers.back();
+    SoundBuffers.emplace_back();
+    sf::SoundBuffer& buffer = SoundBuffers.back();
     if (!buffer.loadFromFile(file_path) == true)
     {
         error("Failed to load " + file_path);
@@ -56,24 +56,24 @@ void Sound::Set_sound()
 {
     for (int i = 0; i < static_cast<int>(SoundType::COUNT); i++)
     {
-        sounds.emplace_back(soundBuffers[i]);
+        Sounds.emplace_back(SoundBuffers[i]);
     }
 }
 
 void Sound::Play_sound(int soundType)
 {
-     sounds[soundType].setBuffer(soundBuffers[soundType]);
-     sounds[soundType].play();
+     Sounds[soundType].setBuffer(SoundBuffers[soundType]);
+     Sounds[soundType].play();
 }
 
 bool Sound::Is_sound_playing(const int soundType)
 {
-    return sounds[soundType].getStatus() == sf::SoundSource::Playing;
+    return Sounds[soundType].getStatus() == sf::SoundSource::Playing;
 }
 
 void Sound::Stop_sound()
 {
-    for (auto& sound : sounds)
+    for (auto& sound : Sounds)
     {
         if (sound.getStatus() == sf::SoundSource::Playing)
         {
