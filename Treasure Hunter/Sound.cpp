@@ -28,6 +28,8 @@ void Sound::Set_up_sound()
     Load_sound("assets/TimerTic.ogg");
     Load_sound("assets/TimesUp.ogg");
     Load_sound("assets/Win.ogg");
+    Load_sound("assets/Ladder.wav");
+    Load_sound("assets/Pass.wav");
     Set_sound();
 }
 

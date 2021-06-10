@@ -207,14 +207,10 @@ void Game::Draw()
 		Ending_timer -= DeltaTime;
 		push_settings();
 		clear_background();
-
-		Ending_scene.Update();
-		sounds.Stop_sound();
-		sounds.music.stop();		
+		
 		doodle::draw_image(Minsoo_UPUP.image, Width/4.0,Height/4.0 , Minsoo_UPUP.frameSize.x, Minsoo_UPUP.frameSize.y, Minsoo_UPUP.GetDrawPos().x, 0);
 		pop_settings();
 
-		Minsoo_UPUP.Update();
 		if(MouseIsPressed)
 		{
 			draw_hojin = true;
@@ -231,7 +227,6 @@ void Game::Draw()
 			Update_shooting_star();
 			Draw_star();
 		}
-			is_music_playing = false;
 	}		
 
 		break;
@@ -421,7 +416,14 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 	{
 		if (Ending_timer < 0)
 		{
+			sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
+			sounds.music.stop();
+			is_music_playing = false;
 			current_state = State::START;
+		}
+		else
+		{
+			sounds.Play_sound(static_cast<int>(SoundType::SelectLimitEffect));
 		}
 		break;
 	}
@@ -766,6 +768,28 @@ void Game::Update()
 		}
 		break;
 	}
+	case State::ENDING:
+	{
+		if (Ending_timer < 0)
+		{
+			if (is_music_playing == false)
+			{
+				sounds.Stop_sound();
+				sounds.Set_music("assets/EndingBGM.ogg", true);
+				sounds.music.play();
+				is_music_playing = true;
+			}
+			Ending_scene.Update();
+		}
+		else
+		{	
+			if (sounds.Is_sound_playing(static_cast<int>(SoundType::Ladder)) == false)
+			{
+				sounds.Play_sound(static_cast<int>(SoundType::Ladder));
+			}
+			Minsoo_UPUP.Update();
+		}
+	}
 	}
 }
 
@@ -910,6 +934,7 @@ void Game::Tile_check()
 		}
 		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::NEXT)
 		{
+			sounds.Play_sound(static_cast<int>(SoundType::Pass));
 			map.map[i].type = Type::ROAD;
 			minsoo.position += math::vec2{ 0,5 };
 			guard.guards.clear();
@@ -1162,6 +1187,7 @@ void Game::Reset()
 	doodle::ElapsedTime = 0;
 	offset = 0;
 	speed = 10;
+	is_bomb_set = false;
 	is_exit = false;
 	radar_start = false;
 	make_radar_big = false;
@@ -1939,6 +1965,9 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 	{
 		current_state = State::ENDING;
 		Generate_shooting_star();
+		sounds.Stop_sound();
+		sounds.music.stop();
+		is_music_playing = false;
 	}
 }
 
@@ -2026,7 +2055,7 @@ void Game::Draw_information()
 		{
 			set_fill_color(255, 255, 0);
 			set_font_size(30);
-			draw_text("Use The Dog Chew!\nPress: 1", Width * 0.3, Height * 0.3);
+			draw_text("Use The Dog Chew!\nPress: 1", Width * 0.2, Height * 0.15);
 		}
 		else if (minsoo.position.x >= 18 && minsoo.position.x < 21)
 		{
@@ -2044,7 +2073,7 @@ void Game::Draw_information()
 		{
 			set_fill_color(255, 255, 0);
 			set_font_size(30);
-			draw_text("Now You Know What To Do.\nPress: 1", Width * 0.3, Height * 0.3);
+			draw_text("Now You Know What To Do.\nPress: 1", Width * 0.2, Height * 0.15);
 		}
 		else if (minsoo.position.x > 27 && minsoo.position.x <= 31)
 		{

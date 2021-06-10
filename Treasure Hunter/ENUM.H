@@ -82,6 +82,8 @@ enum class SoundType
 	TimerTic,
 	TimesUp,
 	Win,
+	Ladder,
+	Pass,
 	COUNT
 };
 
@@ -90,4 +92,5 @@ enum class SoundType
 * Siren
 * MainMenuBGM
 * LevelSelectMenuBGM
+* EndingBGM
 */
