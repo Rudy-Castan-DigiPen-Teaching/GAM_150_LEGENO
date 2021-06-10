@@ -2002,7 +2002,7 @@ void Game::Draw_information()
 		{
 			set_fill_color(255, 255, 0);
 			set_font_size(30);
-			draw_text("Use The Dog Chew!\nPress: 1", Width * 0.3, Height * 0.3);
+			draw_text("Use The Dog Chew!\nPress: 1", Width * 0.2, Height * 0.15);
 		}
 		else if (minsoo.position.x >= 18 && minsoo.position.x < 21)
 		{
@@ -2020,7 +2020,7 @@ void Game::Draw_information()
 		{
 			set_fill_color(255, 255, 0);
 			set_font_size(30);
-			draw_text("Now You Know What To Do.\nPress: 1", Width * 0.3, Height * 0.3);
+			draw_text("Now You Know What To Do.\nPress: 1", Width * 0.2, Height * 0.15);
 		}
 		else if (minsoo.position.x > 27 && minsoo.position.x <= 31)
 		{
