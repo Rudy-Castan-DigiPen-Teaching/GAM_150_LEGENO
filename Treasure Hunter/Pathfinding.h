@@ -58,7 +58,7 @@ vector<Node> path_finding(Map map,math::vec2 minsoo_pos, math::ivec2 guard_pos) 
 			break;
 		}
 
-		for (auto& i : map.Map)
+		for (auto& i : map.map)
 		{
 			if (i.Position.x == node.pos.x+1 && i.Position.y == node.pos.y && i.Type != Type::WALL && is_visited[node.pos.y][node.pos.x + 1]==false)   //right
 			{
