@@ -39,3 +39,4 @@ void on_key_pressed(doodle::KeyboardButtons doodleButton)
      game.Get_inputkey(doodleButton);
      doodleButton = doodle::KeyboardButtons::None;
 }
+

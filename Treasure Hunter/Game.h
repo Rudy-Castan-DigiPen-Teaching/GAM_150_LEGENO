@@ -62,7 +62,8 @@ class Game
 	bool is_played_bite = false;
 
 	bool Get_treasure[4] = { false, };
-	
+
+	bool draw_hojin = false;
 	doodle::Image digipen_logo{ "assets/DigiPen_BLACK_1024px.png" };
 	doodle::Image game_logo{ "assets/Treasure_Hunter_Logo.jpg" };
 	doodle::Image main_menu{ "assets/MainMenu.png" };
@@ -125,7 +126,7 @@ class Game
 	doodle::Image Treasure_box{ "assets/treasure_box.png" };
 	doodle::Image Ending_credit{ "assets/Ending_credit.png" };
 	doodle::Image Hojin{ "assets/Hojin.png" };
-	//doodle::Image Star{ "assets/Star.png" };
+	doodle::Image Star{ "assets/Star.png" };
 	Sprite Siren_sprite{ "assets/siren_sprite.png",9,0.05 };
 	
 	Sprite Clear_effect{ "assets/clear_effect.png",8,0.1 };
@@ -135,7 +136,8 @@ class Game
 	Sprite Minsoo_UPUP{ "assets/Minsoo_upup.png",3 ,0.5 };
 
 	Sprite Ending_scene{ "assets/Ending_scene.png",17 ,0.25 };
-	
+
+	Sprite star_anim{ "assets/star_anim.png",10 ,0.1 };
 	double Get_count();
 public:
 	void Set_up();
@@ -164,11 +166,17 @@ public:
 	void Tile_check(); //3blockss move --> pung~  Check_bomb() -> Tile_check()
 	void Draw_treasure();
 	void Set_ingame_music();
+	void Generate_shooting_star();
+	void Update_shooting_star();
+	void Draw_star();
 	math::vec2 new_pos{ minsoo.Get_position() };
 	double curr_timer{ 0 };
 	double Ending_timer = Minsoo_UPUP.target_time * 6;
 	double Ending_credit_ypos;
 	bool start_camera_count{ false };
 	bool level_clear[3] = { false, };
+
+	math::vec2 star_pos;
+	math::vec2 hojin_pos;
 };
 

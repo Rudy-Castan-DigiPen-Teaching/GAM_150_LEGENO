@@ -215,20 +215,21 @@ void Game::Draw()
 		pop_settings();
 
 		Minsoo_UPUP.Update();
-
-			
+		if(MouseIsPressed)
+		{
+			draw_hojin = true;
+			hojin_pos = { 0,-Hojin.GetHeight()*1.0 };
+		}
+		
 		if (Ending_timer < 0)
 		{
 			Ending_credit_ypos -= DeltaTime*100;
 			doodle::draw_image(Ending_scene.image, 0, 0, Width, Height, Ending_scene.GetDrawPos().x, 0,Ending_scene.frameSize.x, Ending_scene.frameSize.y);
 
-			doodle::draw_image(Ending_credit, Width / 2, Ending_credit_ypos, Width / 2, Height);
-
-			static double hojin_xpos = 0;
-			static double hojin_ypos = 0; 
-			hojin_xpos += DeltaTime ;
-			hojin_ypos = cos(hojin_xpos);
-			doodle::draw_image(Hojin, hojin_xpos, -hojin_ypos*1000, Width/4 , Height/4);
+			doodle::draw_image(Ending_credit, Width / 2, Ending_credit_ypos, Width / 2, Height*2.0);
+		
+			Update_shooting_star();
+			Draw_star();
 		}
 			is_music_playing = false;
 	}		
@@ -416,7 +417,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			}
 		}
 		break;
-	case State::ENDING:
+	case State::ENDING:	
 	{
 		if (Ending_timer < 0)
 		{
@@ -454,7 +455,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 		else if (doodleButton == doodle::KeyboardButtons::Escape)
 		{
 			sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
-			current_state = previous_state;
+			current_state = State::START;
 		}
 		else if (doodleButton == doodle::KeyboardButtons::Enter)
 		{
@@ -503,24 +504,24 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 
 			case (static_cast<int>(State::FLOOR_3)):
 			{
-				//if (unlock_level >= static_cast<int>(State::LEVEL_3))
+				if (unlock_level >= static_cast<int>(State::FLOOR_3))
 				{
-					//if (Is_get_all_treasure() == true)
-					//{
+					if (Is_get_all_treasure() == true)
+					{
 						sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 						Reset();
 						current_state = State::FLOOR_3;
 
-				//	}
-					//else
-					//{
-					//	sounds.Play_sound(static_cast<int>(SoundType::SelectLimitEffect));
-					//}
 				}
-				//else
-				//{
-				//	sounds.Play_sound(static_cast<int>(SoundType::SelectLimitEffect));
-				//}
+					else
+					{
+						sounds.Play_sound(static_cast<int>(SoundType::SelectLimitEffect));
+					}
+				}
+				else
+				{
+					sounds.Play_sound(static_cast<int>(SoundType::SelectLimitEffect));
+				}
 				break;
 			}
 			}
@@ -899,6 +900,7 @@ void Game::Tile_check()
 		{
 			current_state = State::ENDING;
 			Ending_credit_ypos = Height;
+			Generate_shooting_star();
 		}
 
 		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::RADAR)
@@ -1057,6 +1059,56 @@ void Game::Set_ingame_music()
 				sounds.music.play();
 			}
 		}
+	}
+}
+
+void Game::Generate_shooting_star()
+{
+	star_pos.x = doodle::random(0,Width);
+	star_pos.y = -(Star.GetHeight()+1000);
+}
+
+void Game::Update_shooting_star()
+{
+		star_anim.Update();
+
+		star_pos.y += doodle::DeltaTime * 1500;
+		if(draw_hojin == true)
+		{
+			hojin_pos += doodle::DeltaTime * 1500;
+			if (hojin_pos.x > Width || hojin_pos.y > Height)
+			{
+				if (draw_hojin == true)
+				{
+					draw_hojin = false;
+				}
+			}
+		}
+		if (star_pos.y > -Star.GetHeight())
+		{
+			star_pos.x += doodle::DeltaTime * 1500;
+		}
+		if(star_pos.x > Width || star_pos.y > Height)
+		{
+			star_pos.x = doodle::random(0, Width);
+			star_pos.y = -(Star.GetHeight() + 4000);
+			if(draw_hojin == true)
+			{
+				draw_hojin = false;
+			}
+		}
+}
+
+
+void Game::Draw_star()
+{
+	if (draw_hojin == false)
+	{
+		draw_image(star_anim.image, star_pos.x, star_pos.y, star_anim.frameSize.x, star_anim.frameSize.y, star_anim.GetDrawPos().x, 0);
+	}
+	else
+	{
+		draw_image(Hojin, hojin_pos.x, hojin_pos.y);
 	}
 }
 
@@ -1382,7 +1434,7 @@ void Game::Set_item(doodle::KeyboardButtons button)
 	}
 }
 
-void Game::Radar_obtain()	//What is this??????? Why int item num=1?
+void Game::Radar_obtain()
 {
 	if (is_radar_obtained == true)
 	{
@@ -1778,7 +1830,7 @@ void Game::Draw_level()
 		pop_settings();
 	}
 
-	if (guard.Is_trace_sommeone() == true) // 한명이라도 따라오는애 있으면 
+	if (guard.Is_trace_sommeone() == true) // if someone trace
 	{
 		draw_image(Siren_sprite.image, Width / 2.5, 0, Siren_sprite.GetFrameSize().x, Siren_sprite.GetFrameSize().y, Siren_sprite.GetDrawPos().x, 0);
 		Siren_sprite.Update();
@@ -1886,6 +1938,7 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 	if (doodleButton == doodle::KeyboardButtons::L)
 	{
 		current_state = State::ENDING;
+		Generate_shooting_star();
 	}
 }
 
