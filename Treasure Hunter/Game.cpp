@@ -20,6 +20,7 @@ void Game::Set_up()
 
 void Game::Draw()
 {
+	
 	switch (current_state)
 	{
 	case State::SPLASH:
@@ -47,10 +48,22 @@ void Game::Draw()
 		doodle::draw_image(main_menu, 0, 0, Width, Height);
 		switch (current_menu)
 		{
-			case static_cast<int>(MenuOption::START) : doodle::draw_image(start_button, 0, 0, Width, Height); break;
-				case static_cast<int>(MenuOption::CREDIT) : doodle::draw_image(credit_button, 0, 0, Width, Height); break;
-					case static_cast<int>(MenuOption::QUIT) : doodle::draw_image(quit_button, 0, 0, Width, Height); break;
-						case static_cast<int>(MenuOption::OPTION) : doodle::draw_image(option_button, 0, 0, Width, Height); break;
+			case static_cast<int>(MenuOption::START) : doodle::draw_image(start_button, 0, 0, Width, Height);
+			{
+				break;
+			}
+			case static_cast<int>(MenuOption::CREDIT) : doodle::draw_image(credit_button, 0, 0, Width, Height);
+			{
+				break;
+			}
+			case static_cast<int>(MenuOption::QUIT) : doodle::draw_image(quit_button, 0, 0, Width, Height);
+			{
+				break;
+			}
+			case static_cast<int>(MenuOption::OPTION) : doodle::draw_image(option_button, 0, 0, Width, Height);
+			{
+				break;
+			}
 		}
 		break;
 	}
@@ -208,7 +221,18 @@ void Game::Draw()
 		{
 			Ending_credit_ypos -= DeltaTime*100;
 			doodle::draw_image(Ending_scene.image, 0, 0, Width, Height, Ending_scene.GetDrawPos().x, 0,Ending_scene.frameSize.x, Ending_scene.frameSize.y);
-			doodle::draw_image(Ending_credit, Width/2, Ending_credit_ypos,Width/2,Height);
+			if (Ending_credit_ypos > 100)
+			{
+				doodle::draw_image(Ending_credit, Width / 2, Ending_credit_ypos, Width / 2, Height);
+			}
+			else
+			{
+				static double hojin_xpos = 0;
+				static double hojin_ypos = 0; 
+				hojin_xpos += DeltaTime ;
+				hojin_ypos = cos(hojin_xpos);
+				doodle::draw_image(Hojin, hojin_xpos*1000, -hojin_ypos*1000, Width/4 , Height/4);
+			}
 			is_music_playing = false;
 		}		
 
@@ -397,8 +421,10 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 		break;
 	case State::ENDING:
 	{
-		current_state = State::START;
-		
+		if (Ending_timer < 0)
+		{
+			current_state = State::START;
+		}
 		break;
 	}
 	case State::LEVEL_SELECT:
@@ -1757,7 +1783,7 @@ void Game::Draw_level()
 
 	if (guard.Is_trace_sommeone() == true) // 한명이라도 따라오는애 있으면 
 	{
-		draw_image(Siren_sprite.image, Width / 2, 0, Siren_sprite.GetFrameSize().x, Siren_sprite.GetFrameSize().y, Siren_sprite.GetDrawPos().x, 0);
+		draw_image(Siren_sprite.image, Width / 2.5, 0, Siren_sprite.GetFrameSize().x, Siren_sprite.GetFrameSize().y, Siren_sprite.GetDrawPos().x, 0);
 		Siren_sprite.Update();
 	}
 

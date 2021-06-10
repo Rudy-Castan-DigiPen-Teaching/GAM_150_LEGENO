@@ -124,7 +124,7 @@ class Game
 	doodle::Image Level_select_Treasure_4{ "assets/level_select_Treasure4.png" };
 	doodle::Image Treasure_box{ "assets/treasure_box.png" };
 	doodle::Image Ending_credit{ "assets/Ending_credit.png" };
-
+	doodle::Image Hojin{ "assets/Hojin.png" };
 
 	Sprite Siren_sprite{ "assets/siren_sprite.png",9,0.05 };
 	
