@@ -125,7 +125,7 @@ class Game
 	doodle::Image Treasure_box{ "assets/treasure_box.png" };
 	doodle::Image Ending_credit{ "assets/Ending_credit.png" };
 	doodle::Image Hojin{ "assets/Hojin.png" };
-
+	//doodle::Image Star{ "assets/Star.png" };
 	Sprite Siren_sprite{ "assets/siren_sprite.png",9,0.05 };
 	
 	Sprite Clear_effect{ "assets/clear_effect.png",8,0.1 };

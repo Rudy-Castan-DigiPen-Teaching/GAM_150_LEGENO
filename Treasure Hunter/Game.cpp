@@ -221,24 +221,21 @@ void Game::Draw()
 		{
 			Ending_credit_ypos -= DeltaTime*100;
 			doodle::draw_image(Ending_scene.image, 0, 0, Width, Height, Ending_scene.GetDrawPos().x, 0,Ending_scene.frameSize.x, Ending_scene.frameSize.y);
-			if (Ending_credit_ypos > 100)
-			{
-				doodle::draw_image(Ending_credit, Width / 2, Ending_credit_ypos, Width / 2, Height);
-			}
-			else
-			{
-				static double hojin_xpos = 0;
-				static double hojin_ypos = 0; 
-				hojin_xpos += DeltaTime ;
-				hojin_ypos = cos(hojin_xpos);
-				doodle::draw_image(Hojin, hojin_xpos*1000, -hojin_ypos*1000, Width/4 , Height/4);
-			}
+
+			doodle::draw_image(Ending_credit, Width / 2, Ending_credit_ypos, Width / 2, Height);
+
+			static double hojin_xpos = 0;
+			static double hojin_ypos = 0; 
+			hojin_xpos += DeltaTime ;
+			hojin_ypos = cos(hojin_xpos);
+			doodle::draw_image(Hojin, hojin_xpos, -hojin_ypos*1000, Width/4 , Height/4);
+		}
 			is_music_playing = false;
-		}		
+	}		
 
 		break;
 			
-	}
+	
 
 		
 	case State::GAME_OVER:
