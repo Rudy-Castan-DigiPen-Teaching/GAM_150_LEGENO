@@ -157,7 +157,6 @@ void Game::Draw()
 	{
 		push_settings();
 		clear_background();
-		set_fill_color(255, 0, 255);
 		switch (curr_level)
 		{
 			case static_cast<int>(State::TUTORIAL) :
@@ -570,6 +569,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 							break;
 						}
 					}
+					current_menu = static_cast<int>(PauseOption::SOUND);
 					break;
 				}
 				case static_cast<int>(PauseOption::MAIN_MENU) :
@@ -666,7 +666,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 		{
 			sounds.Play_sound(static_cast<int>(SoundType::SelectEffect));
 			is_played_bite = false;
-			curr_level = static_cast<int>(State::FLOOR_1);
+			curr_level = static_cast<int>(State::TUTORIAL);
 			current_state = State::START;
 		}
 		break;
@@ -877,21 +877,13 @@ void Game::Tile_check()
 		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::RADAR)
 		{
 			map.map[i].type = Type::ROAD;
-			did_abtain_radar = true;
+			is_radar_obtained = true;
 		}
 		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::NEXT)
 		{
-			if (Is_get_all_treasure() == true)
-			{
-				map.map[i].type = Type::ROAD;
-				minsoo.position += math::vec2{ 0,5 };
-				guard.guards.clear();
-			}
-			else
-			{
-				Reset();
-				minsoo.position = {3,2};
-			}
+			map.map[i].type = Type::ROAD;
+			minsoo.position += math::vec2{ 0,5 };
+			guard.guards.clear();
 		}
 		else if (map.map[i].position == minsoo.Get_position() && map.map[i].type == Type::TREASURE_crown)
 		{
@@ -927,11 +919,11 @@ void Game::Tile_check()
 				guard.guards.push_back(guard_info{ math::ivec2(12, 10), Direction::DOWN });
 			}
 		}
-		else if (minsoo.position == map.map[494].position || minsoo.position == map.map[537].position || minsoo.position == map.map[580].position)
+		else if (minsoo.position == map.map[495].position || minsoo.position == map.map[538].position || minsoo.position == map.map[581].position)
 		{
 			if (guard.guards.size() == 1)
 			{
-				guard.guards.push_back(guard_info{ math::ivec2(21, 14), Direction::UP });
+				guard.guards.push_back(guard_info{ math::ivec2(22, 14), Direction::UP });
 			}
 		}
 	}
@@ -1365,13 +1357,13 @@ void Game::Set_item(doodle::KeyboardButtons button)
 
 void Game::Radar_obtain()	//What is this??????? Why int item num=1?
 {
-	if (did_abtain_radar == true)
+	if (is_radar_obtained == true)
 	{
 		if (current_state == State::TUTORIAL)
 		{
 			map.map[826].type = Type::EXIT;
 			exit_pos = map.map[826].position;
-			did_abtain_radar = false;
+			is_radar_obtained = false;
 			radar_start = true;
 			guard.guards.push_back(guard_info{ math::ivec2(30, 19), Direction::LEFT ,"Ruby" }); //minsu start pos
 			camera_move = true;
@@ -1418,7 +1410,7 @@ void Game::Radar_obtain()	//What is this??????? Why int item num=1?
 						m.type = Type::EXIT;
 						exit_pos = m.position;
 						item_num--;
-						did_abtain_radar = false;
+						is_radar_obtained = false;
 						radar_start = true;
 						switch (curr_level)
 						{
@@ -1748,12 +1740,12 @@ void Game::Draw_level()
 	if (current_state != State::TUTORIAL)
 	{
 		push_settings();
-		set_outline_width(5);
+		set_outline_width(7);
 		set_outline_color(0);
-		set_fill_color(255);
-
+		draw_line(doodle::Width * 0.075, doodle::Height * 0.12, Width * 0.075 + Width * 0.05 * sin((PI / 50) * (100 - static_cast<double>(timer))), doodle::Height * 0.12 + Height * 0.075 * cos((PI) * ((static_cast<double>(timer)) / 50 - 1)));
+		set_outline_width(3);
 		set_outline_color(255, 0, 0);
-		draw_line(doodle::Width * 0.07, doodle::Height * 0.12, Width * 0.07 + Width * 0.05 * sin((PI / 50) * (100 - static_cast<double>(timer))), doodle::Height * 0.12 + Height * 0.075 * cos((PI) * ((static_cast<double>(timer)) / 50 - 1)));
+		draw_line(doodle::Width * 0.075, doodle::Height * 0.12, Width * 0.075 + Width * 0.05 * sin((PI / 50) * (100 - static_cast<double>(timer))), doodle::Height * 0.12 + Height * 0.075 * cos((PI) * ((static_cast<double>(timer)) / 50 - 1)));
 
 		set_font_size(30);
 		pop_settings();
@@ -1767,6 +1759,10 @@ void Game::Draw_level()
 
 
 	Draw_treasure();
+	if (current_state == State::TUTORIAL)
+	{
+		Draw_information();
+	}
 }
 
 
@@ -1888,8 +1884,6 @@ void Game::Change_sight()
 	}
 }
 
-
-
 bool Game::Is_get_all_treasure()
 {
 	for (int i = 0; i < 4; i++)
@@ -1901,3 +1895,254 @@ bool Game::Is_get_all_treasure()
 	}
 	return true;
 }
+
+int Game::Treasure_count()
+{
+	int count = 0;
+	for (int i = 0; i < 4; i++)
+	{
+		if (Get_treasure[i] == true)
+		{
+			count++;
+		}
+	}
+	return count;
+}
+void Game::Draw_information()
+{
+	if ((minsoo.position.x >= 3 && minsoo.position.x <= 7) && (minsoo.position.y >= 2 && minsoo.position.y <= 6))
+	{
+		if (Is_get_all_treasure() == true)
+		{
+			map.map[265].type = Type::NEXT;
+		}
+		else
+		{
+			push_settings();
+			set_outline_width(3);
+			set_outline_color(0);
+			set_font_fade_out_interval(0.45, 0.55);
+			set_font_backdrop_fade_out_interval(0.6, 1.0);
+			set_fill_color(255);
+			set_font_size(30);
+			draw_text("Move With Keyboard Arrows.\nCollect " + to_string(4 - Treasure_count()) + " More Treasures!", Width * 0.2, Height * 0.15);
+			pop_settings();
+		}
+	}
+	else if (minsoo.position.y >= 9 && minsoo.position.y <= 15)
+	{
+		if (minsoo.position.x >= 7 && minsoo.position.x <= 10)
+		{
+			push_settings();
+			set_outline_width(3);
+			set_outline_color(0);
+			set_font_fade_out_interval(0.45, 0.55);
+			set_font_backdrop_fade_out_interval(0.6, 1.0);
+			set_fill_color(255);
+			set_font_size(30);
+			draw_text("Guards Will Chase If\nMinsoo Is In Sight.", Width * 0.2, Height * 0.15);
+			pop_settings();
+		}
+		else if (minsoo.position.x >= 12 && minsoo.position.x <= 14)
+		{
+			push_settings();
+			set_outline_width(3);
+			set_outline_color(0);
+			set_font_fade_out_interval(0.45, 0.55);
+			set_font_backdrop_fade_out_interval(0.6, 1.0);
+			set_fill_color(255, 0, 0);
+			set_font_size(30);
+			draw_text("Run!", Width * 0.45, Height * 0.3);
+			pop_settings();
+		}
+		else if (minsoo.position.x > 14 && minsoo.position.x < 18 && minsoo.chew_item >= 3)
+		{
+			push_settings();
+			set_outline_width(3);
+			set_outline_color(0);
+			set_font_fade_out_interval(0.45, 0.55);
+			set_font_backdrop_fade_out_interval(0.6, 1.0);
+			set_fill_color(255, 255, 0);
+			set_font_size(30);
+			draw_text("Use The Dog Chew!\nPress: 1", Width * 0.3, Height * 0.3);
+			pop_settings();
+		}
+		else if (minsoo.position.x >= 18 && minsoo.position.x < 21)
+		{
+			push_settings();
+			set_outline_width(3);
+			set_outline_color(0);
+			set_font_fade_out_interval(0.45, 0.55);
+			set_font_backdrop_fade_out_interval(0.6, 1.0);
+			set_fill_color(255);
+			set_font_size(30);
+			draw_text("After 3 Steps, The Guards Will\nStart Roaming Around.", Width * 0.2, Height * 0.15);
+			pop_settings();
+		}
+		else if (minsoo.position.x >= 22 && minsoo.position.x <= 24)
+		{
+			push_settings();
+			set_outline_width(3);
+			set_outline_color(0);
+			set_font_fade_out_interval(0.45, 0.55);
+			set_font_backdrop_fade_out_interval(0.6, 1.0);
+			set_fill_color(255, 0, 0);
+			set_font_size(30);
+			draw_text("Run!", Width * 0.45, Height * 0.3);
+			pop_settings();
+		}
+		else if (minsoo.position.x > 24 && minsoo.position.x <= 27 && minsoo.chew_item >= 2)
+		{
+			push_settings();
+			set_outline_width(3);
+			set_outline_color(0);
+			set_font_fade_out_interval(0.45, 0.55);
+			set_font_backdrop_fade_out_interval(0.6, 1.0);
+			set_fill_color(255, 255, 0);
+			set_font_size(30);
+			draw_text("Now You Know What To Do.\nPress: 1", Width * 0.3, Height * 0.3);
+			pop_settings();
+		}
+		else if (minsoo.position.x > 27 && minsoo.position.x <= 31)
+		{
+			switch (minsoo.chew_item)
+			{
+			case 3:
+			case 2:
+			{
+				push_settings();
+				set_outline_width(3);
+				set_outline_color(0);
+				set_font_fade_out_interval(0.45, 0.55);
+				set_font_backdrop_fade_out_interval(0.6, 1.0);
+				set_fill_color(255);
+				set_font_size(30);
+				draw_text("Use " + to_string(minsoo.chew_item - 1) + " More Dog Chew!\nPress: 1", Width * 0.2, Height * 0.15);
+				pop_settings();
+				break;
+			}
+			default: map.map[590].type = Type::NEXT; break;
+			}
+		}
+	}
+	else if (minsoo.position.y >= 18 && minsoo.position.y <= 20)
+	{
+		if (is_bomb_set == true && minsoo.explode_count != 0)
+		{
+			push_settings();
+			set_outline_width(3);
+			set_outline_color(0);
+			set_font_fade_out_interval(0.45, 0.55);
+			set_font_backdrop_fade_out_interval(0.6, 1.0);
+			set_fill_color(255);
+			set_font_size(30);
+			draw_text(to_string(minsoo.explode_count) + " More Moves\nUntil The Bomb Exploads!", Width * 0.2, Height * 0.15);
+			pop_settings();
+		}
+		else if (minsoo.explode_count == 0)
+		{
+			push_settings();
+			set_outline_width(3);
+			set_outline_color(0);
+			set_font_fade_out_interval(0.45, 0.55);
+			set_font_backdrop_fade_out_interval(0.6, 1.0);
+			set_fill_color(255, 255, 0);
+			set_font_size(30);
+			draw_text("Go Down The Stairs!", Width * 0.2, Height * 0.15);
+			pop_settings();
+		}
+		else if (minsoo.position.x > 26 && minsoo.position.x <= 31)
+		{
+			push_settings();
+			set_outline_width(3);
+			set_outline_color(0);
+			set_font_fade_out_interval(0.45, 0.55);
+			set_font_backdrop_fade_out_interval(0.6, 1.0);
+			set_fill_color(255);
+			set_font_size(30);
+			draw_text("If The Radar Item Is Obtained,\nRuby Will Chase.", Width * 0.2, Height * 0.15);
+			pop_settings();
+		}
+		else if (minsoo.position.x >= 21 && minsoo.position.x <= 25 && minsoo.chew_item >= 1)
+		{
+			push_settings();
+			set_outline_width(3);
+			set_outline_color(0);
+			set_font_fade_out_interval(0.45, 0.55);
+			set_font_backdrop_fade_out_interval(0.6, 1.0);
+			set_fill_color(255, 255, 0);
+			set_font_size(30);
+			draw_text("Use The Last Dog Chew!\nPress: 1", Width * 0.2, Height * 0.15);
+			pop_settings();
+		}
+		else if (minsoo.position.x > 13 && minsoo.position.x <= 20)
+		{
+			push_settings();
+			set_outline_width(3);
+			set_outline_color(0);
+			set_font_fade_out_interval(0.45, 0.55);
+			set_font_backdrop_fade_out_interval(0.6, 1.0);
+			set_fill_color(255);
+			set_font_size(30);
+			draw_text("The Radar Will Expand And Shrink\nFaster As The Hidden Exit Gets Near.", Width * 0.2, Height * 0.15);
+			pop_settings();
+		}
+		else if (minsoo.position.x >= 8 && minsoo.position.x <= 13)
+		{
+			if ((minsoo.position.x > 8 && minsoo.position.x < 10) && minsoo.position.y > 18 && minsoo.position.y < 20)
+			{
+				push_settings();
+				set_outline_width(3);
+				set_outline_color(0);
+				set_font_fade_out_interval(0.45, 0.55);
+				set_font_backdrop_fade_out_interval(0.6, 1.0);
+				set_fill_color(255, 255, 0);
+				set_font_size(30);
+				draw_text("Use The Bomb To Reveal The Exit!\nPress: 2\n", Width * 0.2, Height * 0.15);
+				pop_settings();
+				if (minsoo.bomb_item == 0)
+				{
+					is_bomb_set = true;
+				}
+			}
+			else
+			{
+				push_settings();
+				set_outline_width(3);
+				set_outline_color(0);
+				set_font_fade_out_interval(0.45, 0.55);
+				set_font_backdrop_fade_out_interval(0.6, 1.0);
+				set_fill_color(255);
+				set_font_size(30);
+				draw_text("The Radar Will Make Sound\nIf The Exit Is Near Enough.", Width * 0.2, Height * 0.15);
+				pop_settings();
+			}
+		}
+	}
+}
+//(3, 2)
+//1111111111111111111111111111111111111111111
+//1111111111111111111111111111111111111111111
+//1110000311111111111111111111111111111111111
+//1110000011111111111111111111111111111111111
+//1113000011111111111111111111111111111111111
+//1110000311111111111111111111111111111111111
+//1113000411111111111111111111111111111111111
+//1111111111111111111111111111111111111111111
+//1111111111111111111111111111111111111111111
+//1111111111100111111111111111111111111111111
+//1111111111100111111111111111111111111111111
+//1111111000000001110000000000000011111111111
+//1111111000000001110000001110000011111111111
+//1111111000000000000000001110000411111111111
+//1111111111111111111100111111111111111111111
+//1111111111111111111100111111111111111111111
+//1111111111111111111111111111111111111111111
+//1111111111111111111111111111111111111111111
+//1111111100000110000001100020000011111111111
+//1111111100000110011001100110000011111111111
+//1111111100000000011000000110000011111111111
+//1111111111111111111111111111111111111111111
+//1111111111111111111111111111111111111111111
+//1111111111111111111111111111111111111111111
+//1111111111111111111111111111111111111111111

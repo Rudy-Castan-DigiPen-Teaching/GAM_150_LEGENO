@@ -26,7 +26,6 @@ class Game
 	int timer{ 100 };
 	double pause_timer{ 0 };
 	const int total_time{ 100 };
-	bool did_abtain_radar{ false };
 	bool radar_start{ false };
 	bool make_radar_big{ false };
 	double offset{ 0 };
@@ -34,6 +33,7 @@ class Game
 	double splash_timer{ 3 };
 	math::ivec2 exit_pos{ 0 };
 
+	bool is_radar_obtained{ false };
 	bool is_exit{ false };
 	bool is_in_guard_sight{ false };
 	bool is_music_playing{ false };
@@ -41,6 +41,7 @@ class Game
 	bool is_digipen_splash_done{ false };
 	bool is_paused{ false };
 	bool is_credit_done{ false };
+	bool is_bomb_set{ false };
 
 	State current_state{ State::SPLASH };
 	State previous_state{ State::SPLASH };
@@ -150,9 +151,11 @@ public:
 	void Draw_radar();
 	void Move_camera(math::vec2 position); // camera shows Ruby for a while
 	bool Is_get_all_treasure();
+	int	 Treasure_count();
 	void set_direction(math::vec2 position, int index);
 	void Collision_check();
 	void Change_sight();
+	void Draw_information();
 
 	void Draw_level();
 	void Input_level(doodle::KeyboardButtons doodleButton);

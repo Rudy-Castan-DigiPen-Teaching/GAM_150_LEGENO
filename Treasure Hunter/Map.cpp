@@ -127,11 +127,6 @@ void Map::Set_up(int level)
                 }
                 break;
             }
-            case '4':
-                {
-                    map.push_back(info{ math::ivec2{width,height},Type::NEXT });
-                    break;
-                }
             }
 
             if (width < map_width - 1)
@@ -303,9 +298,6 @@ void Map::Draw(Camera& camera)
         case Type::WALL: 
         {
             push_settings();
-            set_fill_color(0, 0, 0);
-            set_outline_width(1);
-            set_outline_color(255);
             draw_image(Set_wall(i), (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
             pop_settings();
             break;
@@ -394,9 +386,6 @@ void Map::Draw(Camera& camera)
         case Type::EXIT:
         {
             push_settings();
-            set_fill_color(255, 40, 0);
-            set_outline_width(1);
-            set_outline_color(255);
             draw_image(Breakable_wall, (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
             pop_settings();
             break;
@@ -412,9 +401,6 @@ void Map::Draw(Camera& camera)
         case Type::BOMB:
         {
             push_settings();
-            set_fill_color(200, 200, 0);
-            set_outline_width(1);
-            set_outline_color(255);
             draw_image(Road2, (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
             draw_image(Bomb, (i.position.x + camera.Get_position().x) * block_size, (i.position.y + camera.Get_position().y) * block_size, block_size, block_size);
             pop_settings();
