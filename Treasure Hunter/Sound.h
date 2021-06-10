@@ -23,7 +23,7 @@ public:
     void Stop_sound();
 
     std::vector<sf::SoundBuffer> SoundBuffers{};
-    std::vector<sf::Sound>       Sounds{};
-    sf::Music                    Music;
+    std::vector<sf::Sound>       sounds{};
+    sf::Music                    music;
 };
 

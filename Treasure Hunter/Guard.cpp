@@ -124,7 +124,7 @@ void Guard::Draw_sight(Camera& camera, Map MAP)
 		{
 			if(guard.Is_okay == true)
 			{
-				for (auto& m : MAP.Map)
+				for (auto& m : MAP.map)
 				{
 					if (static_cast<int>(guard.Sight_position[i].Position.x) == m.Position.x && static_cast<int>(guard.Sight_position[i].Position.y) == m.Position.y && guard.Sight_position[i].Is_valid == true)
 					{
@@ -272,7 +272,7 @@ void Guard::Change_sight(Map m, int index)
 			{
 			case Direction::UP:
 			{
-				for (auto& j : m.Map)
+				for (auto& j : m.map)
 				{
 					if (Guards[index].Position.x == j.Position.x && Guards[index].Position.y - 1 == j.Position.y && (j.Type != Type::WALL))
 					{
@@ -284,7 +284,7 @@ void Guard::Change_sight(Map m, int index)
 			break;
 			case Direction::DOWN:
 			{
-				for (auto& j : m.Map)
+				for (auto& j : m.map)
 				{
 					if (Guards[index].Position.x == j.Position.x && Guards[index].Position.y + 1 == j.Position.y && (j.Type != Type::WALL))
 					{
@@ -296,7 +296,7 @@ void Guard::Change_sight(Map m, int index)
 			break;
 			case Direction::RIGHT:
 			{
-				for (auto& j : m.Map)
+				for (auto& j : m.map)
 				{
 					if (Guards[index].Position.x + 1 == j.Position.x && Guards[index].Position.y == j.Position.y && (j.Type != Type::WALL))
 					{
@@ -308,7 +308,7 @@ void Guard::Change_sight(Map m, int index)
 			break;
 			case Direction::LEFT:
 			{
-				for (auto& j : m.Map)
+				for (auto& j : m.map)
 				{
 					if (Guards[index].Position.x - 1 == j.Position.x && Guards[index].Position.y == j.Position.y && (j.Type != Type::WALL))
 					{
@@ -329,7 +329,7 @@ void Guard::Guard_movement_update(math::ivec2 exit_pos, Map& m, int movement)
 {
 	for (auto& i : Guards)
 	{
-		for (auto& j : m.Map)
+		for (auto& j : m.map)
 		{
 			if (i.Position == j.Position && j.Type == Type::DOG_CHEW)
 			{
@@ -502,7 +502,7 @@ void Guard::Check_watching_wall(Map m)
 		{
 		case Direction::UP:   //move up
 		{
-			for (auto& i : m.Map)
+			for (auto& i : m.map)
 			{
 				if (i.Position.x == Guards[index].Position.x && i.Position.y == Guards[index].Position.y - 1 && i.Type == Type::WALL)
 				{
@@ -513,7 +513,7 @@ void Guard::Check_watching_wall(Map m)
 		}
 		break;
 		case Direction::DOWN:   //move down
-			for (auto& i : m.Map)
+			for (auto& i : m.map)
 			{
 				if (i.Position.x == Guards[index].Position.x && i.Position.y == Guards[index].Position.y + 1 && i.Type == Type::WALL)
 				{
@@ -523,7 +523,7 @@ void Guard::Check_watching_wall(Map m)
 			}
 			break;
 		case Direction::RIGHT:   //move right
-			for (auto& i : m.Map)
+			for (auto& i : m.map)
 			{
 				if (i.Position.x == Guards[index].Position.x + 1 && i.Position.y == Guards[index].Position.y && i.Type == Type::WALL)
 				{
@@ -533,7 +533,7 @@ void Guard::Check_watching_wall(Map m)
 			}
 			break;
 		case Direction::LEFT:   //move left
-			for (auto& i : m.Map)
+			for (auto& i : m.map)
 			{
 				if (i.Position.x == Guards[index].Position.x - 1 && i.Position.y == Guards[index].Position.y && i.Type == Type::WALL)
 				{

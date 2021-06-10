@@ -35,17 +35,17 @@ void Sound::Set_up_sound()
 
 void Sound::Set_music(const std::string& file_path, bool isLoop)
 {
-    if (!Music.openFromFile(file_path) == true)
+    if (!music.openFromFile(file_path) == true)
     {
         throw std::runtime_error("Failed to load the music file: " + file_path);
     }
-    Music.setLoop(isLoop);
+    music.setLoop(isLoop);
 }
 
 void Sound::Load_sound(const std::string& file_path)
 {
-    SoundBuffers.emplace_back();
-    sf::SoundBuffer& buffer = SoundBuffers.back();
+    soundBuffers.emplace_back();
+    sf::SoundBuffer& buffer = soundBuffers.back();
     if (!buffer.loadFromFile(file_path) == true)
     {
         error("Failed to load " + file_path);
@@ -56,24 +56,24 @@ void Sound::Set_sound()
 {
     for (int i = 0; i < static_cast<int>(SoundType::COUNT); i++)
     {
-        Sounds.emplace_back(SoundBuffers[i]);
+        sounds.emplace_back(soundBuffers[i]);
     }
 }
 
 void Sound::Play_sound(int soundType)
 {
-     Sounds[soundType].setBuffer(SoundBuffers[soundType]);
-     Sounds[soundType].play();
+     sounds[soundType].setBuffer(soundBuffers[soundType]);
+     sounds[soundType].play();
 }
 
 bool Sound::Is_sound_playing(const int soundType)
 {
-    return Sounds[soundType].getStatus() == sf::SoundSource::Playing;
+    return sounds[soundType].getStatus() == sf::SoundSource::Playing;
 }
 
 void Sound::Stop_sound()
 {
-    for (auto& sound : Sounds)
+    for (auto& sound : sounds)
     {
         if (sound.getStatus() == sf::SoundSource::Playing)
         {

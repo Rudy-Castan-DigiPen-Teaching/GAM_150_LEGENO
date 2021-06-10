@@ -13,7 +13,7 @@ using namespace doodle;
 
 void Map::Set_up(int level)
 {
-    Map.clear();
+    map.clear();
     std::ifstream readFile;
 
     readFile.open("assets/Map" + to_string(level - (static_cast<int>(State::FLOOR_1) - 1)) + ".txt");
@@ -26,25 +26,21 @@ void Map::Set_up(int level)
         {
             char a;
             readFile >> a;
- /*           if (readFile.eof())
-            {
-                break;
-            }*/
             switch (a)
             {
             case '0': 
             {
-            		Map.push_back(info{ math::ivec2{width,height},Type::ROAD });
-					 break;
+            	map.push_back(info{ math::ivec2{width,height},Type::ROAD });
+				break;
             }
             case '1':
             {
-            		Map.push_back(info{ math::ivec2{width,height},Type::WALL });
-					 break;
+            	map.push_back(info{ math::ivec2{width,height},Type::WALL });
+			    break;
             }
             case '2': 
             {
-            	Map.push_back(info{ math::ivec2{width,height},Type::RADAR });
+            	map.push_back(info{ math::ivec2{width,height},Type::RADAR });
                 break;
             }
             case '3':
@@ -58,26 +54,26 @@ void Map::Set_up(int level)
                         {
                             case 1:
                             {
-                                Map.push_back(info{ math::ivec2{width,height},Type::TREASURE_CROWN });
+                                map.push_back(info{ math::ivec2{width,height},Type::TREASURE_CROWN });
                                 Treasure_num = 2;
                                 break;
                             }
                             case 2:
                             {
-                                Map.push_back(info{ math::ivec2{width,height},Type::TREASURE_KEY });
+                                map.push_back(info{ math::ivec2{width,height},Type::TREASURE_KEY });
                                 Treasure_num = 1;
                                 break;
                             }
 
                             case 3:
                             {
-                                Map.push_back(info{ math::ivec2{width,height},Type::TREASURE_COIN });
+                                map.push_back(info{ math::ivec2{width,height},Type::TREASURE_COIN });
                                 Treasure_num = 2;
                                 break;
                             }
                             case 4:
                             {
-                                Map.push_back(info{ math::ivec2{width,height},Type::TREASURE_DIA });
+                                map.push_back(info{ math::ivec2{width,height},Type::TREASURE_DIA });
                                 Treasure_num = 3;
                                 break;
                             }                       	
@@ -90,13 +86,13 @@ void Map::Set_up(int level)
                         {
                         case 3:
                         {
-                            Map.push_back(info{ math::ivec2{width,height},Type::TREASURE_CROWN });
+                            map.push_back(info{ math::ivec2{width,height},Type::TREASURE_CROWN });
                             Treasure_num = 2;
                             break;
                         }
                         case 4:
                         {
-                            Map.push_back(info{ math::ivec2{width,height},Type::TREASURE_KEY });
+                            map.push_back(info{ math::ivec2{width,height},Type::TREASURE_KEY });
                             Treasure_num = 3;
                             break;
                         }
@@ -110,13 +106,13 @@ void Map::Set_up(int level)
                         {
                         case 3:
                         {
-                            Map.push_back(info{ math::ivec2{width,height},Type::TREASURE_COIN });
+                            map.push_back(info{ math::ivec2{width,height},Type::TREASURE_COIN });
                             Treasure_num = 2;
                             break;
                         }
                         case 4:
                         {
-                            Map.push_back(info{ math::ivec2{width,height},Type::TREASURE_DIA });
+                            map.push_back(info{ math::ivec2{width,height},Type::TREASURE_DIA });
                             Treasure_num = 3;
                             break;
                         }
@@ -143,7 +139,7 @@ void Map::Set_up(int level)
     }
     readFile.close();
 
-    for (auto& i : Map)
+    for (auto& i : map)
     {
         int rand = doodle::random(0, 15);
         i.Random_num = rand;
@@ -155,9 +151,9 @@ doodle::Image& Map::Set_wall(info& value)
 {
     int wall_count = 0;
     int index = 0;
-    for (int i = 0; i < Map.size(); i++)
+    for (int i = 0; i < map.size(); i++)
     {
-        if (Map[i].Position == value.Position)
+        if (map[i].Position == value.Position)
         {
             index = i;
             break;
@@ -176,42 +172,42 @@ doodle::Image& Map::Set_wall(info& value)
     {
         return WallWall;
     }
-    else if (index > Map.size() - (Map_width + 1))                       
+    else if (index > map.size() - (Map_width + 1))                       
     {
         return WallWall;
     }
     else
     {
-        if (Map[index - Map_width - 1].Type == Type::WALL)
+        if (map[index - Map_width - 1].Type == Type::WALL)
         {
             wall_count++;
         }
-        if (Map[index - Map_width].Type == Type::WALL)
+        if (map[index - Map_width].Type == Type::WALL)
         {
             wall_count++;
         }
-        if (Map[index - Map_width + 1].Type == Type::WALL)
+        if (map[index - Map_width + 1].Type == Type::WALL)
         {
             wall_count++;
         }
-        if (Map[index - 1].Type == Type::WALL)
+        if (map[index - 1].Type == Type::WALL)
         {
             wall_count++;
         }
         
-        if (Map[index + 1].Type == Type::WALL)
+        if (map[index + 1].Type == Type::WALL)
         {
             wall_count++;
         }
-        if (Map[index + Map_width - 1].Type == Type::WALL)
+        if (map[index + Map_width - 1].Type == Type::WALL)
         {
             wall_count++;
         }
-        if (Map[index + Map_width].Type == Type::WALL)
+        if (map[index + Map_width].Type == Type::WALL)
         {
             wall_count++;
         }
-        if (Map[index + Map_width + 1].Type == Type::WALL)
+        if (map[index + Map_width + 1].Type == Type::WALL)
         {
             wall_count++;
         }
@@ -221,19 +217,19 @@ doodle::Image& Map::Set_wall(info& value)
         break;
     case 2:
     case 3:
-        if (Map[index - Map_width - 1].Type == Type::WALL)
+        if (map[index - Map_width - 1].Type == Type::WALL)
         {
             return Wall_Edge_2;
         }
-        else if (Map[index - Map_width + 1].Type == Type::WALL)
+        else if (map[index - Map_width + 1].Type == Type::WALL)
         {
             return Wall_Edge_3;
         }
-        else if (Map[index + Map_width - 1].Type == Type::WALL)
+        else if (map[index + Map_width - 1].Type == Type::WALL)
         {
             return Wall_Edge_1;
         }
-        else if ( Map[index + Map_width + 1].Type == Type::WALL)
+        else if (map[index + Map_width + 1].Type == Type::WALL)
         {
             return Wall_Edge_4;
         }
@@ -242,38 +238,38 @@ doodle::Image& Map::Set_wall(info& value)
     case 4:
     case 5:
     case 6:
-        if (Map[index - Map_width].Type != Type::WALL)
+        if (map[index - Map_width].Type != Type::WALL)
         {
             return Wall_Side_Up;
         }
-        else if ( Map[index - 1].Type != Type::WALL)
+        else if (map[index - 1].Type != Type::WALL)
         {
             return Wall_Side_Left;
         }
-        else if ( Map[index + 1].Type != Type::WALL)
+        else if (map[index + 1].Type != Type::WALL)
         {
             return Wall_Side_Right;
         }
-        else if ( Map[index + Map_width].Type != Type::WALL)
+        else if (map[index + Map_width].Type != Type::WALL)
         {
             return Wall_Side_Down;
         }
         else
             break;
     case 7:
-        if (Map[index - Map_width - 1].Type != Type::WALL)
+        if (map[index - Map_width - 1].Type != Type::WALL)
         {
             return Wall_Corner_4;
         }
-        else if ( Map[index - Map_width + 1].Type != Type::WALL)
+        else if (map[index - Map_width + 1].Type != Type::WALL)
         {
             return Wall_Corner_1;
         }
-        else if ( Map[index + Map_width - 1].Type != Type::WALL)
+        else if (map[index + Map_width - 1].Type != Type::WALL)
         {
             return Wall_Corner_3;
         }
-        else if ( Map[index + Map_width + 1].Type != Type::WALL)
+        else if (map[index + Map_width + 1].Type != Type::WALL)
         {
             return Wall_Corner_2;
         }
@@ -291,7 +287,7 @@ doodle::Image& Map::Set_wall(info& value)
 void Map::Draw(Camera& camera)
 {
 
-    for (auto& i : Map)
+    for (auto& i : map)
     {
         switch (i.Type)
         {

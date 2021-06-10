@@ -279,7 +279,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 					Previous_state = Current_state;
 					Current_state = State::LEVEL_SELECT;
 					doodle::clear_background(0);
-					sounds.Music.stop();
+					sounds.music.stop();
 					Is_music_playing = false;
 					break;
 				}
@@ -356,11 +356,11 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			{
 				sounds.Play_sound(static_cast<int>(SoundType::SELECT_EFFECT));
 				Current_volume += 25;
-				for (sf::Sound& s : sounds.Sounds)
+				for (sf::Sound& s : sounds.sounds)
 				{
 					s.setVolume(Current_volume);
 				}
-				sounds.Music.setVolume(Current_volume);
+				sounds.music.setVolume(Current_volume);
 			}
 			else
 			{
@@ -373,11 +373,11 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			{
 				sounds.Play_sound(static_cast<int>(SoundType::SELECT_EFFECT));
 				Current_volume -= 25;
-				for (sf::Sound& s : sounds.Sounds)
+				for (sf::Sound& s : sounds.sounds)
 				{
 					s.setVolume(Current_volume);
 				}
-				sounds.Music.setVolume(Current_volume);
+				sounds.music.setVolume(Current_volume);
 			}
 			else
 			{
@@ -417,7 +417,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 		if (Ending_timer < 0)
 		{
 			sounds.Play_sound(static_cast<int>(SoundType::SELECT_EFFECT));
-			sounds.Music.stop();
+			sounds.music.stop();
 			Is_music_playing = false;
 			Current_state = State::START;
 		}
@@ -461,7 +461,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 		}
 		else if (doodleButton == doodle::KeyboardButtons::Enter)
 		{
-			sounds.Music.stop();
+			sounds.music.stop();
 			Is_music_playing = false;
 			switch (Curr_level)
 			{
@@ -543,7 +543,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 	{
 		if (doodleButton == doodle::KeyboardButtons::Escape)
 		{
-			sounds.Music.play();
+			sounds.music.play();
 			Is_music_playing = true;
 			sounds.Play_sound(static_cast<int>(SoundType::SELECT_EFFECT));
 			Current_state = Previous_state;
@@ -558,7 +558,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			{
 				case static_cast<int>(PauseOption::SOUND):
 				{
-					sounds.Music.play();
+					sounds.music.play();
 					Is_music_playing = true;
 					sounds.Play_sound(static_cast<int>(SoundType::SELECT_EFFECT));
 					Current_state = Previous_state;
@@ -639,11 +639,11 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 				{
 					sounds.Play_sound(static_cast<int>(SoundType::SELECT_EFFECT));
 					Current_volume += 25;
-					for (sf::Sound& s : sounds.Sounds)
+					for (sf::Sound& s : sounds.sounds)
 					{
 						s.setVolume(Current_volume);
 					}
-					sounds.Music.setVolume(Current_volume);
+					sounds.music.setVolume(Current_volume);
 				}
 				else
 				{
@@ -659,11 +659,11 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 				{
 					sounds.Play_sound(static_cast<int>(SoundType::SELECT_EFFECT));
 					Current_volume -= 25;
-					for (sf::Sound& s : sounds.Sounds)
+					for (sf::Sound& s : sounds.sounds)
 					{
 						s.setVolume(Current_volume);
 					}
-					sounds.Music.setVolume(Current_volume);
+					sounds.music.setVolume(Current_volume);
 				}
 				else
 				{
@@ -729,7 +729,7 @@ void Game::Update()
 		if (Is_music_playing == false)
 		{
 			sounds.Set_music("assets/MainMenuBGM.ogg", true);
-			sounds.Music.play();
+			sounds.music.play();
 			Is_music_playing = true;
 		}
 		break;
@@ -739,7 +739,7 @@ void Game::Update()
 		if (Is_music_playing == false)
 		{
 			sounds.Set_music("assets/LevelSelectMenuBGM.ogg", true);
-			sounds.Music.play();
+			sounds.music.play();
 			Is_music_playing = true;
 		}
 		break;
@@ -776,7 +776,7 @@ void Game::Update()
 			{
 				sounds.Stop_sound();
 				sounds.Set_music("assets/EndingBGM.ogg", true);
-				sounds.Music.play();
+				sounds.music.play();
 				Is_music_playing = true;
 			}
 			Ending_scene.Update();
@@ -848,7 +848,7 @@ void Game::Update_level()
 			else if (Timer <= 0)
 			{
 				sounds.Stop_sound();
-				sounds.Music.stop();
+				sounds.music.stop();
 				Is_music_playing = false;
 				sounds.Play_sound(static_cast<int>(SoundType::TIMES_UP));
 				Current_state = State::GAME_OVER;
@@ -877,9 +877,9 @@ void Game::Update_level()
 
 void Game::Tile_check()
 {
-	for (int i{ 0 }; i < map.Map.size(); i++)
+	for (int i{ 0 }; i < map.map.size(); i++)
 	{
-		if (map.Map[i].Type == Type::BOMB)
+		if (map.map[i].Type == Type::BOMB)
 		{
 			if (minsoo.explode_count == 0)
 			{
@@ -888,16 +888,16 @@ void Game::Tile_check()
 				{
 					if (Current_state != State::FLOOR_3)
 					{
-						map.Map[i].Type = Type::CAN_ESCAPE;
+						map.map[i].Type = Type::CAN_ESCAPE;
 					}
 					else
 					{
-						map.Map[i].Type = Type::LADDER;
+						map.map[i].Type = Type::LADDER;
 					}
 				}
 				else
 				{
-					map.Map[i].Type = Type::BOMB_TO_ROAD;
+					map.map[i].Type = Type::BOMB_TO_ROAD;
 				}
 			}
 			else
@@ -909,10 +909,10 @@ void Game::Tile_check()
 			}
 		}
 
-		if (map.Map[i].Position == minsoo.Get_position() && map.Map[i].Type == Type::CAN_ESCAPE)
+		if (map.map[i].Position == minsoo.Get_position() && map.map[i].Type == Type::CAN_ESCAPE)
 		{
 			sounds.Stop_sound();
-			sounds.Music.stop();
+			sounds.music.stop();
 			Level_clear[static_cast<int>(Current_state) - static_cast<int>(State::TUTORIAL)] = true;
 			Reset();
 			Is_music_playing = false;
@@ -920,60 +920,60 @@ void Game::Tile_check()
 			Current_state = State::CLEAR;
 		}
 
-		if (map.Map[i].Position == minsoo.Get_position() && map.Map[i].Type == Type::LADDER)
+		if (map.map[i].Position == minsoo.Get_position() && map.map[i].Type == Type::LADDER)
 		{
 			Current_state = State::ENDING;
 			Ending_credit_ypos = Height;
 			Generate_shooting_star();
 		}
 
-		else if (map.Map[i].Position == minsoo.Get_position() && map.Map[i].Type == Type::RADAR)
+		else if (map.map[i].Position == minsoo.Get_position() && map.map[i].Type == Type::RADAR)
 		{
-			map.Map[i].Type = Type::ROAD;
+			map.map[i].Type = Type::ROAD;
 			Is_radar_obtained = true;
 		}
-		else if (map.Map[i].Position == minsoo.Get_position() && map.Map[i].Type == Type::NEXT)
+		else if (map.map[i].Position == minsoo.Get_position() && map.map[i].Type == Type::NEXT)
 		{
 			sounds.Play_sound(static_cast<int>(SoundType::PASS));
-			map.Map[i].Type = Type::ROAD;
+			map.map[i].Type = Type::ROAD;
 			minsoo.position += math::vec2{ 0,5 };
 			guard.Guards.clear();
 		}
-		else if (map.Map[i].Position == minsoo.Get_position() && map.Map[i].Type == Type::TREASURE_CROWN)
+		else if (map.map[i].Position == minsoo.Get_position() && map.map[i].Type == Type::TREASURE_CROWN)
 		{
 			sounds.Play_sound(static_cast<int>(SoundType::GET_TREASURE));
-			map.Map[i].Type = Type::ROAD;
+			map.map[i].Type = Type::ROAD;
 			Get_treasure[0] = true;
 		}
-		else if (map.Map[i].Position == minsoo.Get_position() && map.Map[i].Type == Type::TREASURE_KEY)
+		else if (map.map[i].Position == minsoo.Get_position() && map.map[i].Type == Type::TREASURE_KEY)
 		{
 			sounds.Play_sound(static_cast<int>(SoundType::GET_TREASURE));
-			map.Map[i].Type = Type::ROAD;
+			map.map[i].Type = Type::ROAD;
 			Get_treasure[1] = true;
 		}
-		else if (map.Map[i].Position == minsoo.Get_position() && map.Map[i].Type == Type::TREASURE_COIN)
+		else if (map.map[i].Position == minsoo.Get_position() && map.map[i].Type == Type::TREASURE_COIN)
 		{
 			sounds.Play_sound(static_cast<int>(SoundType::GET_TREASURE));
-			map.Map[i].Type = Type::ROAD;
+			map.map[i].Type = Type::ROAD;
 			Get_treasure[2] = true;
 		}
-		else if (map.Map[i].Position == minsoo.Get_position() && map.Map[i].Type == Type::TREASURE_DIA)
+		else if (map.map[i].Position == minsoo.Get_position() && map.map[i].Type == Type::TREASURE_DIA)
 		{
 			sounds.Play_sound(static_cast<int>(SoundType::GET_TREASURE));
-			map.Map[i].Type = Type::ROAD;
+			map.map[i].Type = Type::ROAD;
 			Get_treasure[3] = true;
 		}
 	}
 	if (Current_state == State::TUTORIAL)
 	{
-		if (minsoo.position == map.Map[485].Position || minsoo.position == map.Map[528].Position || minsoo.position == map.Map[571].Position)
+		if (minsoo.position == map.map[485].Position || minsoo.position == map.map[528].Position || minsoo.position == map.map[571].Position)
 		{
 			if (guard.Guards.empty())
 			{
 				guard.Guards.push_back(guard_info{ math::ivec2(12, 10), Direction::DOWN });
 			}
 		}
-		else if (minsoo.position == map.Map[495].Position || minsoo.position == map.Map[538].Position || minsoo.position == map.Map[581].Position)
+		else if (minsoo.position == map.map[495].Position || minsoo.position == map.map[538].Position || minsoo.position == map.map[581].Position)
 		{
 			if (guard.Guards.size() == 1)
 			{
@@ -1061,7 +1061,7 @@ void Game::Set_ingame_music()
 			Is_music_playing = true;
 			Is_chased_state = true;
 			sounds.Set_music("assets/Siren.ogg", true);
-			sounds.Music.play();
+			sounds.music.play();
 		}
 		if (guard.Is_trace_sommeone() == false && Is_chased_state == true)
 		{
@@ -1081,7 +1081,7 @@ void Game::Set_ingame_music()
 			{
 				Is_music_playing = true;
 				sounds.Set_music("assets/BasicBGM.ogg", true);
-				sounds.Music.play();
+				sounds.music.play();
 			}
 		}
 	}
@@ -1220,11 +1220,11 @@ void Game::Reset()
 
 
 	minsoo.direction = Direction::DOWN;
-	for (int i = 0; i < map.Map.size(); i++)
+	for (int i = 0; i < map.map.size(); i++)
 	{
-		if (map.Map[i].Type == Type::RADAR)
+		if (map.map[i].Type == Type::RADAR)
 		{
-			New_pos = map.Map[i].Position;
+			New_pos = map.map[i].Position;
 		}
 	}
 }
@@ -1255,9 +1255,9 @@ bool Game::Check(doodle::KeyboardButtons doodleButton) // get keyboard key and c
 	default:
 		return true;
 	}
-	for (int i = 0; i < map.Map.size(); i++)
+	for (int i = 0; i < map.map.size(); i++)
 	{
-		if (map.Map[i].Position == position && map.Map[i].Type == Type::WALL)
+		if (map.map[i].Position == position && map.map[i].Type == Type::WALL)
 		{
 			sounds.Play_sound(static_cast<int>(SoundType::CRASH_WALL));
 			return true;
@@ -1278,7 +1278,7 @@ bool Game::Check_guard(int index)  // change sight if guard direction is toward 
 	{
 	case Direction::UP:   //move up
 	{
-		for (auto& i : map.Map)
+		for (auto& i : map.map)
 		{
 			if (i.Position.x == guard.Guards[index].Position.x && i.Position.y == guard.Guards[index].Position.y - 1 && i.Type == Type::WALL)
 			{
@@ -1289,7 +1289,7 @@ bool Game::Check_guard(int index)  // change sight if guard direction is toward 
 	}
 	break;
 	case Direction::DOWN:   //move down
-		for (auto& i : map.Map)
+		for (auto& i : map.map)
 		{
 			if (i.Position.x == guard.Guards[index].Position.x && i.Position.y == guard.Guards[index].Position.y + 1 && i.Type == Type::WALL)
 			{
@@ -1299,7 +1299,7 @@ bool Game::Check_guard(int index)  // change sight if guard direction is toward 
 		}
 		break;
 	case Direction::RIGHT:   //move right
-		for (auto& i : map.Map)
+		for (auto& i : map.map)
 		{
 			if (i.Position.x == guard.Guards[index].Position.x + 1 && i.Position.y == guard.Guards[index].Position.y && i.Type == Type::WALL)
 			{
@@ -1309,7 +1309,7 @@ bool Game::Check_guard(int index)  // change sight if guard direction is toward 
 		}
 		break;
 	case Direction::LEFT:   //move left
-		for (auto& i : map.Map)
+		for (auto& i : map.map)
 		{
 			if (i.Position.x == guard.Guards[index].Position.x - 1 && i.Position.y == guard.Guards[index].Position.y && i.Type == Type::WALL)
 			{
@@ -1332,7 +1332,7 @@ void Game::Collision_check()
 		if (difference <= 0.5)
 		{
 			sounds.Stop_sound();
-			sounds.Music.stop();
+			sounds.music.stop();
 			Is_music_playing = false;
 			sounds.Play_sound(static_cast<int>(SoundType::MEOW));
 			minsoo.is_dead = true;
@@ -1347,7 +1347,7 @@ void Game::Sight_check(int index)
 	{
 	case Direction::UP:
 	{
-		for (auto& j : map.Map)
+		for (auto& j : map.map)
 		{
 			if (guard.Guards[index].Position.x == j.Position.x && guard.Guards[index].Position.y - 1 == j.Position.y && j.Type == Type::WALL)
 			{
@@ -1358,7 +1358,7 @@ void Game::Sight_check(int index)
 	break;
 	case Direction::DOWN:
 	{
-		for (auto& j : map.Map)
+		for (auto& j : map.map)
 		{
 			if (guard.Guards[index].Position.x == j.Position.x && guard.Guards[index].Position.y + 1 == j.Position.y && j.Type == Type::WALL)
 			{
@@ -1369,7 +1369,7 @@ void Game::Sight_check(int index)
 	break;
 	case Direction::RIGHT:
 	{
-		for (auto& j : map.Map)
+		for (auto& j : map.map)
 		{
 			if (guard.Guards[index].Position.x + 1 == j.Position.x && guard.Guards[index].Position.y == j.Position.y && j.Type == Type::WALL)
 			{
@@ -1380,7 +1380,7 @@ void Game::Sight_check(int index)
 	break;
 	case Direction::LEFT:
 	{
-		for (auto& j : map.Map)
+		for (auto& j : map.map)
 		{
 			if (guard.Guards[index].Position.x - 1 == j.Position.x && guard.Guards[index].Position.y == j.Position.y && j.Type == Type::WALL)
 			{
@@ -1422,12 +1422,12 @@ void Game::Set_item(doodle::KeyboardButtons button)
 	{
 		if (minsoo.chew_item > 0)
 		{
-			for (int i{ 0 }; i < map.Map.size(); i++)
+			for (int i{ 0 }; i < map.map.size(); i++)
 			{
-				if (map.Map[i].Position == minsoo.Get_position())
+				if (map.map[i].Position == minsoo.Get_position())
 				{
 					sounds.Play_sound(static_cast<int>(SoundType::PUT_ITEM));
-					map.Map[i].Type = Type::DOG_CHEW;
+					map.map[i].Type = Type::DOG_CHEW;
 					minsoo.chew_item--;
 				}
 			}
@@ -1438,17 +1438,17 @@ void Game::Set_item(doodle::KeyboardButtons button)
 	{
 		if (minsoo.bomb_item > 0)
 		{
-			for (int i{ 0 }; i < map.Map.size(); i++)
+			for (int i{ 0 }; i < map.map.size(); i++)
 			{
-				if (map.Map[i].Position == minsoo.Get_position())
+				if (map.map[i].Position == minsoo.Get_position())
 				{
 					sounds.Play_sound(static_cast<int>(SoundType::PUT_ITEM));
-					if (map.Map[i].Position == Exit_pos)
+					if (map.map[i].Position == Exit_pos)
 					{
 						Is_exit = true;
 					}
 					minsoo.explode_count = 3;
-					map.Map[i].Type = Type::BOMB;
+					map.map[i].Type = Type::BOMB;
 					minsoo.bomb_item--;
 
 				}
@@ -1466,8 +1466,8 @@ void Game::Radar_obtain()
 	{
 		if (Current_state == State::TUTORIAL)
 		{
-			map.Map[826].Type = Type::EXIT;
-			Exit_pos = map.Map[826].Position;
+			map.map[826].Type = Type::EXIT;
+			Exit_pos = map.map[826].Position;
 			Is_radar_obtained = false;
 			Radar_start = true;
 			guard.Guards.push_back(guard_info{ math::ivec2(30, 19), Direction::LEFT ,"Ruby" }); //minsu start pos
@@ -1508,7 +1508,7 @@ void Game::Radar_obtain()
 						break;
 					}
 				}
-				for (auto& m : map.Map)
+				for (auto& m : map.map)
 				{
 					if (m.Position == pos && m.Type == Type::ROAD)
 					{
@@ -1876,7 +1876,7 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 	if (doodleButton == doodle::KeyboardButtons::Escape)
 	{
 		sounds.Stop_sound();
-		sounds.Music.pause();
+		sounds.music.pause();
 		Is_music_playing = false;
 		sounds.Play_sound(static_cast<int>(SoundType::SELECT_EFFECT));
 		Previous_state = Current_state;
@@ -1966,7 +1966,7 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 		Current_state = State::ENDING;
 		Generate_shooting_star();
 		sounds.Stop_sound();
-		sounds.Music.stop();
+		sounds.music.stop();
 		Is_music_playing = false;
 	}
 }
@@ -2028,7 +2028,7 @@ void Game::Draw_information()
 	{
 		if (Is_get_all_treasure() == true)
 		{
-			map.Map[265].Type = Type::NEXT;
+			map.map[265].Type = Type::NEXT;
 		}
 		else
 		{
@@ -2087,7 +2087,7 @@ void Game::Draw_information()
 				draw_text("Use " + to_string(minsoo.chew_item - 1) + " More Dog Chew!\nPress: 1", Width * 0.2, Height * 0.15);
 				break;
 			}
-			default: map.Map[590].Type = Type::NEXT; break;
+			default: map.map[590].Type = Type::NEXT; break;
 			}
 		}
 	}
