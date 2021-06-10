@@ -9,6 +9,7 @@ Author:
 
 #include"Game.h"
 #include"Pathfinding.h" //pathfinding logic
+
 using namespace doodle;
 
 void Game::Set_up()
@@ -756,8 +757,8 @@ void Game::Update_level()
 		if (is_minsoo_move == false)  //when minsoo moving finished
 		{
 			guard.Check_watching_wall(map);  // if guard's direction is toward the wall
-			Radar_obtain();
 			Tile_check();
+			Radar_obtain();
 		}
 		for (int i = 0; i < static_cast<int>(guard.guards.size()); i++)
 		{
@@ -1395,6 +1396,7 @@ void Game::Radar_obtain()	//What is this??????? Why int item num=1?
 						pos.x += random_num;
 						random_num = doodle::random(0, 10) - 5;
 						pos.y += random_num;
+
 						break;
 					}
 					case static_cast<int>(State::FLOOR_3) :
