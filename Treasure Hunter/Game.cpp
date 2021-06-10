@@ -756,8 +756,8 @@ void Game::Update_level()
 		if (is_minsoo_move == false)  //when minsoo moving finished
 		{
 			guard.Check_watching_wall(map);  // if guard's direction is toward the wall
-			Tile_check();
 			Radar_obtain();
+			Tile_check();
 		}
 		for (int i = 0; i < static_cast<int>(guard.guards.size()); i++)
 		{
@@ -785,41 +785,44 @@ void Game::Update_level()
 	Set_ingame_music();
 
 	guard.Guard_movement_update(exit_pos, map, minsoo.movement);
-	if (current_state != State::TUTORIAL && current_state != State::CLEAR && current_state != State::GAME_OVER)
+	if (current_state >= State::TUTORIAL && current_state <= State::FLOOR_3)
 	{
-		if (timer < 20 && timer > 0)
+		if( current_state != State::TUTORIAL)
 		{
-			if (sounds.Is_sound_playing(static_cast<int>(SoundType::TimerTic)) == false)
+			if (timer < 20 && timer > 0)
 			{
-				sounds.Play_sound(static_cast<int>(SoundType::TimerTic));
+				if (sounds.Is_sound_playing(static_cast<int>(SoundType::TimerTic)) == false)
+				{
+					sounds.Play_sound(static_cast<int>(SoundType::TimerTic));
+				}
+			}
+			else if (timer <= 0)
+			{
+				sounds.Stop_sound();
+				sounds.music.stop();
+				is_music_playing = false;
+				sounds.Play_sound(static_cast<int>(SoundType::TimesUp));
+				current_state = State::GAME_OVER;
 			}
 		}
-		else if (timer <= 0)
+		if (radar_start == true)
 		{
-			sounds.Stop_sound();
-			sounds.music.stop();
-			is_music_playing = false;
-			sounds.Play_sound(static_cast<int>(SoundType::TimesUp));
-			current_state = State::GAME_OVER;
-		}
-	}
-	if (radar_start == true)
-	{
-		if (Get_count() <= 4 && sounds.Is_sound_playing(static_cast<int>(SoundType::Radar)) == false)
-		{
-			sounds.Play_sound(static_cast<int>(SoundType::Radar));
-		}
-	}
-	for (auto i : guard.guards)
-	{
-		if (i.is_okay == false)
-		{
-			if (sounds.Is_sound_playing(static_cast<int>(SoundType::ChewingGum)) == false)
+			if (Get_count() <= 4 && sounds.Is_sound_playing(static_cast<int>(SoundType::Radar)) == false)
 			{
-				sounds.Play_sound(static_cast<int>(SoundType::ChewingGum));
+				sounds.Play_sound(static_cast<int>(SoundType::Radar));
 			}
 		}
+		for (auto i : guard.guards)
+		{
+			if (i.is_okay == false)
+			{
+				if (sounds.Is_sound_playing(static_cast<int>(SoundType::ChewingGum)) == false)
+				{
+					sounds.Play_sound(static_cast<int>(SoundType::ChewingGum));
+				}
+			}
 
+		}
 	}
 }
 
@@ -1372,22 +1375,26 @@ void Game::Radar_obtain()	//What is this??????? Why int item num=1?
 		{
 			int item_num = 1;
 			math::ivec2 pos(0, 0);
-			while (item_num > 0)
+			int random_num = 0;
+			
+			while (item_num > 0 )
 			{
 				switch (curr_level)
 				{
 					case static_cast<int>(State::FLOOR_1) :
 					case static_cast<int>(State::FLOOR_2) :
 					{
-						//for (auto& m : map.map)
-						//{
-						//	if (m.type == Type::RADAR)
-						//	{
-						//		pos = m.position;
-						//	}
-						//							
-						//}
-						pos = math::ivec2(2,2);
+						for (auto& m : map.map)
+						{
+							if (m.type == Type::RADAR)
+							{
+								pos = m.position;
+							}
+						}
+						random_num = doodle::random(0, 20) - 10;
+						pos.x += random_num;
+						random_num = doodle::random(0, 10) - 5;
+						pos.y += random_num;
 						break;
 					}
 					case static_cast<int>(State::FLOOR_3) :
@@ -1417,17 +1424,17 @@ void Game::Radar_obtain()	//What is this??????? Why int item num=1?
 						{
 							case static_cast<int>(State::FLOOR_1) :
 							{
-								guard.guards.push_back(guard_info{ math::vec2(30, 14), Direction::LEFT ,"Ruby" }); //ruby start pos
+								guard.guards.push_back(guard_info{ math::ivec2(30, 14), Direction::LEFT ,"Ruby" }); //ruby start pos
 								break;
 							}
 							case static_cast<int>(State::FLOOR_2) :
 							{
-								guard.guards.push_back(guard_info{ math::vec2(30, 12), Direction::LEFT ,"Ruby" }); //ruby start pos
+								guard.guards.push_back(guard_info{ math::ivec2(30, 12), Direction::LEFT ,"Ruby" }); //ruby start pos
 								break;
 							}
 							case static_cast<int>(State::FLOOR_3) :
 							{
-								guard.guards.push_back(guard_info{ math::vec2(39, 21), Direction::LEFT ,"Ruby" }); //ruby start pos
+								guard.guards.push_back(guard_info{ math::ivec2(39, 21), Direction::LEFT ,"Ruby" }); //ruby start pos
 								break;
 							}
 						}
