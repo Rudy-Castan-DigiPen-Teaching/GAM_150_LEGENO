@@ -756,8 +756,8 @@ void Game::Update_level()
 		if (is_minsoo_move == false)  //when minsoo moving finished
 		{
 			guard.Check_watching_wall(map);  // if guard's direction is toward the wall
-			Radar_obtain();
 			Tile_check();
+			Radar_obtain();
 		}
 		for (int i = 0; i < static_cast<int>(guard.guards.size()); i++)
 		{
@@ -1372,21 +1372,22 @@ void Game::Radar_obtain()	//What is this??????? Why int item num=1?
 		{
 			int item_num = 1;
 			math::ivec2 pos(0, 0);
-			for (auto& m : map.map)
-			{
-				if (m.type == Type::RADAR)
-				{
-					pos = m.position;
-				}
-			}
 			while (item_num > 0)
 			{
 				switch (curr_level)
 				{
 					case static_cast<int>(State::FLOOR_1) :
-						case static_cast<int>(State::FLOOR_2) :
+					case static_cast<int>(State::FLOOR_2) :
 					{
-						pos = math::ivec2(doodle::random(pos.x - 10, pos.x + 10), doodle::random(pos.y - 5, pos.y + 5));
+						//for (auto& m : map.map)
+						//{
+						//	if (m.type == Type::RADAR)
+						//	{
+						//		pos = m.position;
+						//	}
+						//							
+						//}
+						pos = math::ivec2(2,2);
 						break;
 					}
 					case static_cast<int>(State::FLOOR_3) :
@@ -1416,17 +1417,17 @@ void Game::Radar_obtain()	//What is this??????? Why int item num=1?
 						{
 							case static_cast<int>(State::FLOOR_1) :
 							{
-								guard.guards.push_back(guard_info{ math::ivec2(30, 14), Direction::LEFT ,"Ruby" }); //ruby start pos
+								guard.guards.push_back(guard_info{ math::vec2(30, 14), Direction::LEFT ,"Ruby" }); //ruby start pos
 								break;
 							}
 							case static_cast<int>(State::FLOOR_2) :
 							{
-								guard.guards.push_back(guard_info{ math::ivec2(30, 12), Direction::LEFT ,"Ruby" }); //ruby start pos
+								guard.guards.push_back(guard_info{ math::vec2(30, 12), Direction::LEFT ,"Ruby" }); //ruby start pos
 								break;
 							}
 							case static_cast<int>(State::FLOOR_3) :
 							{
-								guard.guards.push_back(guard_info{ math::ivec2(39, 21), Direction::LEFT ,"Ruby" }); //ruby start pos
+								guard.guards.push_back(guard_info{ math::vec2(39, 21), Direction::LEFT ,"Ruby" }); //ruby start pos
 								break;
 							}
 						}
