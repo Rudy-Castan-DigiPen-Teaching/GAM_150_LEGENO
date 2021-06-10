@@ -1384,7 +1384,13 @@ void Game::Radar_obtain()	//What is this??????? Why int item num=1?
 					case static_cast<int>(State::FLOOR_1) :
 					case static_cast<int>(State::FLOOR_2) :
 					{
-						pos = math::ivec2(static_cast<int>(minsoo.position.x), static_cast<int>(minsoo.position.y));
+						for (auto& m : map.map)
+						{
+							if (m.type == Type::RADAR)
+							{
+								pos = m.position;
+							}
+						}
 						random_num = doodle::random(0, 20) - 10;
 						pos.x += random_num;
 						random_num = doodle::random(0, 10) - 5;
