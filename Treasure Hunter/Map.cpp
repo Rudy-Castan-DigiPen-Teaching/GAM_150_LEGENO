@@ -19,28 +19,24 @@ void Map::Set_up(int level)
     readFile.open("assets/Map" + to_string(level - (static_cast<int>(State::FLOOR_1) - 1)) + ".txt");
     int width = 0;
     int height = 0;
-    treasure_num = 4;
+    Treasure_num = 4;
     if (readFile.is_open())
     {
         while (!readFile.eof())
         {
             char a;
             readFile >> a;
- /*           if (readFile.eof())
-            {
-                break;
-            }*/
             switch (a)
             {
             case '0': 
             {
-            		map.push_back(info{ math::ivec2{width,height},Type::ROAD });
-					 break;
+            	map.push_back(info{ math::ivec2{width,height},Type::ROAD });
+				break;
             }
             case '1':
             {
-            		map.push_back(info{ math::ivec2{width,height},Type::WALL });
-					 break;
+            	map.push_back(info{ math::ivec2{width,height},Type::WALL });
+			    break;
             }
             case '2': 
             {
@@ -54,31 +50,31 @@ void Map::Set_up(int level)
                     case  static_cast<int>(State::TUTORIAL) :
                     {
                         
-                        switch (treasure_num)
+                        switch (Treasure_num)
                         {
                             case 1:
                             {
-                                map.push_back(info{ math::ivec2{width,height},Type::TREASURE_crown });
-                                treasure_num = 2;
+                                map.push_back(info{ math::ivec2{width,height},Type::TREASURE_CROWN });
+                                Treasure_num = 2;
                                 break;
                             }
                             case 2:
                             {
-                                map.push_back(info{ math::ivec2{width,height},Type::TREASURE_key });
-                                treasure_num = 1;
+                                map.push_back(info{ math::ivec2{width,height},Type::TREASURE_KEY });
+                                Treasure_num = 1;
                                 break;
                             }
 
                             case 3:
                             {
-                                map.push_back(info{ math::ivec2{width,height},Type::TREASURE_coin });
-                                treasure_num = 2;
+                                map.push_back(info{ math::ivec2{width,height},Type::TREASURE_COIN });
+                                Treasure_num = 2;
                                 break;
                             }
                             case 4:
                             {
-                                map.push_back(info{ math::ivec2{width,height},Type::TREASURE_dia });
-                                treasure_num = 3;
+                                map.push_back(info{ math::ivec2{width,height},Type::TREASURE_DIA });
+                                Treasure_num = 3;
                                 break;
                             }                       	
                         }
@@ -86,18 +82,18 @@ void Map::Set_up(int level)
                     }
                     case static_cast<int>(State::FLOOR_1) :
                     {
-                        switch (treasure_num)
+                        switch (Treasure_num)
                         {
                         case 3:
                         {
-                            map.push_back(info{ math::ivec2{width,height},Type::TREASURE_crown });
-                            treasure_num = 2;
+                            map.push_back(info{ math::ivec2{width,height},Type::TREASURE_CROWN });
+                            Treasure_num = 2;
                             break;
                         }
                         case 4:
                         {
-                            map.push_back(info{ math::ivec2{width,height},Type::TREASURE_key });
-                            treasure_num = 3;
+                            map.push_back(info{ math::ivec2{width,height},Type::TREASURE_KEY });
+                            Treasure_num = 3;
                             break;
                         }
                         }
@@ -106,18 +102,18 @@ void Map::Set_up(int level)
 
                     case static_cast<int>(State::FLOOR_2) :
                     {
-                        switch (treasure_num)
+                        switch (Treasure_num)
                         {
                         case 3:
                         {
-                            map.push_back(info{ math::ivec2{width,height},Type::TREASURE_coin });
-                            treasure_num = 2;
+                            map.push_back(info{ math::ivec2{width,height},Type::TREASURE_COIN });
+                            Treasure_num = 2;
                             break;
                         }
                         case 4:
                         {
-                            map.push_back(info{ math::ivec2{width,height},Type::TREASURE_dia });
-                            treasure_num = 3;
+                            map.push_back(info{ math::ivec2{width,height},Type::TREASURE_DIA });
+                            Treasure_num = 3;
                             break;
                         }
                         }
@@ -129,11 +125,11 @@ void Map::Set_up(int level)
             }
             }
 
-            if (width < map_width - 1)
+            if (width < Map_width - 1)
             {
                 width++;
             }
-            else if (width == (map_width - 1))
+            else if (width == (Map_width - 1))
             {
                 width = 0;
                 height++;
@@ -146,9 +142,9 @@ void Map::Set_up(int level)
     for (auto& i : map)
     {
         int rand = doodle::random(0, 15);
-        i.random_num = rand;
+        i.Random_num = rand;
     }
-    bomb_target_time = 2;
+    Bomb_target_time = 2;
 }
 
 doodle::Image& Map::Set_wall(info& value)
@@ -157,61 +153,61 @@ doodle::Image& Map::Set_wall(info& value)
     int index = 0;
     for (int i = 0; i < map.size(); i++)
     {
-        if (map[i].position == value.position)
+        if (map[i].Position == value.Position)
         {
             index = i;
             break;
         }
     }
 
-    if (index < map_width)
+    if (index < Map_width)
     {
         return WallWall;
     }
-    else if (index + 1 % (map_width) == 0)
+    else if (index + 1 % (Map_width) == 0)
     {
         return WallWall;
     }
-    else if (index % (map_width) == 0)
+    else if (index % (Map_width) == 0)
     {
         return WallWall;
     }
-    else if (index > map.size() - (map_width + 1))                       
+    else if (index > map.size() - (Map_width + 1))                       
     {
         return WallWall;
     }
     else
     {
-        if (map[index - map_width - 1].type == Type::WALL)
+        if (map[index - Map_width - 1].Type == Type::WALL)
         {
             wall_count++;
         }
-        if (map[index - map_width].type == Type::WALL)
+        if (map[index - Map_width].Type == Type::WALL)
         {
             wall_count++;
         }
-        if (map[index - map_width + 1].type == Type::WALL)
+        if (map[index - Map_width + 1].Type == Type::WALL)
         {
             wall_count++;
         }
-        if (map[index - 1].type == Type::WALL)
+        if (map[index - 1].Type == Type::WALL)
         {
             wall_count++;
         }
         
-        if (map[index + 1].type == Type::WALL)
+        if (map[index + 1].Type == Type::WALL)
         {
             wall_count++;
         }
-        if (map[index + map_width - 1].type == Type::WALL)
+        if (map[index + Map_width - 1].Type == Type::WALL)
         {
             wall_count++;
         }
-        if (map[index + map_width].type == Type::WALL)
+        if (map[index + Map_width].Type == Type::WALL)
         {
             wall_count++;
         }
-        if (map[index + map_width + 1].type == Type::WALL)
+        if (map[index + Map_width + 1].Type == Type::WALL)
         {
             wall_count++;
         }
@@ -221,19 +217,19 @@ doodle::Image& Map::Set_wall(info& value)
         break;
     case 2:
     case 3:
-        if (map[index - map_width - 1].type == Type::WALL)
+        if (map[index - Map_width - 1].Type == Type::WALL)
         {
             return Wall_Edge_2;
         }
-        else if (map[index - map_width + 1].type == Type::WALL)
+        else if (map[index - Map_width + 1].Type == Type::WALL)
         {
             return Wall_Edge_3;
         }
-        else if (map[index + map_width - 1].type == Type::WALL)
+        else if (map[index + Map_width - 1].Type == Type::WALL)
         {
             return Wall_Edge_1;
         }
-        else if ( map[index + map_width + 1].type == Type::WALL)
+        else if (map[index + Map_width + 1].Type == Type::WALL)
         {
             return Wall_Edge_4;
         }
@@ -242,38 +238,38 @@ doodle::Image& Map::Set_wall(info& value)
     case 4:
     case 5:
     case 6:
-        if (map[index - map_width].type != Type::WALL)
+        if (map[index - Map_width].Type != Type::WALL)
         {
             return Wall_Side_Up;
         }
-        else if ( map[index - 1].type != Type::WALL)
+        else if (map[index - 1].Type != Type::WALL)
         {
             return Wall_Side_Left;
         }
-        else if ( map[index + 1].type != Type::WALL)
+        else if (map[index + 1].Type != Type::WALL)
         {
             return Wall_Side_Right;
         }
-        else if ( map[index + map_width].type != Type::WALL)
+        else if (map[index + Map_width].Type != Type::WALL)
         {
             return Wall_Side_Down;
         }
         else
             break;
     case 7:
-        if (map[index - map_width - 1].type != Type::WALL)
+        if (map[index - Map_width - 1].Type != Type::WALL)
         {
             return Wall_Corner_4;
         }
-        else if ( map[index - map_width + 1].type != Type::WALL)
+        else if (map[index - Map_width + 1].Type != Type::WALL)
         {
             return Wall_Corner_1;
         }
-        else if ( map[index + map_width - 1].type != Type::WALL)
+        else if (map[index + Map_width - 1].Type != Type::WALL)
         {
             return Wall_Corner_3;
         }
-        else if ( map[index + map_width + 1].type != Type::WALL)
+        else if (map[index + Map_width + 1].Type != Type::WALL)
         {
             return Wall_Corner_2;
         }
@@ -293,21 +289,21 @@ void Map::Draw(Camera& camera)
 
     for (auto& i : map)
     {
-        switch (i.type)
+        switch (i.Type)
         {
         case Type::WALL: 
         {
             push_settings();
-            draw_image(Set_wall(i), (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
+            draw_image(Set_wall(i), (i.Position.x + camera.Get_position().x) * Block_size - 25, (i.Position.y + camera.Get_position().y) * Block_size - 25, Block_size * 2.5, Block_size * 2.5);
             pop_settings();
             break;
         }
         case Type::ROAD:
         {
             push_settings();
-            switch (i.random_num)
+            switch (i.Random_num)
             {
-            case 0: {draw_image(Road1, (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
+            case 0: {draw_image(Road1, (i.Position.x + camera.Get_position().x) * Block_size - 25, (i.Position.y + camera.Get_position().y) * Block_size - 25, Block_size * 2.5, Block_size * 2.5);
                 break; }
             case 1:
             case 2:
@@ -322,13 +318,13 @@ void Map::Draw(Camera& camera)
             case 11:
             case 12:
             {
-                draw_image(Road2, (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
+                draw_image(Road2, (i.Position.x + camera.Get_position().x) * Block_size - 25, (i.Position.y + camera.Get_position().y) * Block_size - 25, Block_size * 2.5, Block_size * 2.5);
                 break;
             }
             case 13:
             case 14:
             {
-                draw_image(Road3, (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
+                draw_image(Road3, (i.Position.x + camera.Get_position().x) * Block_size - 25, (i.Position.y + camera.Get_position().y) * Block_size - 25, Block_size * 2.5, Block_size * 2.5);
                 break;
             }
             }
@@ -338,99 +334,99 @@ void Map::Draw(Camera& camera)
         case Type::RADAR:
         {
             push_settings();
-            draw_image(Road1, (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
-            draw_image(Radar, (i.position.x + camera.Get_position().x) * block_size, (i.position.y + camera.Get_position().y) * block_size, block_size, block_size);
+            draw_image(Road1, (i.Position.x + camera.Get_position().x) * Block_size - 25, (i.Position.y + camera.Get_position().y) * Block_size - 25, Block_size * 2.5, Block_size * 2.5);
+            draw_image(Radar, (i.Position.x + camera.Get_position().x) * Block_size, (i.Position.y + camera.Get_position().y) * Block_size, Block_size, Block_size);
             pop_settings();
             break;
         }
         case Type::NEXT:
         {
             push_settings();
-            draw_image(Road1, (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
-            draw_image(Next, (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
+            draw_image(Road1, (i.Position.x + camera.Get_position().x) * Block_size - 25, (i.Position.y + camera.Get_position().y) * Block_size - 25, Block_size * 2.5, Block_size * 2.5);
+            draw_image(Next, (i.Position.x + camera.Get_position().x) * Block_size - 25, (i.Position.y + camera.Get_position().y) * Block_size - 25, Block_size * 2.5, Block_size * 2.5);
             pop_settings();
             break;
         }
-        case Type::TREASURE_crown:
+        case Type::TREASURE_CROWN:
         {
             push_settings();
-            draw_image(Road2, (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
-            draw_image(Treasure_1, (i.position.x + camera.Get_position().x) * block_size, (i.position.y + camera.Get_position().y) * block_size, block_size, block_size);
+            draw_image(Road2, (i.Position.x + camera.Get_position().x) * Block_size - 25, (i.Position.y + camera.Get_position().y) * Block_size - 25, Block_size * 2.5, Block_size * 2.5);
+            draw_image(Treasure_1, (i.Position.x + camera.Get_position().x) * Block_size, (i.Position.y + camera.Get_position().y) * Block_size, Block_size, Block_size);
             pop_settings();
             break;
         }
-        case Type::TREASURE_key:
+        case Type::TREASURE_KEY:
         {
             push_settings();
-            draw_image(Road2, (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
-            draw_image(Treasure_2, (i.position.x + camera.Get_position().x) * block_size, (i.position.y + camera.Get_position().y) * block_size, block_size, block_size);
+            draw_image(Road2, (i.Position.x + camera.Get_position().x) * Block_size - 25, (i.Position.y + camera.Get_position().y) * Block_size - 25, Block_size * 2.5, Block_size * 2.5);
+            draw_image(Treasure_2, (i.Position.x + camera.Get_position().x) * Block_size, (i.Position.y + camera.Get_position().y) * Block_size, Block_size, Block_size);
             pop_settings();
             break;
         }
-        case Type::TREASURE_coin:
+        case Type::TREASURE_COIN:
         {
             push_settings();
-            draw_image(Road2, (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
-            draw_image(Treasure_3, (i.position.x + camera.Get_position().x) * block_size, (i.position.y + camera.Get_position().y) * block_size, block_size, block_size);
+            draw_image(Road2, (i.Position.x + camera.Get_position().x) * Block_size - 25, (i.Position.y + camera.Get_position().y) * Block_size - 25, Block_size * 2.5, Block_size * 2.5);
+            draw_image(Treasure_3, (i.Position.x + camera.Get_position().x) * Block_size, (i.Position.y + camera.Get_position().y) * Block_size, Block_size, Block_size);
             pop_settings();
             break;
         }
-        case Type::TREASURE_dia:
+        case Type::TREASURE_DIA:
         {
             push_settings();
-            draw_image(Road2, (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
-            draw_image(Treasure_4, (i.position.x + camera.Get_position().x) * block_size, (i.position.y + camera.Get_position().y) * block_size, block_size, block_size);
+            draw_image(Road2, (i.Position.x + camera.Get_position().x) * Block_size - 25, (i.Position.y + camera.Get_position().y) * Block_size - 25, Block_size * 2.5, Block_size * 2.5);
+            draw_image(Treasure_4, (i.Position.x + camera.Get_position().x) * Block_size, (i.Position.y + camera.Get_position().y) * Block_size, Block_size, Block_size);
             pop_settings();
             break;
         }
         case Type::EXIT:
         {
             push_settings();
-            draw_image(Breakable_wall, (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
+            draw_image(Breakable_wall, (i.Position.x + camera.Get_position().x) * Block_size - 25, (i.Position.y + camera.Get_position().y) * Block_size - 25, Block_size * 2.5, Block_size * 2.5);
             pop_settings();
             break;
         }
         case Type::DOG_CHEW:
         {
             push_settings();
-            draw_image(Road2, (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
-            draw_image(Dog_chew, (i.position.x + camera.Get_position().x) * block_size, (i.position.y + camera.Get_position().y) * block_size, block_size, block_size);
+            draw_image(Road2, (i.Position.x + camera.Get_position().x) * Block_size - 25, (i.Position.y + camera.Get_position().y) * Block_size - 25, Block_size * 2.5, Block_size * 2.5);
+            draw_image(Dog_chew, (i.Position.x + camera.Get_position().x) * Block_size, (i.Position.y + camera.Get_position().y) * Block_size, Block_size, Block_size);
             pop_settings();
             break;
         }
         case Type::BOMB:
         {
             push_settings();
-            draw_image(Road2, (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
-            draw_image(Bomb, (i.position.x + camera.Get_position().x) * block_size, (i.position.y + camera.Get_position().y) * block_size, block_size, block_size);
+            draw_image(Road2, (i.Position.x + camera.Get_position().x) * Block_size - 25, (i.Position.y + camera.Get_position().y) * Block_size - 25, Block_size * 2.5, Block_size * 2.5);
+            draw_image(Bomb, (i.Position.x + camera.Get_position().x) * Block_size, (i.Position.y + camera.Get_position().y) * Block_size, Block_size, Block_size);
             pop_settings();
             break;
         }
         case Type::CAN_ESCAPE:
         {
             push_settings();
-            bomb_target_time -= doodle::DeltaTime;
-            draw_image(Explode.image, (i.position.x + camera.Get_position().x) * block_size, (i.position.y + camera.Get_position().y) * block_size, block_size, block_size, Explode.GetDrawPos().x, 0);
+            Bomb_target_time -= doodle::DeltaTime;
+            draw_image(Explode.image, (i.Position.x + camera.Get_position().x) * Block_size, (i.Position.y + camera.Get_position().y) * Block_size, Block_size, Block_size, Explode.GetDrawPos().x, 0);
             Explode.Update();
-            if (bomb_target_time < 0)
+            if (Bomb_target_time < 0)
             {
                 Explode.currAnim = 0;
-                draw_image(Escape, (i.position.x + camera.Get_position().x) * block_size - 25, (i.position.y + camera.Get_position().y) * block_size - 25, block_size * 2.5, block_size * 2.5);
+                draw_image(Escape, (i.Position.x + camera.Get_position().x) * Block_size - 25, (i.Position.y + camera.Get_position().y) * Block_size - 25, Block_size * 2.5, Block_size * 2.5);
             }
             pop_settings();
             break;
         }
 
-        case Type::Lader:
+        case Type::LADDER:
         {
-            bomb_target_time -= doodle::DeltaTime;
-            draw_image(Explode.image, (i.position.x + camera.Get_position().x)* block_size, (i.position.y + camera.Get_position().y)* block_size, block_size, block_size, Explode.GetDrawPos().x, 0);
+            Bomb_target_time -= doodle::DeltaTime;
+            draw_image(Explode.image, (i.Position.x + camera.Get_position().x)* Block_size, (i.Position.y + camera.Get_position().y)* Block_size, Block_size, Block_size, Explode.GetDrawPos().x, 0);
             Explode.Update();
-            if (bomb_target_time < 0)
+            if (Bomb_target_time < 0)
             {
                 Explode.currAnim = 0;
-                draw_image(Road2, (i.position.x + camera.Get_position().x)* block_size - 25, (i.position.y + camera.Get_position().y)* block_size - 25, block_size * 2.5, block_size * 2.5);              
-                draw_image(Lader, (i.position.x + camera.Get_position().x) * block_size, (i.position.y + camera.Get_position().y) * block_size, block_size, block_size);              
+                draw_image(Road2, (i.Position.x + camera.Get_position().x)* Block_size - 25, (i.Position.y + camera.Get_position().y)* Block_size - 25, Block_size * 2.5, Block_size * 2.5);              
+                draw_image(Ladder, (i.Position.x + camera.Get_position().x) * Block_size, (i.Position.y + camera.Get_position().y) * Block_size, Block_size, Block_size);              
              }
         		
             break;
@@ -439,14 +435,14 @@ void Map::Draw(Camera& camera)
         case Type::BOMB_TO_ROAD:
         {
             push_settings();
-            bomb_target_time -= doodle::DeltaTime;
-            draw_image(Explode.image, (i.position.x + camera.Get_position().x) * block_size, (i.position.y + camera.Get_position().y) * block_size, block_size, block_size, Explode.GetDrawPos().x, 0);
+            Bomb_target_time -= doodle::DeltaTime;
+            draw_image(Explode.image, (i.Position.x + camera.Get_position().x) * Block_size, (i.Position.y + camera.Get_position().y) * Block_size, Block_size, Block_size, Explode.GetDrawPos().x, 0);
             Explode.Update();
-            if (bomb_target_time < 0)
+            if (Bomb_target_time < 0)
             {
                 Explode.currAnim = 0;
-                i.type = Type::ROAD;
-                bomb_target_time = 2;
+                i.Type = Type::ROAD;
+                Bomb_target_time = 2;
             }
             pop_settings();
             break;

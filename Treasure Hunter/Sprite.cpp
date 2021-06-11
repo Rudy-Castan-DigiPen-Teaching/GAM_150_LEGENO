@@ -8,7 +8,6 @@ Sprite::Sprite(const std::filesystem::path& spriteInfoFile, int howmanyimage,dou
 
 void Sprite::Update()
 {
-	
 	animtimer += doodle::DeltaTime;
 	if (animtimer > target_time)
 	{
