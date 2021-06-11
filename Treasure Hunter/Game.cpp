@@ -1182,19 +1182,23 @@ bool Game::Check(doodle::KeyboardButtons doodleButton) // get keyboard key and c
 	math::vec2 position = minsoo.Get_position();
 	switch (doodleButton)
 	{
+	case doodle::KeyboardButtons::S:
 	case doodle::KeyboardButtons::Down:
 		position.y += 1;
 		break;
+	case doodle::KeyboardButtons::A:
 	case doodle::KeyboardButtons::Left:
 	{
 		position.x -= 1;
 		break;
 	}
+	case doodle::KeyboardButtons::D:
 	case doodle::KeyboardButtons::Right:
 	{
 		position.x += 1;
 		break;
 	}
+	case doodle::KeyboardButtons::W:
 	case doodle::KeyboardButtons::Up:
 	{
 		position.y -= 1;
@@ -1841,7 +1845,8 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 #else
 #endif // DEBUG
 
-	if (doodleButton == doodle::KeyboardButtons::Left || doodleButton == doodle::KeyboardButtons::Down || doodleButton == doodle::KeyboardButtons::Up || doodleButton == doodle::KeyboardButtons::Right)
+	if (doodleButton == doodle::KeyboardButtons::Left || doodleButton == doodle::KeyboardButtons::Down || doodleButton == doodle::KeyboardButtons::Up || doodleButton == doodle::KeyboardButtons::Right ||
+		doodleButton == doodle::KeyboardButtons::A || doodleButton == doodle::KeyboardButtons::S || doodleButton == doodle::KeyboardButtons::W || doodleButton == doodle::KeyboardButtons::D)
 	{
 		if (Check(doodleButton) == false && camera_move != true)
 		{

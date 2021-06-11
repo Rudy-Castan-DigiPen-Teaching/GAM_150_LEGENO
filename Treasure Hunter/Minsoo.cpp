@@ -44,12 +44,14 @@ void Minsoo::Set_position(doodle::KeyboardButtons button)
 
 	switch (button)
 	{
+	case doodle::KeyboardButtons::S:
 	case doodle::KeyboardButtons::Down:
 	{
 		target_pos.y += 1;
 		direction = Direction::DOWN;
 	}
 		break;
+	case doodle::KeyboardButtons::A:
 	case doodle::KeyboardButtons::Left:
 		{
 		target_pos.x -= 1;
@@ -57,12 +59,14 @@ void Minsoo::Set_position(doodle::KeyboardButtons button)
 
 		}
 		break;
+	case doodle::KeyboardButtons::D:
 	case doodle::KeyboardButtons::Right:
 		{
 		target_pos.x += 1;			
 		direction = Direction::RIGHT;
 		}
 		break;
+	case doodle::KeyboardButtons::W:
 	case doodle::KeyboardButtons::Up:
 		{
 		target_pos.y -= 1;
