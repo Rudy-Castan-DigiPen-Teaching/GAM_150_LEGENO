@@ -922,6 +922,9 @@ void Game::Tile_check()
 
 		if (map.map[i].Position == minsoo.Get_position() && map.map[i].Type == Type::LADDER)
 		{
+			sounds.Stop_sound();
+			sounds.music.stop();
+			Is_music_playing = false;
 			Current_state = State::ENDING;
 			Ending_credit_ypos = Height;
 			Generate_shooting_star();
@@ -1056,28 +1059,28 @@ void Game::Set_ingame_music()
 {
 	if (minsoo.is_dead == false)
 	{
-		if (guard.Is_trace_sommeone() == true && Is_music_playing == false)
+		if (Current_state >= State::TUTORIAL && Current_state <= State::FLOOR_3)
 		{
-			Is_music_playing = true;
-			Is_chased_state = true;
-			sounds.Set_music("assets/Siren.ogg", true);
-			sounds.music.play();
-		}
-		if (guard.Is_trace_sommeone() == false && Is_chased_state == true)
-		{
-			Is_music_playing = false;
-			Is_chased_state = false;
-		}
+			if (guard.Is_trace_sommeone() == true && Is_music_playing == false)
+			{
+				Is_music_playing = true;
+				Is_chased_state = true;
+				sounds.Set_music("assets/Siren.ogg", true);
+				sounds.music.play();
+			}
+			if (guard.Is_trace_sommeone() == false && Is_chased_state == true)
+			{
+				Is_music_playing = false;
+				Is_chased_state = false;
+			}
 
-		if (guard.Is_trace_sommeone() == true && Is_chased_state == false)
-		{
-			Is_music_playing = false;
-			Is_chased_state = true;
-		}
+			if (guard.Is_trace_sommeone() == true && Is_chased_state == false)
+			{
+				Is_music_playing = false;
+				Is_chased_state = true;
+			}
 
-		if (guard.Is_trace_sommeone() == false && Is_music_playing == false)
-		{
-			if (Current_state >= State::TUTORIAL && Current_state <= State::FLOOR_3)
+			if (guard.Is_trace_sommeone() == false && Is_music_playing == false)
 			{
 				Is_music_playing = true;
 				sounds.Set_music("assets/BasicBGM.ogg", true);
