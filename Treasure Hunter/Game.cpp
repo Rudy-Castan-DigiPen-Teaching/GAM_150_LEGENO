@@ -1,7 +1,5 @@
 ﻿/*--------------------------------------------------------------
-Copyright (C) 2021 DigiPen Institute of Technology.
-Reproduction or disclosure of this file or its contents without the prior
-written consent of DigiPen Institute of Technology is prohibited.
+All content © 2021 DigiPen (USA) Corporation, all rights reserved.
 File Name: Game.cpp
 Project: GAM150
 Author:
@@ -20,7 +18,7 @@ void Game::Set_up()
 
 void Game::Draw()
 {
-	
+
 	switch (Current_state)
 	{
 	case State::SPLASH:
@@ -112,21 +110,21 @@ void Game::Draw()
 		doodle::draw_image(Treasure_box, 0, 0, Width, Height);
 
 
-		if(Get_treasure[0] == true && Level_clear[1] == true)
+		if (Save_treasure[0] == true)
 		{
 			doodle::draw_image(Level_select_Treasure_1, 0, 0, Width, Height);
 		}
 
-		if (Get_treasure[1] == true && Level_clear[1] == true)
+		if (Save_treasure[1] == true)
 		{
 			doodle::draw_image(Level_select_Treasure_2, 0, 0, Width, Height);
 		}
-		if (Get_treasure[2] == true && Level_clear[2] == true)
+		if (Save_treasure[2] == true)
 		{
 			doodle::draw_image(Level_select_Treasure_3, 0, 0, Width, Height);
 		}
-		if (Get_treasure[3] == true && Level_clear[2] == true)
-		{
+		if (Save_treasure[3] == true) {
+
 			doodle::draw_image(Level_select_Treasure_4, 0, 0, Width, Height);
 		}
 
@@ -207,33 +205,33 @@ void Game::Draw()
 		Ending_timer -= DeltaTime;
 		push_settings();
 		clear_background();
-		
-		doodle::draw_image(Minsoo_UPUP.image, Width/4.0,Height/4.0 , Minsoo_UPUP.frameSize.x, Minsoo_UPUP.frameSize.y, Minsoo_UPUP.GetDrawPos().x, 0);
+
+		doodle::draw_image(Minsoo_UPUP.image, Width / 4.0, Height / 4.0, Minsoo_UPUP.frameSize.x, Minsoo_UPUP.frameSize.y, Minsoo_UPUP.GetDrawPos().x, 0);
 		pop_settings();
 
-		if(MouseIsPressed)
+		if (MouseIsPressed)
 		{
 			Draw_hojin = true;
-			Hojin_pos = { 0,-Hojin.GetHeight()*1.0 };
+			Hojin_pos = { 0,-Hojin.GetHeight() * 1.0 };
 		}
-		
+
 		if (Ending_timer < 0)
 		{
-			Ending_credit_ypos -= DeltaTime*100;
-			doodle::draw_image(Ending_scene.image, 0, 0, Width, Height, Ending_scene.GetDrawPos().x, 0,Ending_scene.frameSize.x, Ending_scene.frameSize.y);
+			Ending_credit_ypos -= DeltaTime * 100;
+			doodle::draw_image(Ending_scene.image, 0, 0, Width, Height, Ending_scene.GetDrawPos().x, 0, Ending_scene.frameSize.x, Ending_scene.frameSize.y);
 
-			doodle::draw_image(Ending_credit, Width / 2, Ending_credit_ypos, Width / 2, Height*2.0);
-		
+			doodle::draw_image(Ending_credit, Width / 2, Ending_credit_ypos, Width / 2, Height * 2.0);
+
 			Update_shooting_star();
 			Draw_star();
 		}
-	}		
+	}
 
-		break;
-			
-	
+	break;
 
-		
+
+
+
 	case State::GAME_OVER:
 	{
 		push_settings();
@@ -412,7 +410,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			}
 		}
 		break;
-	case State::ENDING:	
+	case State::ENDING:
 	{
 		if (Ending_timer < 0)
 		{
@@ -470,7 +468,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 				sounds.Play_sound(static_cast<int>(SoundType::SELECT_EFFECT));
 				Reset();
 				Current_state = State::TUTORIAL;
-				minsoo.position = {3,2};
+				minsoo.position = { 3,2 };
 				break;
 			}
 			case (static_cast<int>(State::FLOOR_1)):
@@ -508,13 +506,21 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			{
 				if (Unlock_level >= static_cast<int>(State::FLOOR_3))
 				{
-					if (Is_get_all_treasure() == true)
+					bool Save_all_treasure = true;
+					for (int i = 0; i < 4; i++)
+					{
+						if (Save_treasure[i] == false)
+						{
+							Save_all_treasure = false;
+						}
+					}
+					if (Save_all_treasure == true)
 					{
 						sounds.Play_sound(static_cast<int>(SoundType::SELECT_EFFECT));
 						Reset();
 						Current_state = State::FLOOR_3;
 
-				}
+					}
 					else
 					{
 						sounds.Play_sound(static_cast<int>(SoundType::SELECT_LIMIT_EFFECT));
@@ -556,7 +562,7 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 
 			switch (Current_menu)
 			{
-				case static_cast<int>(PauseOption::SOUND):
+				case static_cast<int>(PauseOption::SOUND) :
 				{
 					sounds.music.play();
 					Is_music_playing = true;
@@ -757,6 +763,28 @@ void Game::Update()
 	}
 	case State::CLEAR:
 	{
+		//if(Level_clear[0] == true)
+		//{
+		//	if(Get_treasure[0] == true)
+		//	{
+		//		Save_treasure[0] = true;
+		//	}
+		//	if (Get_treasure[1] == true)
+		//	{
+		//		Save_treasure[1] = true;
+		//	}
+		//}
+		//if (Level_clear[1] == true)
+		//{
+		//	if (Get_treasure[2] == true)
+		//	{
+		//		Save_treasure[2] = true;
+		//	}
+		//	if (Get_treasure[3] == true)
+		//	{
+		//		Save_treasure[3] = true;
+		//	}
+		//}
 		break;
 	}
 	case State::GAME_OVER:
@@ -782,7 +810,7 @@ void Game::Update()
 			Ending_scene.Update();
 		}
 		else
-		{	
+		{
 			if (sounds.Is_sound_playing(static_cast<int>(SoundType::LADDER)) == false)
 			{
 				sounds.Play_sound(static_cast<int>(SoundType::LADDER));
@@ -821,7 +849,7 @@ void Game::Update_level()
 				curr_position = math::ivec2{ static_cast<int>(guard.Guards[i].Position.x) ,static_cast<int>(guard.Guards[i].Position.y) } - curr_position;  // 페스파인딩으로 다음 갈 곳에 대한 시야 변경
 				set_direction(curr_position, i);
 			}
-		}                                            
+		}
 		guard.Set_sight();
 	}
 	if (Camera_move == true)
@@ -836,7 +864,7 @@ void Game::Update_level()
 	guard.Guard_movement_update(Exit_pos, map, minsoo.movement);
 	if (Current_state >= State::TUTORIAL && Current_state <= State::FLOOR_3)
 	{
-		if( Current_state != State::TUTORIAL)
+		if (Current_state != State::TUTORIAL)
 		{
 			if (Timer < 20 && Timer > 0)
 			{
@@ -913,7 +941,25 @@ void Game::Tile_check()
 		{
 			sounds.Stop_sound();
 			sounds.music.stop();
-			Level_clear[static_cast<int>(Current_state) - static_cast<int>(State::TUTORIAL)] = true;
+
+			if (Get_treasure[0] == true)
+			{
+				Save_treasure[0] = true;
+			}
+			if (Get_treasure[1] == true)
+			{
+				Save_treasure[1] = true;
+			}
+
+			if (Get_treasure[2] == true)
+			{
+				Save_treasure[2] = true;
+			}
+			if (Get_treasure[3] == true)
+			{
+				Save_treasure[3] = true;
+			}
+
 			Reset();
 			Is_music_playing = false;
 			sounds.Play_sound(static_cast<int>(SoundType::WIN));
@@ -990,9 +1036,9 @@ void Game::Draw_treasure()
 {
 	for (int i = 0; i < 4; i++)
 	{
-		if (Get_treasure[i] == true)
+		if (Current_state != State::CLEAR)
 		{
-			if (Current_state != State::CLEAR)
+			if (Get_treasure[i] == true)
 			{
 				switch (i)
 				{
@@ -1021,7 +1067,10 @@ void Game::Draw_treasure()
 				}
 				}
 			}
+		}
 			else
+			{
+			if (Save_treasure[i] == true)
 			{
 				switch (i)
 				{
@@ -1092,39 +1141,39 @@ void Game::Set_ingame_music()
 
 void Game::Generate_shooting_star()
 {
-	Star_pos.x = doodle::random(0,Width);
-	Star_pos.y = -(Star.GetHeight()+1000);
+	Star_pos.x = doodle::random(0, Width);
+	Star_pos.y = -(Star.GetHeight() + 1000);
 }
 
 void Game::Update_shooting_star()
 {
-		Star_anim.Update();
+	Star_anim.Update();
 
-		Star_pos.y += doodle::DeltaTime * 1500;
-		if(Draw_hojin == true)
+	Star_pos.y += doodle::DeltaTime * 1500;
+	if (Draw_hojin == true)
+	{
+		Hojin_pos += doodle::DeltaTime * 1500;
+		if (Hojin_pos.x > Width || Hojin_pos.y > Height)
 		{
-			Hojin_pos += doodle::DeltaTime * 1500;
-			if (Hojin_pos.x > Width || Hojin_pos.y > Height)
-			{
-				if (Draw_hojin == true)
-				{
-					Draw_hojin = false;
-				}
-			}
-		}
-		if (Star_pos.y > -Star.GetHeight())
-		{
-			Star_pos.x += doodle::DeltaTime * 1500;
-		}
-		if(Star_pos.x > Width || Star_pos.y > Height)
-		{
-			Star_pos.x = doodle::random(0, Width);
-			Star_pos.y = -(Star.GetHeight() + 4000);
-			if(Draw_hojin == true)
+			if (Draw_hojin == true)
 			{
 				Draw_hojin = false;
 			}
 		}
+	}
+	if (Star_pos.y > -Star.GetHeight())
+	{
+		Star_pos.x += doodle::DeltaTime * 1500;
+	}
+	if (Star_pos.x > Width || Star_pos.y > Height)
+	{
+		Star_pos.x = doodle::random(0, Width);
+		Star_pos.y = -(Star.GetHeight() + 4000);
+		if (Draw_hojin == true)
+		{
+			Draw_hojin = false;
+		}
+	}
 }
 
 
@@ -1208,18 +1257,27 @@ void Game::Reset()
 	guard.Set_up(Curr_level);
 	Ending_timer = Minsoo_UPUP.target_time * 6;
 	Ending_credit_ypos = doodle::Height;
-	if (Level_clear[1] == false)
+
+
+	if (Save_treasure[0] == false)
 	{
 		Get_treasure[0] = false;
+	}
+	if (Save_treasure[1] == false)
+	{
 		Get_treasure[1] = false;
 	}
-	
-	
-	if (Level_clear[2] == false)
+
+
+	if (Save_treasure[2] == false)
 	{
 		Get_treasure[2] = false;
+	}
+	if (Save_treasure[3] == false)
+	{
 		Get_treasure[3] = false;
 	}
+
 
 
 	minsoo.direction = Direction::DOWN;
@@ -1270,10 +1328,7 @@ bool Game::Check(doodle::KeyboardButtons doodleButton) // get keyboard key and c
 			return true;
 		}
 	}
-	if (Cheat_Z == true)
-	{
-		return false;
-	}
+
 
 	return false;
 }
@@ -1434,13 +1489,13 @@ void Game::Radar_obtain()
 			int item_num = 1;
 			math::ivec2 pos(0, 0);
 			int random_num = 0;
-			
-			while (item_num > 0 )
+
+			while (item_num > 0)
 			{
 				switch (Curr_level)
 				{
 					case static_cast<int>(State::FLOOR_1) :
-					case static_cast<int>(State::FLOOR_2) :
+						case static_cast<int>(State::FLOOR_2) :
 					{
 						pos = math::ivec2(static_cast<int>(minsoo.position.x), static_cast<int>(minsoo.position.y));
 						random_num = doodle::random(0, 20) - 10;
@@ -1841,13 +1896,6 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 		Is_paused = true;
 	}
 
-#ifdef DEBUG
-	if (doodleButton == doodle::KeyboardButtons::Z)
-	{
-		cheat_Z = !cheat_Z;
-	}
-#else
-#endif // DEBUG
 
 	if (doodleButton == doodle::KeyboardButtons::Left || doodleButton == doodle::KeyboardButtons::Down || doodleButton == doodle::KeyboardButtons::Up || doodleButton == doodle::KeyboardButtons::Right ||
 		doodleButton == doodle::KeyboardButtons::A || doodleButton == doodle::KeyboardButtons::S || doodleButton == doodle::KeyboardButtons::W || doodleButton == doodle::KeyboardButtons::D)
@@ -1905,19 +1953,23 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 	if (doodleButton == doodle::KeyboardButtons::K)
 	{
 		sounds.Stop_sound();
-		sounds.Music.stop();
+		sounds.music.stop();
 		Is_music_playing = false;
 		sounds.Play_sound(static_cast<int>(SoundType::WIN));
-		Current_state = State::CLEAR;
-		Level_clear[0] = true;
-		Level_clear[1] = true;
+		if (Current_state == State::FLOOR_1)
+		{
+			Save_treasure[0] = true;
+			Save_treasure[1] = true;
+		}
+		if (Current_state == State::FLOOR_2)
+		{
+			Save_treasure[2] = true;
+			Save_treasure[3] = true;
+		}
 
-		Get_treasure[0] = true;
-		Get_treasure[1] = true;
-		Get_treasure[2] = true;
-		Get_treasure[3] = true;
+		Current_state = State::CLEAR;
+
 	}
-#endif
 	if (doodleButton == doodle::KeyboardButtons::L)
 	{
 		Current_state = State::ENDING;
@@ -1926,6 +1978,7 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 		sounds.music.stop();
 		Is_music_playing = false;
 	}
+#endif
 }
 
 

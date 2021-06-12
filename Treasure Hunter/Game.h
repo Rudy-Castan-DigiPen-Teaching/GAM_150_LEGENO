@@ -1,7 +1,5 @@
-/*--------------------------------------------------------------
-Copyright (C) 2021 DigiPen Institute of Technology.
-Reproduction or disclosure of this file or its contents without the prior
-written consent of DigiPen Institute of Technology is prohibited.
+﻿/*--------------------------------------------------------------
+All content © 2021 DigiPen (USA) Corporation, all rights reserved.
 File Name: Game.h
 Project: GAM150
 Author:
@@ -50,7 +48,6 @@ class Game
 	int Unlock_level{ static_cast<int>(State::FLOOR_1) };
 
 	bool Camera_move{ false };
-	bool Cheat_Z{ false };
 	float Current_volume{ 50 };
 
 	bool Is_minsoo_move = false;
@@ -62,6 +59,7 @@ class Game
 	bool Is_played_bite = false;
 
 	bool Get_treasure[4] = { false, };
+	bool Save_treasure[4] = { false, };
 
 	bool Draw_hojin = false;
 	doodle::Image Digipen_logo{ "assets/DigiPen_BLACK_1024px.png" };
@@ -173,7 +171,7 @@ public:
 	double Ending_timer = Minsoo_UPUP.target_time * 6;
 	double Ending_credit_ypos;
 	bool Start_camera_count{ false };
-	bool Level_clear[3] = { false, };
+	
 
 	math::vec2 Star_pos;
 	math::vec2 Hojin_pos;
