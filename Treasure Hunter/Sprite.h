@@ -1,3 +1,11 @@
+/*--------------------------------------------------------------
+Copyright (C) 2021 DigiPen Institute of Technology.
+Reproduction or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+File Name: Sprite.h
+Project: GAM150
+Author:
+-----------------------------------------------------------------*/
 #pragma once
 #include"vec2.h"// vec2 struct
 #include"doodle/doodle.hpp"	// doodle image & functions 

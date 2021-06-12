@@ -2,7 +2,7 @@
 Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-File Name: Collision.cpp
+File Name: Minsoo.h
 Project: GAM150
 Author:
 -----------------------------------------------------------------*/
@@ -14,7 +14,7 @@ Author:
 class Minsoo: public Map
 {
 public:
-	void Draw_minsu(Camera camera, bool camera_move);
+	void Draw_minsu(Camera camera);
 	void Set_position(doodle::KeyboardButtons button);
 	void Update_position(bool& is_move);
 	math::vec2 Get_position();

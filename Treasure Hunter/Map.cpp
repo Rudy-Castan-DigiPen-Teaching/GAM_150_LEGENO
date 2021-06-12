@@ -2,7 +2,7 @@
 Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-File Name: Collision.cpp
+File Name: Map.cpp
 Project: GAM150
 Author:
 -----------------------------------------------------------------*/
@@ -16,7 +16,7 @@ void Map::Set_up(int level)
     map.clear();
     std::ifstream readFile;
 
-    readFile.open("assets/Map" + to_string(level - (static_cast<int>(State::FLOOR_1) - 1)) + ".txt");
+    readFile.open("assets/Map" + to_string(level - (static_cast<int>(State::FLOOR_1) - 1)) + ".txt"); // map 0,1,2,3
     int width = 0;
     int height = 0;
     treasure_num = 4;
@@ -26,10 +26,6 @@ void Map::Set_up(int level)
         {
             char a;
             readFile >> a;
- /*           if (readFile.eof())
-            {
-                break;
-            }*/
             switch (a)
             {
             case '0': 
@@ -47,7 +43,7 @@ void Map::Set_up(int level)
             	map.push_back(info{ math::ivec2{width,height},Type::RADAR });
                 break;
             }
-            case '3':
+            case '3': //treasure
             {
                 switch (level)
                 {
@@ -151,7 +147,7 @@ void Map::Set_up(int level)
     bomb_target_time = 2;
 }
 
-doodle::Image& Map::Set_wall(info& value)
+doodle::Image& Map::Set_wall(info& value) // set various wall
 {
     int wall_count = 0;
     int index = 0;

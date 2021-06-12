@@ -13,8 +13,10 @@ Author:
 #include "Camera.h"	// Camera class
 #include"doodle/doodle.hpp" // doodle image & draw functions 
 #include"Sprite.h"
-using namespace std;
+#define MAP_WIDTH 25
+#define MAP_HEIGHT 43
 
+using namespace std;
 struct info
 {
 	math::ivec2 position{ 0,0 };
@@ -69,7 +71,7 @@ public:
 public:
 	void Set_up(int level);
 	void Draw(Camera& camera);
-	vector<info> map;
+	std::vector<info> map;
 	doodle::Image& Set_wall(info& value);
 	int treasure_num = 4;
 

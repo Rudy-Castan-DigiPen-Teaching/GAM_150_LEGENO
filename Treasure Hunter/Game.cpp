@@ -2,7 +2,7 @@
 Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-File Name: Collision.cpp
+File Name: Game.cpp
 Project: GAM150
 Author:
 -----------------------------------------------------------------*/
@@ -814,9 +814,9 @@ void Game::Update_level()
 			{
 				math::ivec2 curr_position = math::ivec2{ static_cast<int>(guard.guards[i].position.x) ,static_cast<int>(guard.guards[i].position.y) };
 
-				if (path_finding<25, 43>(map, minsoo.target_pos, curr_position).empty() != true)
+				if (path_finding(map, minsoo.target_pos, curr_position).empty() != true)
 				{
-					curr_position = path_finding<25, 43>(map, minsoo.target_pos, curr_position).back().pos;
+					curr_position = path_finding(map, minsoo.target_pos, curr_position).back().pos;
 				}
 				curr_position = math::ivec2{ static_cast<int>(guard.guards[i].position.x) ,static_cast<int>(guard.guards[i].position.y) } - curr_position;  // 페스파인딩으로 다음 갈 곳에 대한 시야 변경
 				set_direction(curr_position, i);
@@ -826,6 +826,7 @@ void Game::Update_level()
 	}
 	if (camera_move == true)
 	{
+		
 		Move_camera(guard.guards.back().position);
 	}
 
@@ -1341,58 +1342,6 @@ void Game::Collision_check()
 	}
 }
 
-void Game::Sight_check(int index)
-{
-	switch (guard.guards[index].direction)
-	{
-	case Direction::UP:
-	{
-		for (auto& j : map.map)
-		{
-			if (guard.guards[index].position.x == j.position.x && guard.guards[index].position.y - 1 == j.position.y && j.type == Type::WALL)
-			{
-				guard.Change_sight(map, index);
-			}
-		}
-	}
-	break;
-	case Direction::DOWN:
-	{
-		for (auto& j : map.map)
-		{
-			if (guard.guards[index].position.x == j.position.x && guard.guards[index].position.y + 1 == j.position.y && j.type == Type::WALL)
-			{
-				guard.Change_sight(map, index);
-			}
-		}
-	}
-	break;
-	case Direction::RIGHT:
-	{
-		for (auto& j : map.map)
-		{
-			if (guard.guards[index].position.x + 1 == j.position.x && guard.guards[index].position.y == j.position.y && j.type == Type::WALL)
-			{
-				guard.Change_sight(map, index);
-			}
-		}
-	}
-	break;
-	case Direction::LEFT:
-	{
-		for (auto& j : map.map)
-		{
-			if (guard.guards[index].position.x - 1 == j.position.x && guard.guards[index].position.y == j.position.y && j.type == Type::WALL)
-			{
-				guard.Change_sight(map, index);
-			}
-		}
-	}
-	break;
-
-	}
-}
-
 void Game::set_direction(math::vec2 position, int index)
 {
 	if (position.x == -1)
@@ -1793,7 +1742,7 @@ void Game::Draw_level()
 	map.Draw(camera);
 	guard.Draw_guard(camera);
 	guard.Draw_sight(camera, map);
-	minsoo.Draw_minsu(camera, camera_move);
+	minsoo.Draw_minsu(camera);
 	if (current_state != State::TUTORIAL)
 	{
 		doodle::draw_image(Sight_limit, (minsoo.Get_position().x + camera.Get_position().x - 1), (minsoo.Get_position().y + camera.Get_position().y - 20), doodle::Width, doodle::Height);
@@ -1909,10 +1858,10 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 					if (guard.guards[i].is_trace == true && guard.guards[i].is_okay == true)
 					{
 						math::ivec2 curr_position = math::ivec2{ static_cast<int>(guard.guards[i].position.x) ,static_cast<int>(guard.guards[i].position.y) };
-
-						if (path_finding<25, 43>(map, minsoo.target_pos, curr_position).empty() != true)
+						
+						if (path_finding(map, minsoo.target_pos, curr_position).empty() != true)
 						{
-							curr_position = path_finding<25, 43>(map, minsoo.target_pos, curr_position).back().pos;
+							curr_position = path_finding(map, minsoo.target_pos, curr_position).back().pos;
 						}
 
 						curr_position = math::ivec2{ static_cast<int>(guard.guards[i].position.x) ,static_cast<int>(guard.guards[i].position.y) } - curr_position;  // 페스파인딩으로 다음 갈 곳에 대한 시야 변경

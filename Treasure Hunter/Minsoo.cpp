@@ -2,13 +2,13 @@
 Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-File Name: Collision.cpp
+File Name: Minsoo.cpp
 Project: GAM150
 Author:
 -----------------------------------------------------------------*/
 #include"Minsoo.h"
 
-void Minsoo::Draw_minsu(Camera camera,[[maybe_unused]]bool camera_move)
+void Minsoo::Draw_minsu(Camera camera)
 {
 	doodle::set_fill_color(255, 255, 0);
 	switch (direction)
@@ -38,7 +38,7 @@ void Minsoo::Set_up()
 	target_pos = position;
 }
 
-void Minsoo::Set_position(doodle::KeyboardButtons button)
+void Minsoo::Set_position(doodle::KeyboardButtons button) // set target pos so that it will used in update function
 {
 	target_pos = Get_position();  //fist set curr pos
 
@@ -74,9 +74,9 @@ void Minsoo::Set_position(doodle::KeyboardButtons button)
 
 }
 
-void Minsoo::Update_position(bool& is_move)
+void Minsoo::Update_position(bool& is_move) // update position based on target pos
 {
-	if (is_move == true)
+	if (is_move == true) // if he finished current moving
 	{
 		if (position.x > target_pos.x)
 		{

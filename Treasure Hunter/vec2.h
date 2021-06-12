@@ -2,7 +2,7 @@
 Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-File Name: Collision.cpp
+File Name: Vec2.h
 Project: GAM150
 Author:
 -----------------------------------------------------------------*/
@@ -76,17 +76,7 @@ namespace math
 
     [[nodiscard]] constexpr  bool operator==(ivec2 value1, ivec2 value2) noexcept;
     [[nodiscard]] constexpr  bool operator!=(ivec2 value1, ivec2 value2) noexcept;
-    //struct rect2
-    //{
-    //	math::vec2 bottomLeft{ 0.0, 0.0 };
-    //    math::vec2 topRight{ 0.0, 0.0 };
-    //};
-    //
-    //struct irect2
-    //{
-    //    math::ivec2 bottomLeft{ 0.0, 0.0 };
-    //    math::ivec2 topRight{ 0.0, 0.0 };
-    //};
+
 }
 
 

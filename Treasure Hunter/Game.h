@@ -2,7 +2,7 @@
 Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-File Name: Collision.cpp
+File Name: Game.h
 Project: GAM150
 Author:
 -----------------------------------------------------------------*/
@@ -147,7 +147,6 @@ public:
 	void Reset();
 	void Update();
 	bool Check_guard(int index);  // when a guard is looking a wall, change the direction
-	void Sight_check(int index);  // when a minsoo is looking a wall, change the direction
 	void Set_item(doodle::KeyboardButtons button);	// put items on the map
 	void Radar_obtain();	//when minsoo gets radar, add Exit, add Ruby, ready to show Ruby 
 	void Draw_radar();

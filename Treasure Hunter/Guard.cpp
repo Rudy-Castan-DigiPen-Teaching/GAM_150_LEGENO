@@ -2,7 +2,7 @@
 Copyright (C) 2021 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-File Name: Collision.cpp
+File Name: Guard.cpp
 Project: GAM150
 Author:
 -----------------------------------------------------------------*/
@@ -216,7 +216,7 @@ void Guard::Draw_sight(Camera& camera, Map MAP)
 }
 
 
-void Guard::Set_position(int index)
+void Guard::Set_position(int index) // set target pos. it will be used in update function
 {
 	switch (guards[index].direction)
 	{
@@ -255,7 +255,7 @@ void Guard::Set_position(int index)
 	}
 }
 
-void Guard::Change_sight(Map m, int index)
+void Guard::Change_sight(Map m, int index) // change sight 
 {
 	Direction dir;
 	bool is_change = false;
@@ -366,7 +366,7 @@ void Guard::Guard_movement_update(math::ivec2 exit_pos, Map& m, int movement)
 
 }
 
-void Guard::Set_sight()
+void Guard::Set_sight() // set sight position based on guard's sight direction
 {
 	for (auto& guard : guards)
 	{
@@ -412,7 +412,7 @@ void Guard::Set_sight()
 	}
 }
 
-void Guard::Tracing_check(Minsoo minsoo)
+void Guard::Tracing_check(Minsoo minsoo) // when minsoo is in guard sight, return what number of guard it is.		
 {
 	for (int i = 0; i < static_cast<int>(guards.size()); i++)
 	{
@@ -426,12 +426,12 @@ void Guard::Tracing_check(Minsoo minsoo)
 	}
 }
 
-bool Guard::Is_trace_sommeone() 
+bool Guard::Is_trace_sommeone()   // check if there is a guard chasing minsoo  
 {
 	how_many_guards_tracing = 0;
 	for (auto& i : guards)
 	{
-		if (i.is_trace == true && i.is_okay == false) //
+		if (i.is_trace == true && i.is_okay == false) 
 		{
 			i.is_trace = false;
 		}
@@ -452,7 +452,7 @@ bool Guard::Is_trace_sommeone()
 	return false;
 }
 
-void Guard::Update_position()
+void Guard::Update_position() // move based on target pos
 {
 		for (auto& guard : guards)
 		{
