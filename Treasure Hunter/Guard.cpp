@@ -53,11 +53,11 @@ void Guard::Draw_guard(Camera& camera)
 	for (auto& p : Guards)
 	{
 
-		if (p.Is_okay == true)
+		if (p.is_okay == true)
 		{
 			if (p.Guard_type == "guard")
 			{
-				if (p.Is_trace == true)
+				if (p.is_trace == true)
 				{
 					doodle::draw_image(Guard_tracing_image, (p.Position.x + camera.Get_position().x) * Block_size, (p.Position.y + camera.Get_position().y) * Block_size, Block_size + 10.0, Block_size + 10.0);
 				}
@@ -82,7 +82,7 @@ void Guard::Draw_guard(Camera& camera)
 			}
 			else if (p.Guard_type == "Ruby")
 			{
-				p.Is_trace = true;
+				p.is_trace = true;
 				switch (p.Direction)
 				{
 				case Direction::UP:
@@ -100,7 +100,7 @@ void Guard::Draw_guard(Camera& camera)
 				}
 			}
 		}
-		else if (p.Is_okay == false)
+		else if (p.is_okay == false)
 		{
 			if (p.Guard_type == "guard")
 			{
@@ -122,7 +122,7 @@ void Guard::Draw_sight(Camera& camera, Map MAP)
 	{
 		for (int i = 0; i < Sight_size; i++)
 		{
-			if(guard.Is_okay == true)
+			if(guard.is_okay == true)
 			{
 				for (auto& m : MAP.map)
 				{
@@ -222,7 +222,7 @@ void Guard::Set_position(int index) // set target pos. it will be used in update
 	{
 	case Direction::UP:
 		//move up
-		if (Guards[index].Is_okay == true)
+		if (Guards[index].is_okay == true)
 		{
 			Guards[index].Target_pos = Guards[index].Position;
 			Guards[index].Target_pos.y--;
@@ -230,7 +230,7 @@ void Guard::Set_position(int index) // set target pos. it will be used in update
 		break;
 
 	case Direction::DOWN:   //move down
-		if (Guards[index].Is_okay == true)
+		if (Guards[index].is_okay == true)
 		{
 			Guards[index].Target_pos = Guards[index].Position;
 			Guards[index].Target_pos.y++;
@@ -238,7 +238,7 @@ void Guard::Set_position(int index) // set target pos. it will be used in update
 		break;
 
 	case Direction::RIGHT:  //move right
-		if (Guards[index].Is_okay == true)
+		if (Guards[index].is_okay == true)
 		{
 			Guards[index].Target_pos = Guards[index].Position;
 			Guards[index].Target_pos.x++;
@@ -246,7 +246,7 @@ void Guard::Set_position(int index) // set target pos. it will be used in update
 		break;
 
 	case Direction::LEFT:   //move left
-		if (Guards[index].Is_okay == true)
+		if (Guards[index].is_okay == true)
 		{
 			Guards[index].Target_pos = Guards[index].Position;
 			Guards[index].Target_pos.x--;
@@ -259,7 +259,7 @@ void Guard::Change_sight(Map m, int index) // change sight
 {
 	Direction dir;
 	bool is_change = false;
-	if (Guards[index].Is_okay == true)
+	if (Guards[index].is_okay == true)
 	{
 		while (is_change == false)
 		{
@@ -333,7 +333,7 @@ void Guard::Guard_movement_update(math::ivec2 exit_pos, Map& m, int movement)
 		{
 			if (i.Position == j.Position && j.Type == Type::DOG_CHEW)
 			{
-				i.Is_okay = false;
+				i.is_okay = false;
 				i.Movement = movement;
 				if (i.Position == exit_pos)
 				{
@@ -350,16 +350,16 @@ void Guard::Guard_movement_update(math::ivec2 exit_pos, Map& m, int movement)
 	for (auto& i : Guards)
 	{
 
-		if (i.Is_okay == false)
+		if (i.is_okay == false)
 		{
 			if (movement - i.Movement == How_many_craze)
 			{
-				i.Is_okay = true;
+				i.is_okay = true;
 			}
 		}
 		if (i.Trace_movement == How_many_trace)
 		{
-			i.Is_trace = false;
+			i.is_trace = false;
 		}
 
 	}
@@ -418,9 +418,9 @@ void Guard::Tracing_check(Minsoo minsoo) // when minsoo is in guard sight, retur
 	{
 		for (int j = 0; j < Sight_size; j++)
 		{
-			if (minsoo.Get_position() == Guards[i].Sight_position[j].Position && Guards[i].Sight_position[j].Is_valid == true && Guards[i].Is_okay == true)
+			if (minsoo.Get_position() == Guards[i].Sight_position[j].Position && Guards[i].Sight_position[j].Is_valid == true && Guards[i].is_okay == true)
 			{
-				Guards[i].Is_trace = true;
+				Guards[i].is_trace = true;
 			}
 		}
 	}
@@ -434,12 +434,12 @@ bool Guard::Is_trace_sommeone()   // check if there is a guard chasing minsoo
 
 		if (i.is_trace == true && i.is_okay == false) 
 		{
-			i.Is_trace = false;
+			i.is_trace = false;
 		}
 	}
 	for (auto& i : Guards)
 	{
-		if (i.Is_trace == true)
+		if (i.is_trace == true)
 		{
 			How_many_guards_tracing++;
 		}

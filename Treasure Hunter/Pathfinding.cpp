@@ -39,25 +39,25 @@ std::vector<Node> path_finding(Map map, math::vec2 minsoo_pos, math::ivec2 guard
 
 		for (auto& i : map.map)
 		{
-			if (i.position.x == node.pos.x + 1 && i.position.y == node.pos.y && i.type != Type::WALL && is_visited[node.pos.y][node.pos.x + 1] == false)   //right
+			if (i.Position.x == node.pos.x + 1 && i.Position.y == node.pos.y && i.Type != Type::WALL && is_visited[node.pos.y][node.pos.x + 1] == false)   //right
 			{
-				is_visited[i.position.y][i.position.x] = true;
-				que.push_back(Node{ math::ivec2{ i.position.x , i.position.y}, node });
+				is_visited[i.Position.y][i.Position.x] = true;
+				que.push_back(Node{ math::ivec2{ i.Position.x , i.Position.y}, node });
 			}
-			if (i.position.x == node.pos.x - 1 && i.position.y == node.pos.y && i.type != Type::WALL && is_visited[node.pos.y][node.pos.x - 1] == false)   //left
+			if (i.Position.x == node.pos.x - 1 && i.Position.y == node.pos.y && i.Type != Type::WALL && is_visited[node.pos.y][node.pos.x - 1] == false)   //left
 			{
-				is_visited[i.position.y][i.position.x] = true;
-				que.push_back(Node{ math::ivec2{ i.position.x , i.position.y }, node });
+				is_visited[i.Position.y][i.Position.x] = true;
+				que.push_back(Node{ math::ivec2{ i.Position.x , i.Position.y }, node });
 			}
-			if (i.position.x == node.pos.x && i.position.y == node.pos.y - 1 && i.type != Type::WALL && is_visited[node.pos.y - 1][node.pos.x] == false)   //Up
+			if (i.Position.x == node.pos.x && i.Position.y == node.pos.y - 1 && i.Type != Type::WALL && is_visited[node.pos.y - 1][node.pos.x] == false)   //Up
 			{
-				is_visited[i.position.y][i.position.x] = true;
-				que.push_back(Node{ math::ivec2{ i.position.x, i.position.y  }, node });
+				is_visited[i.Position.y][i.Position.x] = true;
+				que.push_back(Node{ math::ivec2{ i.Position.x, i.Position.y  }, node });
 			}
-			if (i.position.x == node.pos.x && i.position.y == node.pos.y + 1 && i.type != Type::WALL && is_visited[node.pos.y + 1][node.pos.x] == false)   //Down
+			if (i.Position.x == node.pos.x && i.Position.y == node.pos.y + 1 && i.Type != Type::WALL && is_visited[node.pos.y + 1][node.pos.x] == false)   //Down
 			{
-				is_visited[i.position.y][i.position.x] = true;
-				que.push_back(Node{ math::ivec2{ i.position.x, i.position.y }, node });
+				is_visited[i.Position.y][i.Position.x] = true;
+				que.push_back(Node{ math::ivec2{ i.Position.x, i.Position.y }, node });
 			}
 		}
 	}

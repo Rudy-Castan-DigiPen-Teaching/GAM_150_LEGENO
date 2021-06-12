@@ -14,21 +14,21 @@ Author:
 #include "Minsoo.h"	// Minsoo class
 struct sight_info
 {
-	math::vec2 position;
-	bool is_valid = true;  // if there a wall in front of their sight
+	math::vec2 Position;
+	bool Is_valid = true;  // if there a wall in front of their sight
 };
 
 struct guard_info
 {
-	math::vec2 position;
-	Direction direction{ Direction::UP };
-	const string guard_type{ "guard" };
-	math::vec2 target_pos = position;
+	math::vec2 Position;
+	Direction Direction{ Direction::UP };
+	const string Guard_type{ "guard" };
+	math::vec2 Target_pos = Position;
 	bool is_okay{ true };  //If guard eat dog chew
 	bool is_trace{ false }; //Whether tracing or not
-	int trace_movement{ 0 };
-	int movement{ 0 };
-	sight_info sight_position[3]{ 0, true };
+	int Trace_movement{ 0 };
+	int Movement{ 0 };
+	sight_info Sight_position[3]{ 0, true };
 };
 
 class Guard : Map
@@ -48,16 +48,15 @@ public:
 	vector<guard_info> Guards;
 
 private:
-<<<<<<< HEAD
-	const int sight_size{ 3 };  //sight size
-	const int how_many_trace{ 5 };// how many guard trace minsoo 
-	const int how_many_craze{ 3 };//how long guard eat dog chew
-	int how_many_guards_tracing{ 0 };
+	const int Sight_size{ 3 };  //sight size
+	const int How_many_trace{ 5 };// how many guard trace minsoo 
+	const int How_many_craze{ 3 };//how long guard eat dog chew
+	int How_many_guards_tracing{ 0 };
 
-	doodle::Image GuardUP_image{ "assets/GuardUp.png" };
-	doodle::Image GuardDown_image{ "assets/GuardDown.png" };
-	doodle::Image GuardRight_image{ "assets/GuardRight.png" };
-	doodle::Image GuardLeft_image{ "assets/GuardLeft.png" };
+	doodle::Image Guard_UP_image{ "assets/GuardUp.png" };
+	doodle::Image Guard_Down_image{ "assets/GuardDown.png" };
+	doodle::Image Guard_Right_image{ "assets/GuardRight.png" };
+	doodle::Image Guard_Left_image{ "assets/GuardLeft.png" };
 	doodle::Image Guard_CHEW_image{ "assets/Chew_dog.png" }; 
 	doodle::Image Ruby_CHEW_image{ "assets/Chew_ruby.png" }; 
 

@@ -810,7 +810,7 @@ void Game::Update_level()
 		}
 		for (int i = 0; i < static_cast<int>(guard.Guards.size()); i++)
 		{
-			if (guard.Guards[i].Is_trace == true && guard.Guards[i].Is_okay == true)
+			if (guard.Guards[i].is_trace == true && guard.Guards[i].is_okay == true)
 			{
 				math::ivec2 curr_position = math::ivec2{ static_cast<int>(guard.Guards[i].Position.x) ,static_cast<int>(guard.Guards[i].Position.y) };
 
@@ -863,7 +863,7 @@ void Game::Update_level()
 		}
 		for (auto i : guard.Guards)
 		{
-			if (i.Is_okay == false)
+			if (i.is_okay == false)
 			{
 				if (sounds.Is_sound_playing(static_cast<int>(SoundType::CHEWING_GUM)) == false)
 				{
@@ -1348,59 +1348,7 @@ void Game::Collision_check()
 	}
 }
 
-void Game::Sight_check(int index)
-{
-	switch (guard.Guards[index].Direction)
-	{
-	case Direction::UP:
-	{
-		for (auto& j : map.map)
-		{
-			if (guard.Guards[index].Position.x == j.Position.x && guard.Guards[index].Position.y - 1 == j.Position.y && j.Type == Type::WALL)
-			{
-				guard.Change_sight(map, index);
-			}
-		}
-	}
-	break;
-	case Direction::DOWN:
-	{
-		for (auto& j : map.map)
-		{
-			if (guard.Guards[index].Position.x == j.Position.x && guard.Guards[index].Position.y + 1 == j.Position.y && j.Type == Type::WALL)
-			{
-				guard.Change_sight(map, index);
-			}
-		}
-	}
-	break;
-	case Direction::RIGHT:
-	{
-		for (auto& j : map.map)
-		{
-			if (guard.Guards[index].Position.x + 1 == j.Position.x && guard.Guards[index].Position.y == j.Position.y && j.Type == Type::WALL)
-			{
-				guard.Change_sight(map, index);
-			}
-		}
-	}
-	break;
-	case Direction::LEFT:
-	{
-		for (auto& j : map.map)
-		{
-			if (guard.Guards[index].Position.x - 1 == j.Position.x && guard.Guards[index].Position.y == j.Position.y && j.Type == Type::WALL)
-			{
-				guard.Change_sight(map, index);
-			}
-		}
-	}
-	break;
 
-	}
-}
-
->>>>>>> 2d3056086c3c8a5fed977ac185fe71c1fd443c13
 void Game::set_direction(math::vec2 position, int index)
 {
 	if (position.x == -1)
@@ -1802,7 +1750,7 @@ void Game::Draw_level()
 	guard.Draw_guard(camera);
 	guard.Draw_sight(camera, map);
 	minsoo.Draw_minsu(camera);
-	if (current_state != State::TUTORIAL)
+	if (Current_state != State::TUTORIAL)
 	{
 		doodle::draw_image(Sight_limit, (minsoo.Get_position().x + camera.Get_position().x - 1), (minsoo.Get_position().y + camera.Get_position().y - 20), doodle::Width, doodle::Height);
 	}
@@ -1915,7 +1863,7 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 
 				for (int i = 0; i < static_cast<int>(guard.Guards.size()); i++)
 				{
-					if (guard.Guards[i].Is_trace == true && guard.Guards[i].Is_okay == true)
+					if (guard.Guards[i].is_trace == true && guard.Guards[i].is_okay == true)
 					{
 						math::ivec2 curr_position = math::ivec2{ static_cast<int>(guard.Guards[i].Position.x) ,static_cast<int>(guard.Guards[i].Position.y) };
 
@@ -1930,7 +1878,7 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 
 					else
 					{
-						if (guard.Guards[i].Is_okay == true)
+						if (guard.Guards[i].is_okay == true)
 						{
 							if (minsoo.movement % 5 == 0)
 							{
@@ -1991,7 +1939,7 @@ void Game::Change_sight()
 			{
 				if (minsoo.movement % 5 == 0 && Is_sight_changed == false)
 				{
-					if (guard.Guards[i].Is_trace == false && guard.Guards[i].Is_okay == true)
+					if (guard.Guards[i].is_trace == false && guard.Guards[i].is_okay == true)
 					{
 						guard.Change_sight(map, i);
 					}
