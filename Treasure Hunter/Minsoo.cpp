@@ -14,16 +14,16 @@ void Minsoo::Draw_minsu(Camera camera)
 	switch (direction)
 	{
 	case Direction::DOWN:
-		doodle::draw_image(Minsoo_Down.image, (position.x + camera.Get_position().x) * block_size, (position.y + camera.Get_position().y) * block_size, block_size, block_size, Minsoo_Down.GetDrawPos().x, 0);
+		doodle::draw_image(Minsoo_Down.image, (position.x + camera.Get_position().x) * Block_size, (position.y + camera.Get_position().y) * Block_size, Block_size, Block_size, Minsoo_Down.GetDrawPos().x, 0);
 		break; 
 	case Direction::UP:
-		doodle::draw_image(Minsoo_Up.image, (position.x + camera.Get_position().x) * block_size, (position.y + camera.Get_position().y) * block_size, block_size, block_size, Minsoo_Up.GetDrawPos().x, 0);
+		doodle::draw_image(Minsoo_Up.image, (position.x + camera.Get_position().x) * Block_size, (position.y + camera.Get_position().y) * Block_size, Block_size, Block_size, Minsoo_Up.GetDrawPos().x, 0);
 		break;
 	case Direction::RIGHT:
-		doodle::draw_image(Minsoo_right.image, (position.x + camera.Get_position().x) * block_size, (position.y + camera.Get_position().y) * block_size, block_size, block_size, Minsoo_right.GetDrawPos().x, 0);
+		doodle::draw_image(Minsoo_right.image, (position.x + camera.Get_position().x) * Block_size, (position.y + camera.Get_position().y) * Block_size, Block_size, Block_size, Minsoo_right.GetDrawPos().x, 0);
 		break; 
 	case Direction::LEFT:
-		doodle::draw_image(Minsoo_left.image, (position.x + camera.Get_position().x) * block_size, (position.y + camera.Get_position().y) * block_size, block_size, block_size, Minsoo_left.GetDrawPos().x,0);
+		doodle::draw_image(Minsoo_left.image, (position.x + camera.Get_position().x) * Block_size, (position.y + camera.Get_position().y) * Block_size, Block_size, Block_size, Minsoo_left.GetDrawPos().x,0);
 		break;
 	}
 }
@@ -44,12 +44,14 @@ void Minsoo::Set_position(doodle::KeyboardButtons button) // set target pos so t
 
 	switch (button)
 	{
+	case doodle::KeyboardButtons::S:
 	case doodle::KeyboardButtons::Down:
 	{
 		target_pos.y += 1;
 		direction = Direction::DOWN;
 	}
 		break;
+	case doodle::KeyboardButtons::A:
 	case doodle::KeyboardButtons::Left:
 		{
 		target_pos.x -= 1;
@@ -57,12 +59,14 @@ void Minsoo::Set_position(doodle::KeyboardButtons button) // set target pos so t
 
 		}
 		break;
+	case doodle::KeyboardButtons::D:
 	case doodle::KeyboardButtons::Right:
 		{
 		target_pos.x += 1;			
 		direction = Direction::RIGHT;
 		}
 		break;
+	case doodle::KeyboardButtons::W:
 	case doodle::KeyboardButtons::Up:
 		{
 		target_pos.y -= 1;

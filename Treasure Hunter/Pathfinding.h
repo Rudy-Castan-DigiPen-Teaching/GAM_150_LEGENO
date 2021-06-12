@@ -33,3 +33,4 @@ struct Node
 
 std::vector<Node> path_finding(Map map, math::vec2 minsoo_pos, math::ivec2 guard_pos);
 
+

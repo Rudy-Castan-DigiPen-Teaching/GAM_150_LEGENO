@@ -45,9 +45,10 @@ public:
 	bool Is_trace_sommeone(); // check if there is a guard chasing minsoo                                   
 	void Update_position();
 	void Check_watching_wall(Map m);
-	vector<guard_info> guards;
+	vector<guard_info> Guards;
 
 private:
+<<<<<<< HEAD
 	const int sight_size{ 3 };  //sight size
 	const int how_many_trace{ 5 };// how many guard trace minsoo 
 	const int how_many_craze{ 3 };//how long guard eat dog chew
@@ -59,6 +60,7 @@ private:
 	doodle::Image GuardLeft_image{ "assets/GuardLeft.png" };
 	doodle::Image Guard_CHEW_image{ "assets/Chew_dog.png" }; 
 	doodle::Image Ruby_CHEW_image{ "assets/Chew_ruby.png" }; 
+
 	doodle::Image Guard_tracing_image{ "assets/Tracing_dog.png" };
 	doodle::Image Ruby_image{ "assets/Ruby.png" };
 

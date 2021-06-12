@@ -23,72 +23,72 @@ class Game
 	Guard guard;
 	Camera camera;
 
-	int timer{ 100 };
-	double pause_timer{ 0 };
-	const int total_time{ 100 };
-	bool radar_start{ false };
-	bool make_radar_big{ false };
-	double offset{ 0 };
-	double speed{ 10 };
-	double splash_timer{ 3 };
-	math::ivec2 exit_pos{ 0 };
+	int Timer{ 100 };
+	double Pause_timer{ 0 };
+	const int Total_time{ 100 };
+	bool Radar_start{ false };
+	bool Make_radar_big{ false };
+	double Offset{ 0 };
+	double Speed{ 10 };
+	double Splash_timer{ 3 };
+	math::ivec2 Exit_pos{ 0 };
 
-	bool is_radar_obtained{ false };
-	bool is_exit{ false };
-	bool is_in_guard_sight{ false };
-	bool is_music_playing{ false };
-	bool is_chased_state{ false };
-	bool is_digipen_splash_done{ false };
-	bool is_paused{ false };
-	bool is_credit_done{ false };
-	bool is_bomb_set{ false };
+	bool Is_radar_obtained{ false };
+	bool Is_exit{ false };
+	bool Is_in_guard_sight{ false };
+	bool Is_music_playing{ false };
+	bool Is_chased_state{ false };
+	bool Is_digipen_splash_done{ false };
+	bool Is_paused{ false };
+	bool Is_credit_done{ false };
+	bool Is_bomb_set{ false };
 
-	State current_state{ State::SPLASH };
-	State previous_state{ State::SPLASH };
-	int current_menu{ static_cast<int>(MenuOption::START) };
-	int curr_level{ static_cast<int>(State::TUTORIAL) };
-	int unlock_level{ static_cast<int>(State::FLOOR_1) };
+	State Current_state{ State::SPLASH };
+	State Previous_state{ State::SPLASH };
+	int Current_menu{ static_cast<int>(MenuOption::START) };
+	int Curr_level{ static_cast<int>(State::TUTORIAL) };
+	int Unlock_level{ static_cast<int>(State::FLOOR_1) };
 
-	bool camera_move{ false };
-	bool cheat_Z{ false };
-	float current_volume{ 50 };
+	bool Camera_move{ false };
+	bool Cheat_Z{ false };
+	float Current_volume{ 50 };
 
-	bool is_minsoo_move = false;
+	bool Is_minsoo_move = false;
 
-	bool is_guard_move = false;
+	bool Is_guard_move = false;
 
-	bool is_sight_changed = false;
+	bool Is_sight_changed = false;
 
-	bool is_played_bite = false;
+	bool Is_played_bite = false;
 
 	bool Get_treasure[4] = { false, };
 
-	bool draw_hojin = false;
-	doodle::Image digipen_logo{ "assets/DigiPen_BLACK_1024px.png" };
-	doodle::Image game_logo{ "assets/Treasure_Hunter_Logo.jpg" };
-	doodle::Image main_menu{ "assets/MainMenu.png" };
-	doodle::Image level_select{ "assets/Level_select.png" };
-	doodle::Image start_button{ "assets/StratButton.png" };
-	doodle::Image credit_button{ "assets/CreditButton.png" };
-	doodle::Image quit_button{ "assets/QuitButton.png" };
-	doodle::Image GameOver_scene{ "assets/GameOver.png" };
-	doodle::Image credit_menu_1{ "assets/Credit_1.png" };
-	doodle::Image credit_menu_2{ "assets/Credit_2.png" };
-	doodle::Image option_button{ "assets/Option_button.png" };
-	doodle::Image tutorial_button{ "assets/tutorial_button.png" };
-	doodle::Image level1_button{ "assets/Level1_button.png" };
-	doodle::Image level2_button{ "assets/Level2_button.png" };
-	doodle::Image level3_button{ "assets/Level3_button.png" };
+	bool Draw_hojin = false;
+	doodle::Image Digipen_logo{ "assets/DigiPen_BLACK_1024px.png" };
+	doodle::Image Game_logo{ "assets/Treasure_Hunter_Logo.jpg" };
+	doodle::Image Main_menu{ "assets/MainMenu.png" };
+	doodle::Image Level_select{ "assets/Level_select.png" };
+	doodle::Image Start_button{ "assets/StratButton.png" };
+	doodle::Image Credit_button{ "assets/CreditButton.png" };
+	doodle::Image Quit_button{ "assets/QuitButton.png" };
+	doodle::Image Game_over_scene{ "assets/GameOver.png" };
+	doodle::Image Credit_menu_1{ "assets/Credit_1.png" };
+	doodle::Image Credit_menu_2{ "assets/Credit_2.png" };
+	doodle::Image Option_button{ "assets/Option_button.png" };
+	doodle::Image Tutorial_button{ "assets/tutorial_button.png" };
+	doodle::Image Level1_button{ "assets/Level1_button.png" };
+	doodle::Image Level2_button{ "assets/Level2_button.png" };
+	doodle::Image Level3_button{ "assets/Level3_button.png" };
 	
-	doodle::Image option_menu{ "assets/Option.png" };
-	doodle::Image sound1{ "assets/Sound1.png" };
-	doodle::Image sound2{ "assets/Sound2.png" };
-	doodle::Image sound3{ "assets/Sound3.png" };
-	doodle::Image sound4{ "assets/Sound4.png" };
-	doodle::Image pause_sound1{ "assets/pause_volume1.png" };
-	doodle::Image pause_sound2{ "assets/pause_volume2.png" };
-	doodle::Image pause_sound3{ "assets/pause_volume3.png" };
-	doodle::Image pause_sound4{ "assets/pause_volume4.png" };
+	doodle::Image Option_menu{ "assets/Option.png" };
+	doodle::Image Sound1{ "assets/Sound1.png" };
+	doodle::Image Sound2{ "assets/Sound2.png" };
+	doodle::Image Sound3{ "assets/Sound3.png" };
+	doodle::Image Sound4{ "assets/Sound4.png" };
+	doodle::Image Pause_sound1{ "assets/pause_volume1.png" };
+	doodle::Image Pause_sound2{ "assets/pause_volume2.png" };
+	doodle::Image Pause_sound3{ "assets/pause_volume3.png" };
+	doodle::Image Pause_sound4{ "assets/pause_volume4.png" };
 	doodle::Image UI{ "assets/UI.png" };
 	doodle::Image Pause_screen{ "assets/Pause_screen.png" };
 	doodle::Image Pause_Restart{ "assets/Pause_Restart.png" };
@@ -137,7 +137,7 @@ class Game
 
 	Sprite Ending_scene{ "assets/Ending_scene.png",17 ,0.25 };
 
-	Sprite star_anim{ "assets/star_anim.png",10 ,0.1 };
+	Sprite Star_anim{ "assets/star_anim.png",10 ,0.1 };
 	double Get_count();
 public:
 	void Set_up();
@@ -168,14 +168,14 @@ public:
 	void Generate_shooting_star();
 	void Update_shooting_star();
 	void Draw_star();
-	math::vec2 new_pos{ minsoo.Get_position() };
-	double curr_timer{ 0 };
+	math::vec2 New_pos{ minsoo.Get_position() };
+	double Curr_timer{ 0 };
 	double Ending_timer = Minsoo_UPUP.target_time * 6;
 	double Ending_credit_ypos;
-	bool start_camera_count{ false };
-	bool level_clear[3] = { false, };
+	bool Start_camera_count{ false };
+	bool Level_clear[3] = { false, };
 
-	math::vec2 star_pos;
-	math::vec2 hojin_pos;
+	math::vec2 Star_pos;
+	math::vec2 Hojin_pos;
 };
 

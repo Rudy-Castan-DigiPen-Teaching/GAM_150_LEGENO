@@ -19,9 +19,9 @@ Author:
 using namespace std;
 struct info
 {
-	math::ivec2 position{ 0,0 };
-	Type type{ Type::WALL };
-	int random_num;
+	math::ivec2 Position{ 0,0 };
+	Type Type{ Type::WALL };
+	int Random_num;
 };
 
 
@@ -29,7 +29,7 @@ class Map
 {
 
 public:
-	int block_size{ 100 };
+	int Block_size{ 100 };
 	doodle::Image Dog_chew{ "assets/Dog_chew.png" };
 	doodle::Image Road1{ "assets/Road1.png" };
 	doodle::Image Road2{ "assets/Road2.png" };
@@ -39,7 +39,7 @@ public:
 	doodle::Image Escape{ "assets/Escape.png" };
 	doodle::Image Radar{ "assets/Radar.png" };
 	doodle::Image Next{ "assets/Next.png" };
-	doodle::Image Lader{ "assets/Lader.png" };
+	doodle::Image Ladder{ "assets/Lader.png" };
 	
 	doodle::Image Treasure_1{ "assets/Treasure_1.png" };
 	doodle::Image Treasure_2{ "assets/Treasure_2.png" };
@@ -65,15 +65,15 @@ public:
 
 	Sprite Explode{ "assets/hit.png",4,0.01 };
 
-	int map_width{ 43 };
-	int map_height{ 25 };
-	double bomb_target_time = 2;
+	int Map_width{ 43 };
+	int Map_height{ 25 };
+	double Bomb_target_time = 2;
 public:
 	void Set_up(int level);
 	void Draw(Camera& camera);
 	std::vector<info> map;
 	doodle::Image& Set_wall(info& value);
-	int treasure_num = 4;
+	int Treasure_num = 4;
 
 };
 
