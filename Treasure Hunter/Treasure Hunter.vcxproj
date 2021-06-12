@@ -125,9 +125,7 @@ xcopy /y /d "$(SolutionDir)external\SFML\$(Platform)\bin\sfml-system-2.dll" "$(T
     <ClCompile Include="Pathfinding.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="WinMain.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
@@ -143,13 +141,13 @@ xcopy /y /d "$(SolutionDir)external\SFML\$(Platform)\bin\sfml-system-2.dll" "$(T
     <ClInclude Include="vec2.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Vec2.inl" />
+  </ItemGroup>
+  <ItemGroup>
     <ResourceCompile Include="doodle.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="icon1.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Vec2.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

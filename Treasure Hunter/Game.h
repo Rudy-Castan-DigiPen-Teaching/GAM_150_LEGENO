@@ -115,7 +115,6 @@ class Game
 	doodle::Image Clear_tutorial{ "assets/Tutorial_clear.png" };
 	doodle::Image Clear_scene1{ "assets/Level1_clear.png" };
 	doodle::Image Clear_scene2{ "assets/Level2_clear.png" };
-	doodle::Image Clear_scene3{ "assets/Level3_clear.png" }; 
 	
 	doodle::Image Level_select_Treasure_1{ "assets/level_select_Treasure1.png" };
 	doodle::Image Level_select_Treasure_2{ "assets/level_select_Treasure2.png" };
@@ -124,7 +123,7 @@ class Game
 	doodle::Image Treasure_box{ "assets/treasure_box.png" };
 	doodle::Image Ending_credit{ "assets/Ending_credit.png" };
 	doodle::Image Hojin{ "assets/Hojin.png" };
-	doodle::Image Star{ "assets/Star.png" };
+
 	Sprite Siren_sprite{ "assets/siren_sprite.png",9,0.05 };
 	
 	Sprite Clear_effect{ "assets/clear_effect.png",8,0.1 };

@@ -186,11 +186,6 @@ void Game::Draw()
 				draw_image(Clear_scene2, 0, 0, Width, Height * 1.2);// function for image movement
 				break;
 			}
-			case static_cast<int>(State::FLOOR_3) :
-			{
-				draw_image(Clear_scene3, 0, 0, Width, Height * 1.2);// function for image movement
-				break;
-			}
 		}
 		draw_image(Jump_minsoo.image, Width * 0.52, Height * 0.4, Jump_minsoo.GetFrameSize().x, Jump_minsoo.GetFrameSize().y, Jump_minsoo.GetDrawPos().x, 0);
 		Jump_minsoo.Update();
@@ -417,6 +412,10 @@ void Game::Get_inputkey(doodle::KeyboardButtons doodleButton)
 			sounds.Play_sound(static_cast<int>(SoundType::SELECT_EFFECT));
 			sounds.music.stop();
 			Is_music_playing = false;
+			Save_treasure[0] = false;
+			Save_treasure[1] = false;
+			Save_treasure[2] = false;
+			Save_treasure[3] = false;
 			Current_state = State::START;
 		}
 		else
@@ -763,28 +762,6 @@ void Game::Update()
 	}
 	case State::CLEAR:
 	{
-		//if(Level_clear[0] == true)
-		//{
-		//	if(Get_treasure[0] == true)
-		//	{
-		//		Save_treasure[0] = true;
-		//	}
-		//	if (Get_treasure[1] == true)
-		//	{
-		//		Save_treasure[1] = true;
-		//	}
-		//}
-		//if (Level_clear[1] == true)
-		//{
-		//	if (Get_treasure[2] == true)
-		//	{
-		//		Save_treasure[2] = true;
-		//	}
-		//	if (Get_treasure[3] == true)
-		//	{
-		//		Save_treasure[3] = true;
-		//	}
-		//}
 		break;
 	}
 	case State::GAME_OVER:
@@ -1145,7 +1122,7 @@ void Game::Set_ingame_music()
 void Game::Generate_shooting_star()
 {
 	Star_pos.x = doodle::random(0, Width);
-	Star_pos.y = -(Star.GetHeight() + 1000);
+	Star_pos.y = -(Star_anim.GetFrameSize().y + 1000);
 }
 
 void Game::Update_shooting_star()
@@ -1164,14 +1141,14 @@ void Game::Update_shooting_star()
 			}
 		}
 	}
-	if (Star_pos.y > -Star.GetHeight())
+	if (Star_pos.y > -Star_anim.GetFrameSize().y)
 	{
 		Star_pos.x += doodle::DeltaTime * 1500;
 	}
 	if (Star_pos.x > Width || Star_pos.y > Height)
 	{
 		Star_pos.x = doodle::random(0, Width);
-		Star_pos.y = -(Star.GetHeight() + 4000);
+		Star_pos.y = -(Star_anim.GetFrameSize().y + 4000);
 		if (Draw_hojin == true)
 		{
 			Draw_hojin = false;
@@ -1958,7 +1935,7 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 		sounds.Stop_sound();
 		sounds.music.stop();
 		Is_music_playing = false;
-		sounds.Play_sound(static_cast<int>(SoundType::WIN));
+
 		if (Current_state == State::FLOOR_1)
 		{
 			Save_treasure[0] = true;
@@ -1969,9 +1946,15 @@ void Game::Input_level(doodle::KeyboardButtons doodleButton)
 			Save_treasure[2] = true;
 			Save_treasure[3] = true;
 		}
-
-		Current_state = State::CLEAR;
-
+		if (Current_state != State::FLOOR_3)
+		{
+			sounds.Play_sound(static_cast<int>(SoundType::WIN));
+			Current_state = State::CLEAR;
+		}
+		if (Current_state == State::FLOOR_3)
+		{
+			Current_state = State::ENDING;
+		}
 	}
 	if (doodleButton == doodle::KeyboardButtons::L)
 	{
