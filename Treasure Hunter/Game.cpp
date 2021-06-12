@@ -942,22 +942,25 @@ void Game::Tile_check()
 			sounds.Stop_sound();
 			sounds.music.stop();
 
-			if (Get_treasure[0] == true)
+			if (Current_state != State::TUTORIAL)
 			{
-				Save_treasure[0] = true;
-			}
-			if (Get_treasure[1] == true)
-			{
-				Save_treasure[1] = true;
-			}
+				if (Get_treasure[0] == true)
+				{
+					Save_treasure[0] = true;
+				}
+				if (Get_treasure[1] == true)
+				{
+					Save_treasure[1] = true;
+				}
 
-			if (Get_treasure[2] == true)
-			{
-				Save_treasure[2] = true;
-			}
-			if (Get_treasure[3] == true)
-			{
-				Save_treasure[3] = true;
+				if (Get_treasure[2] == true)
+				{
+					Save_treasure[2] = true;
+				}
+				if (Get_treasure[3] == true)
+				{
+					Save_treasure[3] = true;
+				}
 			}
 
 			Reset();
