@@ -2,7 +2,7 @@
 All content © 2021 DigiPen (USA) Corporation, all rights reserved.
 File Name: Camera.h
 Project: GAM150
-Author: 
+Author: Hyosang Jung
 -----------------------------------------------------------------*/
 #pragma once
 

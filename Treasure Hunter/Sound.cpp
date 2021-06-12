@@ -2,7 +2,7 @@
 All content © 2021 DigiPen (USA) Corporation, all rights reserved.
 File Name: Sound.cpp
 Project: GAM150
-Author:
+Author:Hyungwon An
 -----------------------------------------------------------------*/
 #include "Sound.h"
 #include "ENUM.H"

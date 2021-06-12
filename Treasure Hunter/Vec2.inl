@@ -2,7 +2,7 @@
 All content © 2021 DigiPen (USA) Corporation, all rights reserved.
 File Name: Vec2.inl
 Project: GAM150
-Author:
+Author:Sunwoo Lee
 -----------------------------------------------------------------*/
 
 #include "vec2.h"

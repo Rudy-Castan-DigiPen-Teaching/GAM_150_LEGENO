@@ -2,7 +2,7 @@
 All content © 2021 DigiPen (USA) Corporation, all rights reserved.
 File Name: Minsoo.cpp
 Project: GAM150
-Author:
+Author:Hyosang Jung
 -----------------------------------------------------------------*/
 #include"Minsoo.h"
 

@@ -2,7 +2,7 @@
 All content © 2021 DigiPen (USA) Corporation, all rights reserved.
 File Name: Sprite.h
 Project: GAM150
-Author:
+Author:Hyosang Jung
 -----------------------------------------------------------------*/
 #pragma once
 #include"vec2.h"// vec2 struct

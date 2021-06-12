@@ -2,7 +2,7 @@
 All content © 2021 DigiPen (USA) Corporation, all rights reserved.
 File Name: Game.h
 Project: GAM150
-Author:
+Author:Sunwoo Lee, Hyosang Jung, Hyun Kang, Hyungwon An
 -----------------------------------------------------------------*/
 #include "doodle/doodle.hpp" // doodle image & functions 
 #include "ENUM.h"	//	enum classes

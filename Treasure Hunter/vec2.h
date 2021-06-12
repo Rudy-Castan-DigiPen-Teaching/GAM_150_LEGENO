@@ -2,7 +2,7 @@
 All content © 2021 DigiPen (USA) Corporation, all rights reserved.
 File Name: Vec2.h
 Project: GAM150
-Author:
+Author:Sunwoo Lee
 -----------------------------------------------------------------*/
 #pragma once
 #include <cmath>

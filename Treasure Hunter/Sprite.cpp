@@ -2,7 +2,7 @@
 All content © 2021 DigiPen (USA) Corporation, all rights reserved.
 File Name: Sprite.cpp
 Project: GAM150
-Author:
+Author:Hyosang Jung
 -----------------------------------------------------------------*/
 #include"Sprite.h"
 

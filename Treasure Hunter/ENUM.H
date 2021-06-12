@@ -2,7 +2,7 @@
 All content © 2021 DigiPen (USA) Corporation, all rights reserved.
 File Name: ENUM.H
 Project: GAM150
-Author:
+Author:Sunwoo Lee
 -----------------------------------------------------------------*/
 #pragma once
 enum class State

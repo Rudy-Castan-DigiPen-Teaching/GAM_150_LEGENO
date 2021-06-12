@@ -2,7 +2,7 @@
 All content © 2021 DigiPen (USA) Corporation, all rights reserved.
 File Name: Map.cpp
 Project: GAM150
-Author:
+Author:Hyun Kang
 -----------------------------------------------------------------*/
 #include "Map.h"
 #include <fstream> // to load file

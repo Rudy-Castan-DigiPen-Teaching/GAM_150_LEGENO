@@ -2,7 +2,7 @@
 All content © 2021 DigiPen (USA) Corporation, all rights reserved.
 File Name: Camera.cpp
 Project: GAM150
-Author:
+Author:Hyosang Jung
 -----------------------------------------------------------------*/
 #include"Camera.h"
 #include"doodle/doodle.hpp"

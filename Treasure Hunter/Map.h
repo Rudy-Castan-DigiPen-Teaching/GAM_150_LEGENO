@@ -2,7 +2,7 @@
 All content © 2021 DigiPen (USA) Corporation, all rights reserved.
 File Name: Collision.cpp
 Project: GAM150
-Author:
+Author:Hyun Kang
 -----------------------------------------------------------------*/
 #pragma once
 #include<vector>	// std::vector
